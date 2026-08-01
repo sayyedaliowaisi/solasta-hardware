@@ -4,23 +4,15 @@
 
 @section('content')
 
-
-@include('components.hero')
-
-@include('components.why-choose')
-
-@include('components.featured-products')
-
-@include('components.categories')
-
-@include('components.statistics')
-
-@include('components.ourprocess')
-
-@include('components.testimonial')
-
-@include('components.cta')
-
+@include('components.Homepage Components.hero')
+@include('components.Homepage Components.why-choose')
+@include('components.Homepage Components.categories')
+@include('components.Homepage Components.featured-products')
+@include('components.Homepage Components.aboutsection')
+@include('components.Homepage Components.statistics')
+@include('components.Homepage Components.ourprocess')
+@include('components.Homepage Components.testimonial')
+@include('components.Homepage Components.cta')
 
 
 @endsection
