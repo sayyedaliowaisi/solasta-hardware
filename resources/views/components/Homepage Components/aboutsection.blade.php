@@ -11,7 +11,7 @@
             <div class="relative">
 
                 <img
-                    src="{{ asset('images/about/company.jpg') }}"
+                    src="{{ asset('images/Homepage/about/company.jpg') }}"
                     alt="Solasta Hardware"
                     class="rounded-3xl shadow-2xl w-full">
 

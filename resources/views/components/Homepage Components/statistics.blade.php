@@ -97,74 +97,68 @@
 
 </section>
 
-<!-- Trusted Brands -->
+<section class="py-24 bg-white overflow-hidden relative">
 
-<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 text-center">
 
-    <div class="max-w-7xl mx-auto px-6">
+        <span class="inline-flex items-center rounded-full bg-orange-100 px-5 py-2 text-sm font-semibold text-orange-600">
+            OUR BRANDS
+        </span>
 
-        <div class="text-center mb-16">
+        <h2 class="mt-6 text-4xl md:text-5xl font-bold text-gray-900">
+            Trusted Brands We Deal In
+        </h2>
 
-            <span class="bg-orange-100 text-orange-600 px-5 py-2 rounded-full text-sm font-semibold">
-                OUR BRANDS
-            </span>
+        <p class="mt-5 max-w-2xl mx-auto text-gray-600">
+            We supply genuine industrial hardware and construction products from globally trusted brands.
+        </p>
 
-            <h2 class="text-4xl md:text-5xl font-bold mt-6 text-gray-900">
+    </div>
 
-                Trusted Brands We Deal In
+    <!-- Left Fade -->
+    <div class="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
 
-            </h2>
+    <!-- Right Fade -->
+    <div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
 
-            <p class="mt-5 text-gray-600 max-w-2xl mx-auto">
+    @php
+        $brands = [
+            'bosch',
+            'dewalt',
+            'makita',
+            'stanley',
+            'hilti',
+            'taparia',
+            'total',
+            'hikoki',
 
-                We supply genuine hardware products from globally trusted
-                and industry-leading brands.
+            // Duplicate
+            'bosch',
+            'dewalt',
+            'makita',
+            'stanley',
+            'hilti',
+            'taparia',
+            'total',
+            'hikoki',
+        ];
+    @endphp
 
-            </p>
+    <div class="brand-marquee mt-16">
 
-        </div>
+        <div class="brand-track">
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-10 items-center">
+            @foreach($brands as $brand)
 
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/bosch.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
+                <div class="brand-card">
 
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/dewalt.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
+                    <img
+                        src="{{ asset('images/Homepage/brand-logo/'.$brand.'.png') }}"
+                        alt="{{ ucfirst($brand) }}">
 
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/makita.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
+                </div>
 
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/stanley.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
-
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/hilti.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
-
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/taparia.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
-
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/total.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
-
-            <div class="flex justify-center">
-                <img src="{{ asset('images/brands/hikoki.png') }}"
-                     class="h-16 opacity-60 hover:opacity-100 transition duration-300 hover:scale-110">
-            </div>
+            @endforeach
 
         </div>
 
