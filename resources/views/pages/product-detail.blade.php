@@ -1,218 +1,1147 @@
 @extends('layouts.app')
 
-@section('title', 'M R Hardware | Industrial Hardware Supplier')
+@section('title', $product['name'] . ' | M R Hardware')
+
 
 @section('content')
 
 
-<section class="bg-gradient-to-r from-gray-900 to-orange-600 text-white py-20">
+{{-- =========================================================
+    PRODUCT DETAIL
+========================================================= --}}
 
-    <div class="max-w-7xl mx-auto px-6">
+<section class="py-10 lg:py-16 bg-[#f7f8fa]">
 
-        <h1 class="text-5xl font-bold">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            Cabinet Handle
 
-        </h1>
+        {{-- BREADCRUMB --}}
 
-        <p class="mt-4 text-orange-100">
+        <div
+            class="flex
+                   flex-wrap
+                   items-center
+                   gap-2
+                   text-sm
+                   text-gray-500
+                   mb-8"
+        >
 
-            Premium quality cabinet handles for homes,
-            offices and commercial interiors.
+            <a
+                href="{{ route('home') }}"
+                class="hover:text-orange-600"
+            >
+                Home
+            </a>
 
-        </p>
+            <span>/</span>
+
+            <a
+                href="{{ route('products', ['category' => $product['category_slug']]) }}"
+                class="hover:text-orange-600"
+            >
+                {{ $currentCategory['title'] }}
+            </a>
+
+            <span>/</span>
+
+            <span class="text-gray-900">
+                {{ $product['name'] }}
+            </span>
+
+        </div>
+
+
+
+        <div
+            class="grid
+                   lg:grid-cols-2
+                   gap-8
+                   lg:gap-14
+                   items-start"
+        >
+
+
+            {{-- =================================================
+                IMAGE
+            ================================================= --}}
+
+            <div
+                class="bg-white
+                       border
+                       border-gray-200
+                       rounded-[30px]
+                       overflow-hidden
+                       shadow-sm"
+            >
+
+                <div
+                    class="aspect-square
+                           flex
+                           items-center
+                           justify-center
+                           p-5 sm:p-8"
+                >
+
+                    <img
+                        src="{{ asset($product['image']) }}"
+
+                        alt="{{ $product['name'] }}"
+
+                        class="w-full
+                               h-full
+                               object-contain"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            {{-- =================================================
+                INFO
+            ================================================= --}}
+
+            <div class="lg:sticky lg:top-28">
+
+
+                <p
+                    class="text-orange-600
+                           uppercase
+                           tracking-[4px]
+                           text-xs
+                           sm:text-sm
+                           font-bold"
+                >
+                    {{ $currentCategory['title'] }}
+                </p>
+
+
+                <h1
+                    class="mt-4
+                           text-4xl
+                           sm:text-5xl
+                           lg:text-6xl
+                           font-black
+                           text-gray-950
+                           tracking-tight"
+                >
+                    {{ $product['name'] }}
+                </h1>
+
+
+                <p
+                    class="mt-6
+                           text-gray-600
+                           text-base
+                           sm:text-lg
+                           leading-8"
+                >
+                    Part of the M R Hardware
+                    {{ $currentCategory['title'] }}
+                    collection.
+                    Contact us for model-wise specifications,
+                    availability and further product information.
+                </p>
+
+
+
+                {{-- INFO BOXES --}}
+
+                <div
+                    class="grid
+                           sm:grid-cols-2
+                           gap-4
+                           mt-8"
+                >
+
+
+                    <div
+                        class="bg-white
+                               border
+                               border-gray-200
+                               rounded-2xl
+                               p-5"
+                    >
+
+                        <p
+                            class="text-xs
+                                   uppercase
+                                   tracking-[2px]
+                                   font-bold
+                                   text-gray-400"
+                        >
+                            Category
+                        </p>
+
+                        <p
+                            class="mt-2
+                                   font-black
+                                   text-gray-900"
+                        >
+                            {{ $currentCategory['title'] }}
+                        </p>
+
+                    </div>
+
+
+
+                    <div
+                        class="bg-white
+                               border
+                               border-gray-200
+                               rounded-2xl
+                               p-5"
+                    >
+
+                        <p
+                            class="text-xs
+                                   uppercase
+                                   tracking-[2px]
+                                   font-bold
+                                   text-gray-400"
+                        >
+                            Brand
+                        </p>
+
+                        <p
+                            class="mt-2
+                                   font-black
+                                   text-gray-900"
+                        >
+                            M R Hardware
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                {{-- BUTTONS --}}
+
+                <div
+                    class="flex
+                           flex-col
+                           sm:flex-row
+                           gap-3
+                           mt-8"
+                >
+
+                    <a
+                        href="{{ route('contact') }}"
+
+                        class="inline-flex
+                               items-center
+                               justify-center
+                               gap-2
+                               px-7
+                               py-4
+                               rounded-full
+                               bg-orange-600
+                               hover:bg-orange-500
+                               text-white
+                               font-black
+                               transition"
+                    >
+                        Send Enquiry
+
+                        <span>
+                            →
+                        </span>
+                    </a>
+
+
+                    <a
+                        href="{{ route('products', ['category' => $product['category_slug']]) }}"
+
+                        class="inline-flex
+                               items-center
+                               justify-center
+                               px-7
+                               py-4
+                               rounded-full
+                               border
+                               border-gray-300
+                               bg-white
+                               hover:bg-gray-100
+                               text-gray-900
+                               font-black
+                               transition"
+                    >
+                        Back to Products
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
-<section class="py-20 bg-gray-100">
+{{-- =========================================================
+    PRODUCT DETAILS
+========================================================= --}}
+
+<section class="py-16 lg:py-20 bg-white">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid lg:grid-cols-[1.35fr_.65fr] gap-8 lg:gap-12">
+
+
+            {{-- LEFT SIDE --}}
+            <div>
+
+                <p
+                    class="text-orange-600
+                           uppercase
+                           tracking-[4px]
+                           text-xs
+                           sm:text-sm
+                           font-bold"
+                >
+                    Product Information
+                </p>
+
+
+                <h2
+                    class="mt-3
+                           text-3xl
+                           sm:text-4xl
+                           lg:text-5xl
+                           font-black
+                           text-gray-950"
+                >
+                    Product Details
+                </h2>
+
+
+                <div
+                    class="mt-7
+                           text-gray-600
+                           leading-8
+                           text-base
+                           sm:text-lg"
+                >
+
+                    <p>
+                        {{ $product['name'] }}
+                        is part of the
+                        <strong class="text-gray-900">
+                            {{ $currentCategory['title'] }}
+                        </strong>
+                        collection offered by M R Hardware.
+                    </p>
+
+
+                    <p class="mt-5">
+                        This product is available for relevant
+                        furniture, interior and hardware applications.
+                        For exact model-wise size, finish, specifications
+                        and availability, please contact us directly.
+                    </p>
+
+                </div>
+
+
+
+                {{-- PRODUCT DATA TABLE --}}
+
+                <div
+                    class="mt-10
+                           border
+                           border-gray-200
+                           rounded-3xl
+                           overflow-hidden"
+                >
+
+
+                    <div
+                        class="grid
+                               grid-cols-[130px_1fr]
+                               sm:grid-cols-[190px_1fr]
+                               border-b
+                               border-gray-200"
+                    >
+
+                        <div
+                            class="bg-gray-50
+                                   px-4
+                                   sm:px-6
+                                   py-4
+                                   font-bold
+                                   text-gray-700"
+                        >
+                            Product
+                        </div>
+
+
+                        <div
+                            class="px-4
+                                   sm:px-6
+                                   py-4
+                                   text-gray-600"
+                        >
+                            {{ $product['name'] }}
+                        </div>
+
+                    </div>
+
+
+
+                    <div
+                        class="grid
+                               grid-cols-[130px_1fr]
+                               sm:grid-cols-[190px_1fr]
+                               border-b
+                               border-gray-200"
+                    >
+
+                        <div
+                            class="bg-gray-50
+                                   px-4
+                                   sm:px-6
+                                   py-4
+                                   font-bold
+                                   text-gray-700"
+                        >
+                            Category
+                        </div>
+
+
+                        <div
+                            class="px-4
+                                   sm:px-6
+                                   py-4
+                                   text-gray-600"
+                        >
+                            {{ $currentCategory['title'] }}
+                        </div>
+
+                    </div>
+
+
+
+                    <div
+                        class="grid
+                               grid-cols-[130px_1fr]
+                               sm:grid-cols-[190px_1fr]
+                               border-b
+                               border-gray-200"
+                    >
+
+                        <div
+                            class="bg-gray-50
+                                   px-4
+                                   sm:px-6
+                                   py-4
+                                   font-bold
+                                   text-gray-700"
+                        >
+                            Brand
+                        </div>
+
+
+                        <div
+                            class="px-4
+                                   sm:px-6
+                                   py-4
+                                   text-gray-600"
+                        >
+                            M R Hardware
+                        </div>
+
+                    </div>
+
+
+
+                    <div
+                        class="grid
+                               grid-cols-[130px_1fr]
+                               sm:grid-cols-[190px_1fr]"
+                    >
+
+                        <div
+                            class="bg-gray-50
+                                   px-4
+                                   sm:px-6
+                                   py-4
+                                   font-bold
+                                   text-gray-700"
+                        >
+                            Details
+                        </div>
+
+
+                        <div
+                            class="px-4
+                                   sm:px-6
+                                   py-4
+                                   text-gray-600"
+                        >
+                            Contact for model-wise specifications
+                            and availability.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- RIGHT SIDE --}}
+            <div>
+
+                <div
+                    class="bg-[#071a2d]
+                           text-white
+                           rounded-[30px]
+                           p-7
+                           sm:p-8
+                           lg:sticky
+                           lg:top-28"
+                >
+
+                    <p
+                        class="text-orange-400
+                               uppercase
+                               tracking-[3px]
+                               text-xs
+                               font-bold"
+                    >
+                        Need Information?
+                    </p>
+
+
+                    <h3
+                        class="mt-3
+                               text-2xl
+                               sm:text-3xl
+                               font-black"
+                    >
+                        Enquire About This Product
+                    </h3>
+
+
+                    <p
+                        class="mt-4
+                               text-gray-300
+                               leading-7"
+                    >
+                        Contact M R Hardware for product details,
+                        specifications and availability.
+                    </p>
+
+
+                    <div class="mt-7 space-y-3">
+
+
+                        <a
+                            href="{{ route('contact') }}"
+                            class="flex
+                                   items-center
+                                   justify-center
+                                   w-full
+                                   px-6
+                                   py-4
+                                   rounded-full
+                                   bg-orange-600
+                                   hover:bg-orange-500
+                                   font-black
+                                   transition"
+                        >
+                            Send Enquiry
+                        </a>
+
+
+                        <a
+                            href="tel:+919811510846"
+                            class="flex
+                                   items-center
+                                   justify-center
+                                   w-full
+                                   px-6
+                                   py-4
+                                   rounded-full
+                                   border
+                                   border-white/20
+                                   hover:bg-white/10
+                                   font-bold
+                                   transition"
+                        >
+                            Call +91 98115 10846
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{{-- =========================================================
+    PRODUCT VIDEOS
+========================================================= --}}
+
+@if(
+    !empty($currentCategory['videos'])
+    && $currentCategory['videos']->count()
+)
+
+<section
+    class="py-16
+           lg:py-24
+           bg-[#071a2d]
+           text-white
+           overflow-hidden"
+>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+        {{-- HEADER --}}
+
+        <div
+            class="flex
+                   items-end
+                   justify-between
+                   gap-6
+                   mb-10"
+        >
+
+
+            <div>
+
+                <p
+                    class="text-orange-400
+                           uppercase
+                           tracking-[4px]
+                           text-xs
+                           sm:text-sm
+                           font-bold"
+                >
+                    Product Media
+                </p>
+
+
+                <h2
+                    class="mt-3
+                           text-3xl
+                           sm:text-4xl
+                           lg:text-5xl
+                           font-black"
+                >
+                    Product Videos
+                </h2>
+
+
+                <p
+                    class="mt-4
+                           text-gray-400
+                           max-w-xl"
+                >
+                    View videos available for the
+                    {{ $currentCategory['title'] }}
+                    collection.
+                </p>
+
+            </div>
+
+
+
+            {{-- DESKTOP ARROWS --}}
+
+            <div class="hidden md:flex gap-3">
+
+                <button
+                    type="button"
+
+                    onclick="scrollProductVideos(-1)"
+
+                    class="w-12
+                           h-12
+                           rounded-full
+                           border
+                           border-white/20
+                           hover:bg-orange-600
+                           hover:border-orange-600
+                           transition"
+                >
+                    ←
+                </button>
 
-<div class="max-w-7xl mx-auto px-6">
+
+                <button
+                    type="button"
+
+                    onclick="scrollProductVideos(1)"
+
+                    class="w-12
+                           h-12
+                           rounded-full
+                           border
+                           border-white/20
+                           hover:bg-orange-600
+                           hover:border-orange-600
+                           transition"
+                >
+                    →
+                </button>
+
+            </div>
 
-<div class="grid lg:grid-cols-4 gap-10">
-    <div class="bg-white rounded-3xl shadow-lg p-8">
+        </div>
 
-<h3 class="font-bold text-2xl mb-6">
 
-Categories
 
-</h3>
+        {{-- VIDEO SLIDER --}}
 
-<div class="space-y-2">
+        <div
+            id="productVideoSlider"
 
-<a href="#" class="block p-3 rounded-xl bg-orange-600 text-white">
+            class="product-video-slider
+                   flex
+                   gap-5
+                   lg:gap-6
+                   overflow-x-auto
+                   scroll-smooth
+                   snap-x
+                   snap-mandatory
+                   pb-5"
+        >
 
-Cabinet Handle
 
-</a>
+            @foreach($currentCategory['videos'] as $index => $video)
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
 
-Door Handle
+                <article
+                    class="flex-none
+                           w-[88%]
+                           sm:w-[70%]
+                           md:w-[55%]
+                           lg:w-[44%]
+                           xl:w-[38%]
+                           snap-start"
+                >
 
-</a>
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+                    <div
+                        class="bg-black
+                               rounded-3xl
+                               overflow-hidden
+                               border
+                               border-white/10
+                               shadow-2xl"
+                    >
 
-Knobs
 
-</a>
+                        <video
+                            controls
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+                            playsinline
 
-Latch
+                            preload="metadata"
 
-</a>
+                            class="w-full
+                                   aspect-video
+                                   bg-black
+                                   object-contain"
+                        >
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+                            <source
+                                src="{{ asset($video) }}"
+                                type="video/mp4"
+                            >
 
-Ventilation Jali
 
-</a>
+                            Your browser does not support
+                            HTML5 video.
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+                        </video>
 
-Magnet Catcher
+                    </div>
 
-</a>
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
 
-Door Stopper
+                    <div class="mt-4">
 
-</a>
+                        <p
+                            class="text-xs
+                                   uppercase
+                                   tracking-[2px]
+                                   font-bold
+                                   text-orange-400"
+                        >
+                            {{ $currentCategory['title'] }}
+                        </p>
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
 
-Key Holder
+                        <h3
+                            class="mt-2
+                                   text-lg
+                                   font-black"
+                        >
+                            Product Video
+                            {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                        </h3>
 
-</a>
+                    </div>
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+                </article>
 
-Profile Handle
 
-</a>
+            @endforeach
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+        </div>
 
-Mortise Handle
+    </div>
 
-</a>
+</section>
 
-<a href="#" class="block p-3 rounded-xl hover:bg-orange-50">
+@endif
 
-Sliding Handle
 
-</a>
 
-</div>
+{{-- =========================================================
+    RELATED PRODUCTS
+========================================================= --}}
 
-</div>
+@if($relatedProducts->count())
 
-<div class="lg:col-span-3">
+<section
+    class="py-16
+           lg:py-24
+           bg-white
+           overflow-hidden"
+>
 
-<div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-<img
-src="{{ asset('images/products/cabinet-handle.jpg') }}"
-class="w-full h-[500px] object-cover">
 
-<div class="p-10">
+        <div
+            class="flex
+                   items-end
+                   justify-between
+                   gap-5
+                   mb-10"
+        >
 
-<h2 class="text-4xl font-bold">
 
-Cabinet Handle
+            <div>
 
-</h2>
+                <p
+                    class="text-orange-600
+                           uppercase
+                           tracking-[4px]
+                           text-xs
+                           sm:text-sm
+                           font-bold"
+                >
+                    Explore More
+                </p>
 
-<p class="text-gray-600 mt-5">
 
-Premium cabinet handles manufactured using
-high-quality materials for long-lasting durability
-and modern appearance.
+                <h2
+                    class="mt-3
+                           text-3xl
+                           sm:text-4xl
+                           lg:text-5xl
+                           font-black
+                           text-gray-950"
+                >
+                    Related Products
+                </h2>
 
-</p>
+            </div>
 
-<h3 class="mt-10 font-bold text-2xl">
 
-Available Sizes
 
-</h3>
+            <div class="hidden md:flex gap-3">
 
-<div class="flex flex-wrap gap-3 mt-5">
+                <button
+                    type="button"
 
-<span class="px-5 py-2 rounded-full bg-orange-100 text-orange-700">
+                    onclick="scrollRelatedProducts(-1)"
 
-96 mm
+                    class="w-12
+                           h-12
+                           rounded-full
+                           border
+                           border-gray-300
+                           hover:bg-orange-600
+                           hover:border-orange-600
+                           hover:text-white
+                           transition"
+                >
+                    ←
+                </button>
 
-</span>
 
-<span class="px-5 py-2 rounded-full bg-orange-100">
+                <button
+                    type="button"
 
-128 mm
+                    onclick="scrollRelatedProducts(1)"
 
-</span>
+                    class="w-12
+                           h-12
+                           rounded-full
+                           border
+                           border-gray-300
+                           hover:bg-orange-600
+                           hover:border-orange-600
+                           hover:text-white
+                           transition"
+                >
+                    →
+                </button>
 
-<span class="px-5 py-2 rounded-full bg-orange-100">
+            </div>
 
-192 mm
+        </div>
 
-</span>
 
-<span class="px-5 py-2 rounded-full bg-orange-100">
 
-224 mm
+        <div
+            id="relatedProductsSlider"
 
-</span>
+            class="related-products-slider
+                   flex
+                   gap-4
+                   sm:gap-5
+                   overflow-x-auto
+                   scroll-smooth
+                   snap-x
+                   snap-mandatory
+                   pb-4"
+        >
 
-<span class="px-5 py-2 rounded-full bg-orange-100">
 
-288 mm
+            @foreach($relatedProducts as $related)
 
-</span>
 
-</div>
+                <a
+                    href="{{ route('product.detail', ['slug' => $related['slug']]) }}"
 
-<h3 class="mt-10 text-2xl font-bold">
+                    class="group
+                           flex-none
+                           w-[72%]
+                           sm:w-[45%]
+                           md:w-[31%]
+                           lg:w-[23%]
+                           snap-start
+                           bg-white
+                           border
+                           border-gray-200
+                           rounded-3xl
+                           overflow-hidden
+                           hover:shadow-xl
+                           transition"
+                >
 
-Features
 
-</h3>
+                    <div
+                        class="aspect-square
+                               bg-gray-50
+                               overflow-hidden"
+                    >
 
-<ul class="mt-5 space-y-3 text-gray-700">
+                        <img
+                            src="{{ asset($related['image']) }}"
 
-<li>✔ Premium Finish</li>
+                            alt="{{ $related['name'] }}"
 
-<li>✔ Rust Resistant</li>
+                            loading="lazy"
 
-<li>✔ Heavy Duty</li>
+                            class="w-full
+                                   h-full
+                                   object-contain
+                                   p-4
+                                   group-hover:scale-105
+                                   transition
+                                   duration-500"
+                        >
 
-<li>✔ Easy Installation</li>
+                    </div>
 
-<li>✔ Long Lasting Shine</li>
 
-</ul>
 
-<div class="flex gap-5 mt-12">
+                    <div class="p-5">
 
-<a href="#"
-class="bg-orange-600 text-white px-8 py-4 rounded-full">
+                        <p
+                            class="text-xs
+                                   uppercase
+                                   tracking-[2px]
+                                   font-bold
+                                   text-orange-600"
+                        >
+                            {{ $currentCategory['title'] }}
+                        </p>
 
-Get Quote
 
-</a>
+                        <h3
+                            class="mt-2
+                                   font-black
+                                   text-gray-950
+                                   line-clamp-2"
+                        >
+                            {{ $related['name'] }}
+                        </h3>
 
-<a href="#"
-class="border border-orange-600 text-orange-600 px-8 py-4 rounded-full">
 
-Download Catalogue
+                        <p
+                            class="mt-4
+                                   text-sm
+                                   text-gray-500
+                                   group-hover:text-orange-600
+                                   transition"
+                        >
+                            View Product →
+                        </p>
 
-</a>
+                    </div>
 
-</div>
+                </a>
 
+
+            @endforeach
+
+        </div>
+
+    </div>
+
+</section>
+
+@endif
+
+
+
+{{-- =========================================================
+    CSS
+========================================================= --}}
+
+<style>
+
+.product-video-slider,
+.related-products-slider {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+}
+
+.product-video-slider::-webkit-scrollbar,
+.related-products-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.product-video-slider > *,
+.related-products-slider > * {
+    scroll-snap-align: start;
+}
+
+</style>
+
+
+
+{{-- =========================================================
+    JS
+========================================================= --}}
+
+<script>
+
+function scrollProductVideos(direction) {
+
+    const slider =
+        document.getElementById('productVideoSlider');
+
+    if (!slider) {
+        return;
+    }
+
+
+    const card =
+        slider.firstElementChild;
+
+    if (!card) {
+        return;
+    }
+
+
+    const styles =
+        window.getComputedStyle(slider);
+
+
+    const gap =
+        parseFloat(styles.gap)
+        || 24;
+
+
+    const width =
+        card.getBoundingClientRect().width;
+
+
+    slider.scrollBy({
+        left: direction * (width + gap),
+        behavior: 'smooth'
+    });
+
+}
+
+
+
+function scrollRelatedProducts(direction) {
+
+    const slider =
+        document.getElementById('relatedProductsSlider');
+
+    if (!slider) {
+        return;
+    }
+
+
+    const card =
+        slider.firstElementChild;
+
+    if (!card) {
+        return;
+    }
+
+
+    const styles =
+        window.getComputedStyle(slider);
+
+
+    const gap =
+        parseFloat(styles.gap)
+        || 20;
+
+
+    const width =
+        card.getBoundingClientRect().width;
+
+
+    slider.scrollBy({
+        left: direction * (width + gap),
+        behavior: 'smooth'
+    });
+
+}
+
+</script>
 
 
 @endsection
