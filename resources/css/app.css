@@ -1,137 +1,124 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Instrument Sans",
+        ui-sans-serif,
+        system-ui,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 
-@import "tailwindcss";
+/* =========================================
+   ALPINE
+========================================= */
 
 [x-cloak] {
     display: none !important;
 }
 
-/* ===============================
+
+/* =========================================
    BRAND MARQUEE
-==================================*/
+========================================= */
 
-.brand-marquee{
-
-    overflow:hidden;
-    width:100%;
-    position:relative;
-
+.brand-marquee {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
 }
 
-.brand-track{
+.brand-track {
+    display: flex;
+    width: max-content;
+    gap: 35px;
 
-    display:flex;
-    width:max-content;
-    gap:35px;
-
-    animation:brandSlider 35s linear infinite;
-
+    animation: brandSlider 35s linear infinite;
 }
 
-.brand-marquee:hover .brand-track{
-
-    animation-play-state:paused;
-
+.brand-marquee:hover .brand-track {
+    animation-play-state: paused;
 }
 
-.brand-card{
+.brand-card {
+    width: 220px;
+    height: 120px;
 
-    width:220px;
-    height:120px;
+    background: #fff;
 
-    background:#fff;
+    border-radius: 20px;
 
-    border-radius:20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    border: 1px solid #ededed;
 
-    border:1px solid #ededed;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .05);
 
-    box-shadow:0 8px 30px rgba(0,0,0,.05);
-
-    transition:.35s;
-
+    transition: .35s;
 }
 
-.brand-card:hover{
+.brand-card:hover {
+    transform: translateY(-8px);
 
-    transform:translateY(-8px);
-
-    box-shadow:0 15px 40px rgba(249,115,22,.18);
-
+    box-shadow: 0 15px 40px rgba(249, 115, 22, .18);
 }
 
-.brand-card img{
+.brand-card img {
+    max-width: 150px;
+    max-height: 55px;
 
-    max-width:150px;
+    width: auto;
+    height: auto;
 
-    max-height:55px;
+    object-fit: contain;
 
-    width:auto;
-    height:auto;
+    filter: grayscale(100%);
+    opacity: .75;
 
-    object-fit:contain;
-
-    filter:grayscale(100%);
-    opacity:.75;
-
-    transition:.35s;
-
+    transition: .35s;
 }
 
-.brand-card:hover img{
-
-    filter:none;
-    opacity:1;
-
+.brand-card:hover img {
+    filter: none;
+    opacity: 1;
 }
 
-@keyframes brandSlider{
-
-    from{
-
-        transform:translateX(0);
-
+@keyframes brandSlider {
+    from {
+        transform: translateX(0);
     }
 
-    to{
+    to {
+        transform: translateX(-50%);
+    }
+}
 
-        transform:translateX(-50%);
 
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .brand-card {
+        width: 170px;
+        height: 95px;
+    }
+
+    .brand-card img {
+        max-width: 110px;
+        max-height: 42px;
     }
 
 }
-
-/* Mobile */
-
-@media(max-width:768px){
-
-.brand-card{
-
-    width:170px;
-    height:95px;
-
-}
-
-.brand-card img{
-
-    max-width:110px;
-
-    max-height:42px;
-
-}
-
-}    

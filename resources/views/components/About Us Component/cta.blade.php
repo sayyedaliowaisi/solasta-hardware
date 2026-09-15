@@ -1,59 +1,274 @@
+@php
+    /*
+    |--------------------------------------------------------------------------
+    | CTA CMS Content
+    |--------------------------------------------------------------------------
+    */
 
-<!-- CTA Section -->
+    $ctaBadge =
+        $section->badge
+        ?: 'GET IN TOUCH';
+
+    $ctaTitle =
+        $section->title
+        ?: 'Looking for Hardware Products?';
+
+    $ctaSubtitle =
+        $section->subtitle;
+
+    $ctaDescription =
+        $section->description
+        ?: 'Contact M R Hardware for product availability and model-wise details.';
+
+    $ctaButtonText =
+        $section->button_text
+        ?: 'Contact Us';
+
+    $ctaButtonLink =
+        $section->button_link
+        ?: '/contact';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Primary Button URL
+    |--------------------------------------------------------------------------
+    */
+
+    $ctaButtonUrl =
+        str_starts_with($ctaButtonLink, 'http://') ||
+        str_starts_with($ctaButtonLink, 'https://') ||
+        str_starts_with($ctaButtonLink, '#') ||
+        str_starts_with($ctaButtonLink, 'tel:') ||
+        str_starts_with($ctaButtonLink, 'mailto:')
+            ? $ctaButtonLink
+            : url($ctaButtonLink);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Company Phone
+    |--------------------------------------------------------------------------
+    |
+    | Phone comes from global Site Settings.
+    |
+    */
+
+    $companyPhone =
+        $siteSettings->phone ?? null;
+
+    $phoneHref =
+        $companyPhone
+            ? preg_replace('/[^0-9+]/', '', $companyPhone)
+            : null;
+@endphp
+
+
+<!-- =========================================================
+     CTA SECTION
+========================================================= -->
 
 <section class="relative py-24 overflow-hidden">
 
-    <!-- Background -->
 
-    <div class="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-600 to-red-500"></div>
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
 
-    <!-- Decorative Circles -->
+    <div
+        class="absolute inset-0
+               bg-gradient-to-r
+               from-orange-500
+               via-orange-600
+               to-red-500"
+    ></div>
 
-    <div class="absolute -top-20 -left-20 w-72 h-72 bg-white/10 rounded-full"></div>
 
-    <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/10 rounded-full"></div>
+    <!-- =====================================================
+         DECORATIVE CIRCLES
+    ====================================================== -->
 
-    <div class="relative max-w-7xl mx-auto px-6 text-center text-white">
+    <div
+        class="absolute
+               -top-20
+               -left-20
+               w-72 h-72
+               bg-white/10
+               rounded-full"
+    ></div>
 
-        <span class="inline-block bg-white/20 px-6 py-2 rounded-full text-sm font-semibold tracking-wide">
 
-            READY TO START?
+    <div
+        class="absolute
+               bottom-0
+               right-0
+               w-80 h-80
+               bg-white/10
+               rounded-full"
+    ></div>
 
-        </span>
 
-        <h2 class="text-4xl md:text-6xl font-bold mt-8 leading-tight">
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
 
-            Looking for Reliable <br>
+    <div
+        class="relative
+               max-w-7xl
+               mx-auto
+               px-6
+               text-center
+               text-white"
+    >
 
-            Hardware Solutions?
 
-        </h2>
+        <!-- BADGE -->
 
-        <p class="max-w-3xl mx-auto mt-8 text-lg text-orange-100 leading-8">
+        @if($ctaBadge)
 
-            Whether you're working on a residential, commercial,
-            or industrial project, Solasta Hardware is here
-            to provide premium-quality products with trusted support.
+            <span
+                class="inline-block
+                       bg-white/20
+                       px-6 py-2
+                       rounded-full
+                       text-sm
+                       font-semibold
+                       tracking-wide"
+            >
+                {{ $ctaBadge }}
+            </span>
 
-        </p>
+        @endif
 
-        <div class="flex flex-col sm:flex-row justify-center gap-6 mt-12">
 
-            <a href="#"
-               class="bg-white text-orange-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition">
+        <!-- TITLE -->
 
-                Request a Quote
+        @if($ctaTitle)
 
-            </a>
+            <h2
+                class="text-4xl
+                       md:text-6xl
+                       font-bold
+                       mt-8
+                       leading-tight
+                       max-w-5xl
+                       mx-auto"
+            >
+                {{ $ctaTitle }}
+            </h2>
 
-            <a href="tel:+919876543210"
-               class="border-2 border-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-orange-600 transition">
+        @endif
 
-                📞 Call Now
 
-            </a>
+        <!-- OPTIONAL SUBTITLE -->
+
+        @if($ctaSubtitle)
+
+            <p
+                class="mt-5
+                       text-lg
+                       font-semibold
+                       text-white"
+            >
+                {{ $ctaSubtitle }}
+            </p>
+
+        @endif
+
+
+        <!-- DESCRIPTION -->
+
+        @if($ctaDescription)
+
+            <p
+                class="max-w-3xl
+                       mx-auto
+                       mt-8
+                       text-lg
+                       text-orange-100
+                       leading-8
+                       whitespace-pre-line"
+            >
+                {{ $ctaDescription }}
+            </p>
+
+        @endif
+
+
+        <!-- =================================================
+             CTA BUTTONS
+        ================================================== -->
+
+        <div
+            class="flex
+                   flex-col
+                   sm:flex-row
+                   justify-center
+                   gap-6
+                   mt-12"
+        >
+
+
+            <!-- PRIMARY CTA -->
+
+            @if($ctaButtonText)
+
+                <a
+                    href="{{ $ctaButtonUrl }}"
+                    class="bg-white
+                           text-orange-600
+                           px-8 py-4
+                           rounded-xl
+                           font-semibold
+                           shadow-lg
+                           transition
+                           hover:bg-gray-100
+                           hover:-translate-y-1"
+                >
+                    {{ $ctaButtonText }}
+                </a>
+
+            @endif
+
+
+            <!-- CALL BUTTON -->
+
+            @if($companyPhone)
+
+                <a
+                    href="tel:{{ $phoneHref }}"
+                    class="border-2
+                           border-white
+                           px-8 py-4
+                           rounded-xl
+                           font-semibold
+                           transition
+                           hover:bg-white
+                           hover:text-orange-600
+                           hover:-translate-y-1"
+                >
+                    📞 Call Now
+                </a>
+
+            @endif
 
         </div>
+
+
+        <!-- PHONE NUMBER -->
+
+        @if($companyPhone)
+
+            <p
+                class="mt-5
+                       text-sm
+                       font-medium
+                       text-orange-100"
+            >
+                {{ $companyPhone }}
+            </p>
+
+        @endif
 
     </div>
 

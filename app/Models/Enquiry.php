@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Enquiry extends Model
 {
     protected $fillable = [
-        'name',
-        'email',
-        'phone',
         'product',
-        'category',
+        'name',
+        'phone',
+        'email',
         'message',
+        'status',
+        'admin_note',
     ];
 }

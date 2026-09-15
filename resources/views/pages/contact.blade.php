@@ -1,496 +1,399 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us | M R Hardware')
+@section('title', 'Contact Us | ' . ($siteSettings->company_name ?: 'M R Hardware'))
 
 @section('content')
 
 @php
-    $selectedProduct = request('product');
-    $selectedCategory = request('category');
+    /*
+    |--------------------------------------------------------------------------
+    | Site Settings
+    |--------------------------------------------------------------------------
+    */
 
-    
+    $companyName =
+        $siteSettings->company_name
+        ?: 'M R Hardware';
+
+    $phoneDigits =
+        preg_replace(
+            '/\D+/',
+            '',
+            $siteSettings->phone ?? ''
+        );
+
+    if (strlen($phoneDigits) === 10) {
+        $phoneDigits = '91' . $phoneDigits;
+    }
+
+    $phoneDisplay =
+        $siteSettings->phone
+        ?: '9811510846';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Page CMS
+    |--------------------------------------------------------------------------
+    */
+
+    $contactBadge =
+        $contactSettings->badge
+        ?: 'Contact Us';
+
+    $contactTitle =
+        $contactSettings->title
+        ?: "Let's Talk";
+
+    $contactDescription =
+        $contactSettings->description
+        ?: 'Contact us for product enquiries, availability and business information.';
+
+
+    $detailsBadge =
+        $contactSettings->details_badge
+        ?: 'Contact Details';
+
+    $detailsTitle =
+        $contactSettings->details_title
+        ?: 'Get in touch';
+
+    $detailsDescription =
+        $contactSettings->details_description
+        ?: 'Contact '
+            . $companyName
+            . ' for product enquiries, availability and business information.';
+
+
+    $formBadge =
+        $contactSettings->form_badge
+        ?: 'Enquiry Form';
+
+    $formTitle =
+        $contactSettings->form_title
+        ?: 'Send us a message';
+
+    $formDescription =
+        $contactSettings->form_description
+        ?: 'Share your requirement and our team will get back to you.';
+
+    $formButtonText =
+        $contactSettings->form_button_text
+        ?: 'Send Enquiry';
 @endphp
 
 
-<!-- =========================================================
+{{-- =========================================================
      CONTACT HERO
-========================================================= -->
+========================================================= --}}
+<section
+    class="relative overflow-hidden
+           bg-[#071a2d]
+           text-white
+           lg:min-h-[calc(100svh-72px)]
+           lg:flex lg:items-center"
+>
 
-<section class="relative overflow-hidden bg-gray-950">
+    <div
+        class="absolute inset-0 opacity-30"
+        style="
+            background-image:
+                radial-gradient(circle at 18% 28%, rgba(249,115,22,.9) 0, transparent 28%),
+                radial-gradient(circle at 82% 72%, rgba(14,165,233,.45) 0, transparent 30%);
+        "
+    ></div>
 
-    <!-- BACKGROUND -->
-
-    <div class="absolute inset-0">
-
-        <div class="absolute
-                    -top-32
-                    -right-32
-                    w-96 h-96
-                    bg-orange-600/20
-                    rounded-full
-                    blur-3xl">
-        </div>
-
-        <div class="absolute
-                    -bottom-32
-                    -left-32
-                    w-96 h-96
-                    bg-orange-500/10
-                    rounded-full
-                    blur-3xl">
-        </div>
-
-        <div class="absolute inset-0
-                    bg-gradient-to-br
-                    from-gray-950
-                    via-gray-900
-                    to-orange-950">
-        </div>
-
-    </div>
+    <div
+        class="absolute inset-0
+               bg-gradient-to-br
+               from-[#071a2d]/10
+               via-[#071a2d]/40
+               to-[#071a2d]/90"
+    ></div>
 
 
-    <!-- CONTENT -->
+    <div
+        class="relative mx-auto w-full max-w-[1180px]
+               px-4 py-14
+               sm:px-6 sm:py-16
+               lg:px-8 lg:py-10"
+    >
 
-    <div class="relative
-                max-w-7xl
-                mx-auto
-                px-6
-                py-24
-                md:py-32">
+        <div
+            class="grid items-center
+                   gap-8 lg:gap-12
+                   lg:grid-cols-[1.08fr_.92fr]"
+        >
 
-        <div class="max-w-4xl">
+            {{-- LEFT --}}
+            <div class="max-w-2xl">
 
-            <span class="inline-flex
-                         items-center
-                         gap-3
-                         text-orange-400
-                         uppercase
-                         tracking-[5px]
-                         text-sm
-                         font-bold">
+                @if($contactBadge)
 
-                <span class="w-10 h-px bg-orange-500"></span>
+                    <p
+                        class="text-[10px] sm:text-[11px]
+                               font-bold uppercase
+                               tracking-[0.2em]
+                               text-orange-400"
+                    >
+                        {{ $contactBadge }}
+                    </p>
 
-                M R Hardware
-
-            </span>
-
-
-            <h1 class="text-5xl
-                       md:text-6xl
-                       lg:text-7xl
-                       font-black
-                       text-white
-                       mt-7">
-
-                Contact Us
-
-            </h1>
+                @endif
 
 
-            <p class="text-gray-300
-                      text-lg
-                      md:text-xl
-                      leading-8
-                      mt-6
-                      max-w-2xl">
-
-                Get in touch with M R Hardware for
-                product enquiries, bulk orders and
-                hardware requirements.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     CONTACT SECTION
-========================================================= -->
-
-<section class="py-24 bg-gray-50">
-
-    <div class="max-w-7xl mx-auto px-6">
-
-        <div class="grid
-                    lg:grid-cols-[0.85fr_1.15fr]
-                    gap-10
-                    lg:gap-14">
-
-
-            <!-- =====================================================
-                 LEFT CONTACT INFORMATION
-            ====================================================== -->
-
-            <div>
-
-                <span class="text-orange-600
-                             uppercase
-                             tracking-[4px]
-                             text-sm
-                             font-bold">
-
-                    Get In Touch
-
-                </span>
-
-
-                <h2 class="text-4xl
-                           md:text-5xl
+                <h1
+                    class="mt-4
+                           text-[38px]
+                           sm:text-[48px]
+                           lg:text-[56px]
                            font-black
-                           text-gray-900
-                           mt-4">
-
-                    We'd Love to Hear From You
-
-                </h2>
-
-
-                <p class="text-gray-600
-                          mt-6
-                          leading-8">
-
-                    Contact us for product details,
-                    pricing, bulk orders or any other
-                    business enquiry.
-
-                </p>
+                           leading-[1.03]
+                           tracking-[-0.045em]"
+                >
+                    {{ $contactTitle }}
+                </h1>
 
 
+                @if($contactDescription)
 
-                <!-- CONTACT CARDS -->
+                    <p
+                        class="mt-5
+                               max-w-xl
+                               text-[14px] sm:text-[15px]
+                               leading-7
+                               text-slate-300"
+                    >
+                        {{ $contactDescription }}
+                    </p>
 
-                <div class="space-y-5 mt-10">
-
-
-                    <!-- PHONE -->
-
-                    <a href="tel:+919811510846"
-                       class="group
-                              flex
-                              items-start
-                              gap-5
-                              bg-white
-                              p-6
-                              rounded-2xl
-                              border
-                              border-gray-100
-                              shadow-sm
-                              hover:shadow-xl
-                              hover:-translate-y-1
-                              transition-all
-                              duration-300">
-
-                        <div class="w-14 h-14
-                                    shrink-0
-                                    rounded-xl
-                                    bg-orange-100
-                                    text-orange-600
-                                    flex
-                                    items-center
-                                    justify-center
-                                    text-2xl">
-
-                            ☎
-
-                        </div>
+                @endif
 
 
-                        <div>
+                <div class="mt-7 flex flex-wrap gap-3">
 
-                            <p class="text-sm
-                                      uppercase
-                                      tracking-[2px]
-                                      text-gray-400">
-
-                                Call Us
-
-                            </p>
-
-                            <h3 class="text-lg
-                                       font-bold
-                                       text-gray-900
-                                       mt-1">
-
-                                +91 9811510846
-
-                            </h3>
-
-                        </div>
-
+                    <a
+                        href="#contact-form"
+                        class="inline-flex min-h-[44px]
+                               items-center justify-center
+                               rounded-xl
+                               bg-orange-600
+                               px-5
+                               text-[12px]
+                               font-bold
+                               text-white
+                               transition
+                               hover:bg-orange-500"
+                    >
+                        {{ $formButtonText }}
                     </a>
 
 
+                    @if($siteSettings->phone)
 
-                    <!-- EMAIL -->
+                        <a
+                            href="tel:+{{ $phoneDigits }}"
+                            class="inline-flex min-h-[44px]
+                                   items-center justify-center
+                                   rounded-xl
+                                   border border-white/20
+                                   bg-white/5
+                                   px-5
+                                   text-[12px]
+                                   font-bold
+                                   text-white
+                                   transition
+                                   hover:bg-white
+                                   hover:text-slate-950"
+                        >
+                            Call {{ $phoneDisplay }}
+                        </a>
 
-                    <a href="mailto:mrhardware04@gmail.com"
-                       class="group
-                              flex
-                              items-start
-                              gap-5
-                              bg-white
-                              p-6
-                              rounded-2xl
-                              border
-                              border-gray-100
-                              shadow-sm
-                              hover:shadow-xl
-                              hover:-translate-y-1
-                              transition-all
-                              duration-300">
-
-                        <div class="w-14 h-14
-                                    shrink-0
-                                    rounded-xl
-                                    bg-orange-100
-                                    text-orange-600
-                                    flex
-                                    items-center
-                                    justify-center
-                                    text-2xl">
-
-                            ✉
-
-                        </div>
-
-
-                        <div class="min-w-0">
-
-                            <p class="text-sm
-                                      uppercase
-                                      tracking-[2px]
-                                      text-gray-400">
-
-                                Email Us
-
-                            </p>
-
-                            <h3 class="text-lg
-                                       font-bold
-                                       text-gray-900
-                                       mt-1
-                                       break-all">
-
-                                mrhardware04@gmail.com
-
-                            </h3>
-
-                        </div>
-
-                    </a>
-
-
-
-                    <!-- ADDRESS -->
-
-                    <div class="flex
-                                items-start
-                                gap-5
-                                bg-white
-                                p-6
-                                rounded-2xl
-                                border
-                                border-gray-100
-                                shadow-sm">
-
-                        <div class="w-14 h-14
-                                    shrink-0
-                                    rounded-xl
-                                    bg-orange-100
-                                    text-orange-600
-                                    flex
-                                    items-center
-                                    justify-center
-                                    text-2xl">
-
-                            📍
-
-                        </div>
-
-
-                        <div>
-
-                            <p class="text-sm
-                                      uppercase
-                                      tracking-[2px]
-                                      text-gray-400">
-
-                                Our Location
-
-                            </p>
-
-                            <h3 class="font-bold
-                                       text-gray-900
-                                       mt-1
-                                       leading-7">
-
-                                3335/107-108 Sharda Mata Complex,<br>
-                                Gali Bajrang Bali,<br>
-                                Chawri Bazar,<br>
-                                Delhi - 110006
-
-                            </h3>
-
-                        </div>
-
-                    </div>
+                    @endif
 
                 </div>
 
             </div>
 
 
+            {{-- RIGHT INFO PANEL --}}
+            <div
+                class="rounded-[26px]
+                       border border-white/10
+                       bg-white/[0.06]
+                       p-5 sm:p-6
+                       backdrop-blur"
+            >
 
-            <!-- =====================================================
-                 RIGHT CONTACT FORM
-            ====================================================== -->
-
-            <div>
-
-                <div class="bg-white
-                            rounded-[2rem]
-                            p-7
-                            md:p-10
-                            border
-                            border-gray-100
-                            shadow-xl">
-
-
-                    <!-- FORM HEADING -->
-
-                    <div class="mb-8">
-
-                        <span class="text-orange-600
-                                     uppercase
-                                     tracking-[3px]
-                                     text-sm
-                                     font-bold">
-
-                            Send Enquiry
-
-                        </span>
+                <p
+                    class="text-[9px]
+                           font-bold uppercase
+                           tracking-[0.18em]
+                           text-orange-400"
+                >
+                    Quick Contact
+                </p>
 
 
-                        <h2 class="text-3xl
-                                   md:text-4xl
-                                   font-black
-                                   text-gray-900
-                                   mt-3">
-
-                            Request a Quote
-
-                        </h2>
-
-
-                        <p class="text-gray-500
-                                  mt-3
-                                  leading-7">
-
-                            Fill in your details and our team
-                            will contact you regarding your enquiry.
-
-                        </p>
-
-                    </div>
+                <h2
+                    class="mt-2
+                           text-[22px] sm:text-[24px]
+                           font-black
+                           tracking-[-0.03em]"
+                >
+                    Reach {{ $companyName }}
+                </h2>
 
 
-
-                    <!-- =================================================
-                         SELECTED PRODUCT INFORMATION
-                    ================================================== -->
-
-                    @if($selectedProduct)
-
-                        <div class="mb-8
-                                    relative
-                                    overflow-hidden
-                                    bg-gradient-to-r
-                                    from-orange-50
-                                    to-orange-100/50
-                                    border
-                                    border-orange-200
-                                    rounded-2xl
-                                    p-6">
+                <p
+                    class="mt-2
+                           text-[12px]
+                           leading-5
+                           text-slate-400"
+                >
+                    {{ $detailsDescription }}
+                </p>
 
 
-                            <div class="absolute
-                                        -right-8
-                                        -top-8
-                                        w-28 h-28
-                                        bg-orange-200/40
-                                        rounded-full">
+                <div class="mt-5 space-y-3">
+
+                    @if($siteSettings->phone)
+
+                        <a
+                            href="tel:+{{ $phoneDigits }}"
+                            class="flex items-center gap-3
+                                   rounded-2xl
+                                   border border-white/10
+                                   bg-white/[0.05]
+                                   px-4 py-3
+                                   transition
+                                   hover:bg-white/[0.09]"
+                        >
+
+                            <div
+                                class="flex h-9 w-9
+                                       items-center justify-center
+                                       rounded-xl
+                                       bg-orange-500/15
+                                       text-orange-400"
+                            >
+                                ☎
                             </div>
 
+                            <div>
 
-                            <div class="relative">
+                                <p
+                                    class="text-[8px]
+                                           font-bold uppercase
+                                           tracking-[0.14em]
+                                           text-slate-500"
+                                >
+                                    Phone
+                                </p>
 
-                                <div class="flex
-                                            items-start
-                                            gap-4">
+                                <p class="mt-0.5 text-[12px] font-bold text-white">
+                                    {{ $phoneDisplay }}
+                                </p>
 
-                                    <div class="w-12 h-12
-                                                shrink-0
-                                                rounded-xl
-                                                bg-orange-600
-                                                text-white
-                                                flex
-                                                items-center
-                                                justify-center
-                                                text-xl">
+                            </div>
 
-                                        🔩
+                        </a>
 
-                                    </div>
-
-
-                                    <div>
-
-                                        <p class="text-xs
-                                                  uppercase
-                                                  tracking-[3px]
-                                                  text-orange-600
-                                                  font-bold">
-
-                                            Product Enquiry
-
-                                        </p>
+                    @endif
 
 
-                                        <h3 class="text-xl
-                                                   md:text-2xl
-                                                   font-black
-                                                   text-gray-900
-                                                   mt-2">
+                    @if($siteSettings->email)
 
-                                            {{ $selectedProduct }}
+                        <a
+                            href="mailto:{{ $siteSettings->email }}"
+                            class="flex items-center gap-3
+                                   rounded-2xl
+                                   border border-white/10
+                                   bg-white/[0.05]
+                                   px-4 py-3
+                                   transition
+                                   hover:bg-white/[0.09]"
+                        >
 
-                                        </h3>
+                            <div
+                                class="flex h-9 w-9
+                                       items-center justify-center
+                                       rounded-xl
+                                       bg-orange-500/15
+                                       text-orange-400"
+                            >
+                                ✉
+                            </div>
+
+                            <div class="min-w-0">
+
+                                <p
+                                    class="text-[8px]
+                                           font-bold uppercase
+                                           tracking-[0.14em]
+                                           text-slate-500"
+                                >
+                                    Email
+                                </p>
+
+                                <p
+                                    class="mt-0.5
+                                           truncate
+                                           text-[12px]
+                                           font-bold
+                                           text-white"
+                                >
+                                    {{ $siteSettings->email }}
+                                </p>
+
+                            </div>
+
+                        </a>
+
+                    @endif
 
 
-                                        @if($selectedCategory)
+                    @if($siteSettings->address)
 
-                                            <p class="text-gray-600
-                                                      mt-2">
+                        <div
+                            class="flex items-start gap-3
+                                   rounded-2xl
+                                   border border-white/10
+                                   bg-white/[0.05]
+                                   px-4 py-3"
+                        >
 
-                                                Category:
-                                                <span class="font-semibold">
-                                                    {{ $selectedCategory }}
-                                                </span>
+                            <div
+                                class="flex h-9 w-9
+                                       shrink-0
+                                       items-center justify-center
+                                       rounded-xl
+                                       bg-orange-500/15
+                                       text-orange-400"
+                            >
+                                ⌖
+                            </div>
 
-                                            </p>
+                            <div>
 
-                                        @endif
+                                <p
+                                    class="text-[8px]
+                                           font-bold uppercase
+                                           tracking-[0.14em]
+                                           text-slate-500"
+                                >
+                                    Address
+                                </p>
 
-                                    </div>
-
-                                </div>
+                                <p
+                                    class="mt-0.5
+                                           text-[11px]
+                                           leading-5
+                                           font-medium
+                                           text-slate-200"
+                                >
+                                    {{ $siteSettings->address }}
+                                </p>
 
                             </div>
 
@@ -498,180 +401,6 @@
 
                     @endif
 
-
-
-                    <!-- =================================================
-                         FORM
-                    ================================================== -->
-
-
-
-                    @if(session('success'))
-
-    <div class="mb-6
-                bg-green-50
-                border border-green-200
-                text-green-700
-                px-5 py-4
-                rounded-xl">
-
-        {{ session('success') }}
-
-    </div>
-
-@endif
-
-
-                    <form
-    action="{{ route('contact.store') }}"
-    method="POST"
-    class="space-y-6"
->
-
-    @csrf
-
-    <div>
-        <label class="block mb-2 font-semibold text-gray-700">
-            Your Name *
-        </label>
-
-        <input
-            type="text"
-            name="name"
-            value="{{ old('name') }}"
-            placeholder="Enter your name"
-            class="w-full px-5 py-4 border rounded-xl
-                   focus:outline-none
-                   focus:ring-2
-                   focus:ring-orange-500"
-            required
-        >
-
-        @error('name')
-            <p class="text-red-600 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
-    <div>
-        <label class="block mb-2 font-semibold text-gray-700">
-            Phone Number *
-        </label>
-
-        <input
-            type="tel"
-            name="phone"
-            value="{{ old('phone') }}"
-            placeholder="Enter phone number"
-            class="w-full px-5 py-4 border rounded-xl
-                   focus:outline-none
-                   focus:ring-2
-                   focus:ring-orange-500"
-            required
-        >
-
-        @error('phone')
-            <p class="text-red-600 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
-    <div>
-        <label class="block mb-2 font-semibold text-gray-700">
-            Email Address
-        </label>
-
-        <input
-            type="email"
-            name="email"
-            value="{{ old('email') }}"
-            placeholder="Enter email address"
-            class="w-full px-5 py-4 border rounded-xl
-                   focus:outline-none
-                   focus:ring-2
-                   focus:ring-orange-500"
-        >
-
-        @error('email')
-            <p class="text-red-600 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
-    <div>
-        <label class="block mb-2 font-semibold text-gray-700">
-            Product
-        </label>
-
-        <input
-            type="text"
-            name="product"
-            value="{{ old('product', request('product')) }}"
-            placeholder="Product name"
-            @if(request('product'))
-        readonly
-    @endif
-            class="w-full px-5 py-4 border rounded-xl
-                   focus:outline-none
-                   focus:ring-2
-                   focus:ring-orange-500"
-        >
-    </div>
-
-
-    <input
-        type="hidden"
-        name="category"
-        value="{{ old('category', request('category')) }}"
-    >
-
-
-    <div>
-        <label class="block mb-2 font-semibold text-gray-700">
-            Message
-        </label>
-
-        <textarea
-            name="message"
-            rows="5"
-            placeholder="Tell us about your requirement..."
-            class="w-full px-5 py-4 border rounded-xl
-                   resize-none
-                   focus:outline-none
-                   focus:ring-2
-                   focus:ring-orange-500"
-        >{{ old('message') }}</textarea>
-
-        @error('message')
-            <p class="text-red-600 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
-    <button
-        type="submit"
-        class="w-full
-               bg-orange-600
-               hover:bg-orange-700
-               text-white
-               px-8 py-4
-               rounded-xl
-               font-bold
-               transition"
-    >
-        Submit Enquiry
-    </button>
-
-</form>
-
                 </div>
 
             </div>
@@ -684,93 +413,695 @@
 
 
 
-<!-- =========================================================
-     QUICK CTA
-========================================================= -->
+{{-- =========================================================
+     CONTACT AREA
+========================================================= --}}
+<section
+    id="contact-form"
+    class="bg-[#f6f6f3]
+           py-10 sm:py-12
+           lg:min-h-screen
+           lg:flex lg:items-center
+           lg:py-8"
+>
 
-<section class="relative
-                overflow-hidden
-                py-20
-                bg-gradient-to-br
-                from-orange-600
-                to-orange-800
-                text-white">
+    <div class="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
 
-
-    <div class="absolute
-                -top-20
-                -right-20
-                w-72 h-72
-                bg-white/10
-                rounded-full
-                blur-2xl">
-    </div>
-
-
-    <div class="relative
-                max-w-5xl
-                mx-auto
-                px-6
-                text-center">
-
-        <span class="uppercase
-                     tracking-[4px]
-                     text-orange-200
-                     text-sm
-                     font-bold">
-
-            Quick Support
-
-        </span>
-
-
-        <h2 class="text-4xl
-                   md:text-5xl
-                   font-black
-                   mt-4">
-
-            Need Immediate Assistance?
-
-        </h2>
-
-
-        <p class="text-orange-100
-                  mt-5
-                  text-lg
-                  leading-8">
-
-            Call us directly for product pricing,
-            availability and bulk order enquiries.
-
-        </p>
-
-
-        <a
-            href="tel:+919811510846"
-            class="inline-flex
-                   items-center
-                   justify-center
-                   mt-8
-                   bg-white
-                   text-orange-600
-                   px-8
-                   py-4
-                   rounded-full
-                   font-bold
-                   hover:bg-gray-100
-                   hover:-translate-y-1
-                   shadow-xl
-                   transition-all
-                   duration-300"
+        <div
+            class="grid
+                   gap-6 lg:gap-7
+                   lg:grid-cols-[.78fr_1.22fr]
+                   lg:items-stretch"
         >
 
-            ☎ &nbsp; +91 9811510846
+            {{-- LEFT CONTACT INFORMATION --}}
+            <div
+                class="rounded-[24px]
+                       border border-slate-200
+                       bg-white
+                       p-5 sm:p-6
+                       shadow-[0_14px_38px_rgba(15,23,42,0.05)]"
+            >
 
-        </a>
+                <p
+                    class="text-[9px]
+                           font-bold uppercase
+                           tracking-[0.18em]
+                           text-orange-600"
+                >
+                    {{ $detailsBadge }}
+                </p>
+
+
+                <h2
+                    class="mt-2
+                           text-[25px] sm:text-[29px]
+                           font-black
+                           tracking-[-0.035em]
+                           text-slate-950"
+                >
+                    {{ $detailsTitle }}
+                </h2>
+
+
+                <p
+                    class="mt-3
+                           max-w-lg
+                           text-[12px] sm:text-[13px]
+                           leading-6
+                           text-slate-600"
+                >
+                    {{ $detailsDescription }}
+                </p>
+
+
+                @if($contactSettings->show_contact_cards)
+
+                    <div class="mt-5 space-y-3">
+
+                        @if($siteSettings->phone)
+
+                            <a
+                                href="tel:+{{ $phoneDigits }}"
+                                class="group
+                                       flex items-start gap-3
+                                       rounded-2xl
+                                       border border-slate-200
+                                       bg-[#fafafa]
+                                       p-4
+                                       transition
+                                       hover:border-orange-300
+                                       hover:bg-orange-50/40"
+                            >
+
+                                <div
+                                    class="flex h-9 w-9
+                                           shrink-0
+                                           items-center justify-center
+                                           rounded-xl
+                                           bg-orange-50
+                                           text-orange-600"
+                                >
+                                    ☎
+                                </div>
+
+
+                                <div>
+
+                                    <p
+                                        class="text-[8px]
+                                               font-bold uppercase
+                                               tracking-[0.14em]
+                                               text-slate-400"
+                                    >
+                                        Phone
+                                    </p>
+
+                                    <p
+                                        class="mt-1
+                                               text-[12px]
+                                               font-bold
+                                               text-slate-950"
+                                    >
+                                        {{ $phoneDisplay }}
+                                    </p>
+
+                                </div>
+
+                            </a>
+
+                        @endif
+
+
+                        @if($siteSettings->email)
+
+                            <a
+                                href="mailto:{{ $siteSettings->email }}"
+                                class="group
+                                       flex items-start gap-3
+                                       rounded-2xl
+                                       border border-slate-200
+                                       bg-[#fafafa]
+                                       p-4
+                                       transition
+                                       hover:border-orange-300
+                                       hover:bg-orange-50/40"
+                            >
+
+                                <div
+                                    class="flex h-9 w-9
+                                           shrink-0
+                                           items-center justify-center
+                                           rounded-xl
+                                           bg-orange-50
+                                           text-orange-600"
+                                >
+                                    ✉
+                                </div>
+
+
+                                <div class="min-w-0">
+
+                                    <p
+                                        class="text-[8px]
+                                               font-bold uppercase
+                                               tracking-[0.14em]
+                                               text-slate-400"
+                                    >
+                                        Email
+                                    </p>
+
+                                    <p
+                                        class="mt-1
+                                               break-all
+                                               text-[12px]
+                                               font-bold
+                                               text-slate-950"
+                                    >
+                                        {{ $siteSettings->email }}
+                                    </p>
+
+                                </div>
+
+                            </a>
+
+                        @endif
+
+
+                        @if($siteSettings->address)
+
+                            <div
+                                class="flex items-start gap-3
+                                       rounded-2xl
+                                       border border-slate-200
+                                       bg-[#fafafa]
+                                       p-4"
+                            >
+
+                                <div
+                                    class="flex h-9 w-9
+                                           shrink-0
+                                           items-center justify-center
+                                           rounded-xl
+                                           bg-orange-50
+                                           text-orange-600"
+                                >
+                                    ⌖
+                                </div>
+
+
+                                <div>
+
+                                    <p
+                                        class="text-[8px]
+                                               font-bold uppercase
+                                               tracking-[0.14em]
+                                               text-slate-400"
+                                    >
+                                        Address
+                                    </p>
+
+                                    <p
+                                        class="mt-1
+                                               text-[11px]
+                                               leading-5
+                                               font-medium
+                                               text-slate-700"
+                                    >
+                                        {{ $siteSettings->address }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                    </div>
+
+                @endif
+
+
+                <div
+                    class="mt-5
+                           rounded-2xl
+                           bg-slate-950
+                           p-4
+                           text-white"
+                >
+
+                    <p
+                        class="text-[8px]
+                               font-bold uppercase
+                               tracking-[0.14em]
+                               text-orange-400"
+                    >
+                        Product Enquiry
+                    </p>
+
+                    <p
+                        class="mt-1.5
+                               text-[11px]
+                               leading-5
+                               text-slate-300"
+                    >
+                        If you opened this page from a product,
+                        the selected product will appear automatically
+                        in the enquiry form.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- CONTACT FORM --}}
+            <div
+                class="rounded-[24px]
+                       border border-slate-200
+                       bg-white
+                       p-5 sm:p-6
+                       lg:p-7
+                       shadow-[0_14px_38px_rgba(15,23,42,0.05)]"
+            >
+
+                <div>
+
+                    <p
+                        class="text-[9px]
+                               font-bold uppercase
+                               tracking-[0.18em]
+                               text-orange-600"
+                    >
+                        {{ $formBadge }}
+                    </p>
+
+
+                    <h2
+                        class="mt-2
+                               text-[24px] sm:text-[27px]
+                               font-black
+                               tracking-[-0.03em]
+                               text-slate-950"
+                    >
+                        {{ $formTitle }}
+                    </h2>
+
+
+                    @if($formDescription)
+
+                        <p
+                            class="mt-2
+                                   text-[12px]
+                                   leading-5
+                                   text-slate-600"
+                        >
+                            {{ $formDescription }}
+                        </p>
+
+                    @endif
+
+                </div>
+
+
+                @if(session('success'))
+
+                    <div
+                        class="mt-4
+                               rounded-xl
+                               border border-emerald-200
+                               bg-emerald-50
+                               px-4 py-3
+                               text-[11px]
+                               font-medium
+                               text-emerald-700"
+                    >
+                        {{ session('success') }}
+                    </div>
+
+                @endif
+
+
+                @if($errors->any())
+
+                    <div
+                        class="mt-4
+                               rounded-xl
+                               border border-red-200
+                               bg-red-50
+                               px-4 py-3"
+                    >
+
+                        <p class="text-[11px] font-bold text-red-700">
+                            Please check the form.
+                        </p>
+
+                        <ul class="mt-1.5 list-disc pl-5 text-[10px] text-red-600">
+
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+
+                        </ul>
+
+                    </div>
+
+                @endif
+
+
+                <form
+                    action="{{ route('contact.store') }}"
+                    method="POST"
+                    class="mt-5 space-y-4"
+                >
+
+                    @csrf
+
+
+                    @if(request()->filled('product') || old('product'))
+
+                        <div>
+
+                            <label
+                                for="product"
+                                class="mb-1.5
+                                       block
+                                       text-[11px]
+                                       font-bold
+                                       text-slate-800"
+                            >
+                                Selected Product
+                            </label>
+
+
+                            <div class="relative">
+
+                                <input
+                                    type="text"
+                                    id="product"
+                                    name="product"
+                                    value="{{ old('product', request('product')) }}"
+                                    readonly
+                                    class="w-full
+                                           rounded-xl
+                                           border border-orange-200
+                                           bg-orange-50
+                                           px-4 py-3
+                                           pr-24
+                                           text-[12px]
+                                           font-semibold
+                                           text-slate-900
+                                           outline-none"
+                                >
+
+
+                                <span
+                                    class="absolute right-3 top-1/2
+                                           -translate-y-1/2
+                                           rounded-full
+                                           bg-orange-600
+                                           px-2.5 py-1
+                                           text-[8px]
+                                           font-bold uppercase
+                                           tracking-wider
+                                           text-white"
+                                >
+                                    Selected
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    @else
+
+                        <input
+                            type="hidden"
+                            name="product"
+                            value="{{ old('product') }}"
+                        >
+
+                    @endif
+
+
+
+                    <div>
+
+                        <label
+                            for="name"
+                            class="mb-1.5
+                                   block
+                                   text-[11px]
+                                   font-bold
+                                   text-slate-800"
+                        >
+                            Your Name
+                            <span class="text-orange-600">*</span>
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ old('name') }}"
+                            required
+                            placeholder="Enter your name"
+                            class="w-full
+                                   rounded-xl
+                                   border border-slate-300
+                                   bg-white
+                                   px-4 py-3
+                                   text-[12px]
+                                   text-slate-900
+                                   outline-none
+                                   transition
+                                   focus:border-orange-500
+                                   focus:ring-4
+                                   focus:ring-orange-500/10"
+                        >
+
+                    </div>
+
+
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+
+                        <div>
+
+                            <label
+                                for="phone"
+                                class="mb-1.5
+                                       block
+                                       text-[11px]
+                                       font-bold
+                                       text-slate-800"
+                            >
+                                Phone
+                                <span class="text-orange-600">*</span>
+                            </label>
+
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                value="{{ old('phone') }}"
+                                required
+                                placeholder="Enter phone number"
+                                class="w-full
+                                       rounded-xl
+                                       border border-slate-300
+                                       px-4 py-3
+                                       text-[12px]
+                                       outline-none
+                                       transition
+                                       focus:border-orange-500
+                                       focus:ring-4
+                                       focus:ring-orange-500/10"
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label
+                                for="email"
+                                class="mb-1.5
+                                       block
+                                       text-[11px]
+                                       font-bold
+                                       text-slate-800"
+                            >
+                                Email
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="Enter email address"
+                                class="w-full
+                                       rounded-xl
+                                       border border-slate-300
+                                       px-4 py-3
+                                       text-[12px]
+                                       outline-none
+                                       transition
+                                       focus:border-orange-500
+                                       focus:ring-4
+                                       focus:ring-orange-500/10"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <label
+                            for="message"
+                            class="mb-1.5
+                                   block
+                                   text-[11px]
+                                   font-bold
+                                   text-slate-800"
+                        >
+                            Message
+                            <span class="text-orange-600">*</span>
+                        </label>
+
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="4"
+                            required
+                            placeholder="Tell us about your requirement..."
+                            class="w-full
+                                   resize-none
+                                   rounded-xl
+                                   border border-slate-300
+                                   px-4 py-3
+                                   text-[12px]
+                                   outline-none
+                                   transition
+                                   focus:border-orange-500
+                                   focus:ring-4
+                                   focus:ring-orange-500/10"
+                        >{{ old('message') }}</textarea>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="inline-flex
+                               min-h-[44px]
+                               w-full
+                               items-center justify-center
+                               rounded-xl
+                               bg-orange-600
+                               px-6
+                               text-[12px]
+                               font-bold
+                               text-white
+                               transition
+                               hover:bg-orange-500"
+                    >
+                        {{ $formButtonText }}
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
+
+
+{{-- =========================================================
+     MAP
+========================================================= --}}
+@if($contactSettings->show_map && $contactSettings->map_embed)
+
+    <section
+        class="bg-white
+               py-10 sm:py-12
+               lg:min-h-screen
+               lg:flex lg:items-center
+               lg:py-8"
+    >
+
+        <div class="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
+
+            <div class="mb-5">
+
+                <p
+                    class="text-[9px]
+                           font-bold uppercase
+                           tracking-[0.18em]
+                           text-orange-600"
+                >
+                    Find Us
+                </p>
+
+
+                <h2
+                    class="mt-1.5
+                           text-[26px]
+                           font-black
+                           tracking-[-0.03em]
+                           text-slate-950"
+                >
+                    Our Location
+                </h2>
+
+            </div>
+
+
+            <div
+                class="overflow-hidden
+                       rounded-[24px]
+                       border border-slate-200
+                       bg-white
+                       shadow-[0_14px_38px_rgba(15,23,42,0.05)]"
+            >
+
+                <iframe
+                    src="{{ $contactSettings->map_embed }}"
+                    class="h-[360px] w-full
+                           sm:h-[430px]
+                           lg:h-[560px]"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen
+                ></iframe>
+
+            </div>
+
+        </div>
+
+    </section>
+
+@endif
+
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 
 @endsection
