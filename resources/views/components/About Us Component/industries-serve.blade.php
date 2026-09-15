@@ -341,7 +341,7 @@
                 </p>
 
                 <a
-                    href="{{ route('products.index') }}"
+                    href="{{ route('products') }}"
                     class="mt-6
                            inline-flex
                            items-center
