@@ -77,18 +77,19 @@ $homeTestimonials = $testimonialItems->take(
 
 {{-- =========================================================
      HERO
-     Desktop: one complete screen
+     Same Design + Premium Animations
 ========================================================= --}}
 <section
-    class="relative overflow-hidden
+    class="home-hero relative overflow-hidden
            bg-gradient-to-r from-slate-950 via-slate-900 to-[#8a3413]
            text-white
            lg:min-h-[calc(100svh-72px)]
            lg:flex lg:items-center"
 >
 
+    {{-- Background Glow --}}
     <div
-        class="absolute inset-0 opacity-40"
+        class="hero-bg-glow absolute inset-0 opacity-40"
         style="
             background-image:
                 radial-gradient(circle at 16% 20%, rgba(249,115,22,.48) 0, transparent 28%),
@@ -96,7 +97,35 @@ $homeTestimonials = $testimonialItems->take(
         "
     ></div>
 
-    <div class="absolute inset-0 bg-gradient-to-br from-slate-950/10 via-transparent to-slate-950/45"></div>
+    <div
+        class="absolute inset-0
+               bg-gradient-to-br
+               from-slate-950/10
+               via-transparent
+               to-slate-950/45"
+    ></div>
+
+
+    {{-- Decorative Animated Glow --}}
+    <div
+        class="hero-orb hero-orb-one
+               pointer-events-none
+               absolute -left-24 top-20
+               h-64 w-64
+               rounded-full
+               bg-orange-500/10
+               blur-3xl"
+    ></div>
+
+    <div
+        class="hero-orb hero-orb-two
+               pointer-events-none
+               absolute -right-24 bottom-10
+               h-72 w-72
+               rounded-full
+               bg-sky-500/10
+               blur-3xl"
+    ></div>
 
 
     <div
@@ -112,12 +141,16 @@ $homeTestimonials = $testimonialItems->take(
                    lg:grid-cols-[1.02fr_.98fr]"
         >
 
-            {{-- LEFT --}}
+            {{-- =====================================================
+                 LEFT CONTENT
+            ====================================================== --}}
             <div class="max-w-2xl">
 
+                {{-- Badge --}}
                 @if(!empty($homepage->hero_badge))
                     <span
-                        class="inline-flex items-center
+                        class="hero-animate hero-delay-1
+                               inline-flex items-center
                                rounded-full
                                border border-orange-400/20
                                bg-orange-500/10
@@ -132,8 +165,10 @@ $homeTestimonials = $testimonialItems->take(
                 @endif
 
 
+                {{-- Heading --}}
                 <h1
-                    class="mt-5
+                    class="hero-animate hero-delay-2
+                           mt-5
                            text-[38px]
                            sm:text-[48px]
                            lg:text-[56px]
@@ -146,9 +181,11 @@ $homeTestimonials = $testimonialItems->take(
                 </h1>
 
 
+                {{-- Description --}}
                 @if(!empty($homepage->hero_description))
                     <p
-                        class="mt-5
+                        class="hero-animate hero-delay-3
+                               mt-5
                                max-w-xl
                                text-[14px] sm:text-[15px]
                                leading-7
@@ -159,12 +196,17 @@ $homeTestimonials = $testimonialItems->take(
                 @endif
 
 
-                <div class="mt-7 flex flex-wrap gap-3">
+                {{-- Buttons --}}
+                <div
+                    class="hero-animate hero-delay-4
+                           mt-7 flex flex-wrap gap-3"
+                >
 
                     @if(!empty($homepage->hero_primary_text))
                         <a
                             href="{{ $homepage->hero_primary_link ?: route('products') }}"
-                            class="inline-flex min-h-[44px]
+                            class="hero-primary-btn
+                                   inline-flex min-h-[44px]
                                    items-center justify-center
                                    rounded-xl
                                    bg-orange-600
@@ -183,7 +225,8 @@ $homeTestimonials = $testimonialItems->take(
                     @if(!empty($homepage->hero_secondary_text))
                         <a
                             href="{{ $homepage->hero_secondary_link ?: route('contact') }}"
-                            class="inline-flex min-h-[44px]
+                            class="hero-secondary-btn
+                                   inline-flex min-h-[44px]
                                    items-center justify-center
                                    rounded-xl
                                    border border-white/20
@@ -203,30 +246,39 @@ $homeTestimonials = $testimonialItems->take(
                 </div>
 
 
+                {{-- =================================================
+                     STATS
+                ================================================== --}}
                 <div
-                    class="mt-7 grid max-w-xl
+                    class="hero-animate hero-delay-5
+                           mt-7 grid max-w-xl
                            grid-cols-2
                            gap-3 sm:grid-cols-4"
                 >
 
+                    {{-- Stat 1 --}}
                     <div
-                        class="rounded-2xl
+                        class="hero-stat-card
+                               rounded-2xl
                                border border-white/10
                                bg-white/[0.06]
                                px-4 py-3
                                backdrop-blur"
                     >
-<p class="text-[20px] font-black text-orange-400">
-    {{ $homepage->hero_stat_1_value ?: '2014' }}
-</p>
+                        <p class="text-[20px] font-black text-orange-400">
+                            {{ $homepage->hero_stat_1_value ?: '2014' }}
+                        </p>
 
-<p class="mt-0.5 text-[10px] text-slate-400">
-    {{ $homepage->hero_stat_1_label ?: 'Established' }}
-</p>
+                        <p class="mt-0.5 text-[10px] text-slate-400">
+                            {{ $homepage->hero_stat_1_label ?: 'Established' }}
+                        </p>
                     </div>
 
+
+                    {{-- Stat 2 --}}
                     <div
-                        class="rounded-2xl
+                        class="hero-stat-card
+                               rounded-2xl
                                border border-white/10
                                bg-white/[0.06]
                                px-4 py-3
@@ -235,11 +287,17 @@ $homeTestimonials = $testimonialItems->take(
                         <p class="text-[20px] font-black text-orange-400">
                             {{ $categories->count() }}
                         </p>
-                        <p class="mt-0.5 text-[10px] text-slate-400">Categories</p>
+
+                        <p class="mt-0.5 text-[10px] text-slate-400">
+                            Categories
+                        </p>
                     </div>
 
+
+                    {{-- Stat 3 --}}
                     <div
-                        class="rounded-2xl
+                        class="hero-stat-card
+                               rounded-2xl
                                border border-white/10
                                bg-white/[0.06]
                                px-4 py-3
@@ -248,23 +306,29 @@ $homeTestimonials = $testimonialItems->take(
                         <p class="text-[20px] font-black text-orange-400">
                             {{ $featuredProducts->count() }}+
                         </p>
-                        <p class="mt-0.5 text-[10px] text-slate-400">Featured</p>
+
+                        <p class="mt-0.5 text-[10px] text-slate-400">
+                            Featured
+                        </p>
                     </div>
 
+
+                    {{-- Stat 4 --}}
                     <div
-                        class="rounded-2xl
+                        class="hero-stat-card
+                               rounded-2xl
                                border border-white/10
                                bg-white/[0.06]
                                px-4 py-3
                                backdrop-blur"
                     >
                         <p class="text-[20px] font-black text-orange-400">
-    {{ $homepage->hero_stat_4_value ?: 'India' }}
-</p>
+                            {{ $homepage->hero_stat_4_value ?: 'India' }}
+                        </p>
 
-<p class="mt-0.5 text-[10px] text-slate-400">
-    {{ $homepage->hero_stat_4_label ?: 'Market' }}
-</p>
+                        <p class="mt-0.5 text-[10px] text-slate-400">
+                            {{ $homepage->hero_stat_4_label ?: 'Market' }}
+                        </p>
                     </div>
 
                 </div>
@@ -272,11 +336,28 @@ $homeTestimonials = $testimonialItems->take(
             </div>
 
 
-            {{-- RIGHT IMAGE --}}
-            <div class="relative">
+            {{-- =====================================================
+                 RIGHT IMAGE
+            ====================================================== --}}
+            <div
+                class="hero-image-entry
+                       relative"
+            >
+
+                {{-- Soft Glow Behind Image --}}
+                <div
+                    class="hero-image-glow
+                           pointer-events-none
+                           absolute inset-8
+                           rounded-[30px]
+                           bg-orange-500/20
+                           blur-3xl"
+                ></div>
+
 
                 <div
-                    class="relative
+                    class="hero-image-card
+                           relative
                            h-[360px]
                            overflow-hidden
                            rounded-[26px]
@@ -286,10 +367,13 @@ $homeTestimonials = $testimonialItems->take(
                            sm:h-[440px]
                            lg:h-[500px]"
                 >
+
                     <img
                         src="{{ asset($homepage->hero_image ?: 'images/Homepage/Hero/hero.jpg') }}"
                         alt="{{ $homepage->hero_title ?: 'M R Hardware' }}"
-                        class="absolute inset-0
+                        fetchpriority="high"
+                        class="hero-main-image
+                               absolute inset-0
                                h-full w-full
                                object-cover object-center"
                     >
@@ -301,11 +385,28 @@ $homeTestimonials = $testimonialItems->take(
                                via-transparent
                                to-transparent"
                     ></div>
+
+                    {{-- Animated Shine --}}
+                    <div
+                        class="hero-image-shine
+                               pointer-events-none
+                               absolute inset-y-0
+                               -left-1/2
+                               w-1/3
+                               rotate-12
+                               bg-gradient-to-r
+                               from-transparent
+                               via-white/10
+                               to-transparent"
+                    ></div>
+
                 </div>
 
 
+                {{-- Floating Card --}}
                 <div
-                    class="absolute bottom-4 left-4
+                    class="hero-floating-card
+                           absolute bottom-4 left-4
                            rounded-2xl
                            border border-white/50
                            bg-white/95
@@ -314,12 +415,12 @@ $homeTestimonials = $testimonialItems->take(
                            backdrop-blur"
                 >
                     <p class="text-[16px] font-black text-orange-600">
-    {{ $homepage->hero_floating_title ?: 'Since 2014' }}
-</p>
+                        {{ $homepage->hero_floating_title ?: 'Since 2014' }}
+                    </p>
 
-<p class="text-[10px] font-semibold text-slate-600">
-    {{ $homepage->hero_floating_text ?: 'M R Hardware' }}
-</p>
+                    <p class="text-[10px] font-semibold text-slate-600">
+                        {{ $homepage->hero_floating_text ?: 'M R Hardware' }}
+                    </p>
                 </div>
 
             </div>
@@ -327,7 +428,337 @@ $homeTestimonials = $testimonialItems->take(
         </div>
 
     </div>
+
 </section>
+
+
+{{-- =========================================================
+     HERO ANIMATIONS
+========================================================= --}}
+<style>
+
+    /* =========================================================
+       LEFT CONTENT ENTRANCE
+    ========================================================= */
+
+    .hero-animate {
+        opacity: 0;
+        transform: translateY(24px);
+        animation: heroFadeUp .75s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+
+    .hero-delay-1 {
+        animation-delay: .08s;
+    }
+
+    .hero-delay-2 {
+        animation-delay: .18s;
+    }
+
+    .hero-delay-3 {
+        animation-delay: .30s;
+    }
+
+    .hero-delay-4 {
+        animation-delay: .42s;
+    }
+
+    .hero-delay-5 {
+        animation-delay: .54s;
+    }
+
+    @keyframes heroFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+       RIGHT IMAGE ENTRANCE
+    ========================================================= */
+
+    .hero-image-entry {
+        opacity: 0;
+        transform: translateX(32px) scale(.97);
+        animation: heroImageEntry
+            .9s
+            .25s
+            cubic-bezier(.22, 1, .36, 1)
+            forwards;
+    }
+
+    @keyframes heroImageEntry {
+        from {
+            opacity: 0;
+            transform: translateX(32px) scale(.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+    }
+
+
+    /* =========================================================
+       IMAGE
+    ========================================================= */
+
+    .hero-main-image {
+        transform: scale(1.035);
+        animation: heroImageZoom 9s ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    @keyframes heroImageZoom {
+        from {
+            transform: scale(1.035);
+        }
+
+        to {
+            transform: scale(1.09);
+        }
+    }
+
+
+    /* =========================================================
+       IMAGE CARD
+    ========================================================= */
+
+    .hero-image-card {
+        transition:
+            transform .45s cubic-bezier(.22, 1, .36, 1),
+            box-shadow .45s ease,
+            border-color .45s ease;
+    }
+
+    .hero-image-entry:hover .hero-image-card {
+        transform: translateY(-4px);
+        border-color: rgba(255, 255, 255, .18);
+        box-shadow:
+            0 28px 70px rgba(0, 0, 0, .35);
+    }
+
+
+    /* =========================================================
+       IMAGE SHINE
+    ========================================================= */
+
+    .hero-image-shine {
+        opacity: 0;
+        transform: translateX(-220%) rotate(12deg);
+        animation: heroImageShine 7s ease-in-out 2s infinite;
+    }
+
+    @keyframes heroImageShine {
+
+        0%,
+        72% {
+            opacity: 0;
+            transform: translateX(-220%) rotate(12deg);
+        }
+
+        78% {
+            opacity: 1;
+        }
+
+        92% {
+            opacity: .45;
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateX(650%) rotate(12deg);
+        }
+    }
+
+
+    /* =========================================================
+       FLOATING CARD
+    ========================================================= */
+
+    .hero-floating-card {
+        animation: heroFloatingCard 4s ease-in-out infinite;
+        will-change: transform;
+    }
+
+    @keyframes heroFloatingCard {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-7px);
+        }
+    }
+
+
+    /* =========================================================
+       STATS HOVER
+    ========================================================= */
+
+    .hero-stat-card {
+        transition:
+            transform .3s ease,
+            background-color .3s ease,
+            border-color .3s ease,
+            box-shadow .3s ease;
+    }
+
+    .hero-stat-card:hover {
+        transform: translateY(-5px);
+        background-color: rgba(255, 255, 255, .09);
+        border-color: rgba(249, 115, 22, .25);
+        box-shadow:
+            0 14px 30px rgba(0, 0, 0, .15);
+    }
+
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    .hero-primary-btn,
+    .hero-secondary-btn {
+        position: relative;
+        overflow: hidden;
+
+        transition:
+            transform .25s ease,
+            box-shadow .25s ease,
+            background-color .25s ease,
+            color .25s ease;
+    }
+
+    .hero-primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow:
+            0 12px 28px rgba(234, 88, 12, .30);
+    }
+
+    .hero-secondary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow:
+            0 12px 28px rgba(0, 0, 0, .18);
+    }
+
+
+    /* =========================================================
+       BACKGROUND MOVEMENT
+    ========================================================= */
+
+    .hero-bg-glow {
+        animation: heroBackgroundGlow 9s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroBackgroundGlow {
+        from {
+            transform: scale(1);
+            opacity: .40;
+        }
+
+        to {
+            transform: scale(1.06);
+            opacity: .52;
+        }
+    }
+
+
+    /* =========================================================
+       DECORATIVE ORBS
+    ========================================================= */
+
+    .hero-orb-one {
+        animation: heroOrbOne 8s ease-in-out infinite alternate;
+    }
+
+    .hero-orb-two {
+        animation: heroOrbTwo 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroOrbOne {
+        from {
+            transform: translate3d(0, 0, 0);
+        }
+
+        to {
+            transform: translate3d(40px, 25px, 0);
+        }
+    }
+
+    @keyframes heroOrbTwo {
+        from {
+            transform: translate3d(0, 0, 0);
+        }
+
+        to {
+            transform: translate3d(-35px, -25px, 0);
+        }
+    }
+
+
+    /* =========================================================
+       IMAGE GLOW
+    ========================================================= */
+
+    .hero-image-glow {
+        animation: heroImageGlow 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroImageGlow {
+        from {
+            opacity: .35;
+            transform: scale(.94);
+        }
+
+        to {
+            opacity: .65;
+            transform: scale(1.04);
+        }
+    }
+
+
+    /* =========================================================
+       ACCESSIBILITY / REDUCED MOTION
+    ========================================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .hero-animate,
+        .hero-image-entry {
+            opacity: 1;
+            transform: none;
+            animation: none;
+        }
+
+        .hero-main-image,
+        .hero-floating-card,
+        .hero-bg-glow,
+        .hero-orb-one,
+        .hero-orb-two,
+        .hero-image-glow,
+        .hero-image-shine {
+            animation: none;
+        }
+
+        .hero-image-entry:hover .hero-image-card,
+        .hero-stat-card:hover,
+        .hero-primary-btn:hover,
+        .hero-secondary-btn:hover {
+            transform: none;
+        }
+    }
+
+</style>
 
 
 
@@ -336,7 +767,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($whySection && $whyItems->isNotEmpty())
 <section
-    class="bg-white
+    class="home-reveal-section bg-white
            py-12 sm:py-14
            lg:min-h-screen
            lg:flex lg:items-center
@@ -653,7 +1084,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($homepage->show_products)
 <section
-    class="bg-white
+    class="home-reveal-section bg-white
            py-12 sm:py-14
            lg:min-h-screen
            lg:flex lg:items-center
@@ -856,7 +1287,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($homepage->show_about)
 <section
-    class="bg-[#f6f6f3]
+    class="home-reveal-section bg-[#f6f6f3]
            py-12 sm:py-14
            lg:min-h-screen
            lg:flex lg:items-center
@@ -1024,7 +1455,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($statsSection && $statsItems->isNotEmpty())
 <section
-    class="bg-slate-950
+    class="home-reveal-section bg-slate-950
            py-12 sm:py-14
            text-white
            lg:min-h-screen
@@ -1141,7 +1572,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($brandsSection && $brandItems->isNotEmpty())
 <section
-    class="relative overflow-hidden
+    class="home-reveal-section relative overflow-hidden
            bg-white
            py-12 sm:py-14
            lg:min-h-screen
@@ -1208,7 +1639,7 @@ $homeTestimonials = $testimonialItems->take(
                     @foreach($brandItems->concat($brandItems) as $brand)
 
                         <div
-                            class="brand-card
+                            class="brand-card home-premium-card
                                    flex h-[96px] w-[190px]
                                    shrink-0
                                    items-center justify-center
@@ -1256,7 +1687,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($processSection && $processItems->isNotEmpty())
 <section
-    class="bg-[#f6f6f3]
+    class="home-reveal-section bg-[#f6f6f3]
            py-12 sm:py-14
            lg:min-h-screen
            lg:flex lg:items-center
@@ -1373,7 +1804,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($testimonialsSection && $testimonialItems->isNotEmpty())
 <section
-    class="bg-white
+    class="home-reveal-section bg-white
            py-12 sm:py-14
            lg:min-h-screen
            lg:flex lg:items-center
@@ -1523,7 +1954,7 @@ $homeTestimonials = $testimonialItems->take(
 ========================================================= --}}
 @if($homepage->show_cta)
 <section
-    class="relative overflow-hidden
+    class="home-reveal-section relative overflow-hidden
            bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700
            py-12 sm:py-14
            lg:min-h-screen
@@ -1538,7 +1969,7 @@ $homeTestimonials = $testimonialItems->take(
     <div class="relative mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
 
         <div
-            class="rounded-[28px]
+            class="home-cta-card rounded-[28px]
                    border border-white/20
                    bg-white/10
                    px-6 py-10
@@ -1691,5 +2122,135 @@ $homeTestimonials = $testimonialItems->take(
         }
     }
 </style>
+
+
+{{-- =========================================================
+     HOMEPAGE SCROLL + PREMIUM MICRO ANIMATIONS
+========================================================= --}}
+<style>
+    html.home-reveal-ready .home-reveal-section > div {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity .75s cubic-bezier(.22,1,.36,1),
+                    transform .75s cubic-bezier(.22,1,.36,1);
+    }
+
+    html.home-reveal-ready .home-reveal-section.is-visible > div {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    html.home-reveal-ready .home-reveal-item {
+        opacity: 0;
+        transform: translateY(24px) scale(.985);
+        transition: opacity .7s cubic-bezier(.22,1,.36,1),
+                    transform .7s cubic-bezier(.22,1,.36,1),
+                    box-shadow .35s ease,
+                    border-color .35s ease;
+    }
+
+    html.home-reveal-ready .home-reveal-item.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .home-premium-card {
+        transition: transform .35s cubic-bezier(.22,1,.36,1),
+                    box-shadow .35s ease,
+                    border-color .35s ease;
+    }
+
+    .home-premium-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 46px rgba(15,23,42,.10);
+    }
+
+    .home-dark-card {
+        transition: transform .35s cubic-bezier(.22,1,.36,1),
+                    background-color .35s ease,
+                    border-color .35s ease,
+                    box-shadow .35s ease;
+    }
+
+    .home-dark-card:hover {
+        transform: translateY(-6px);
+        background-color: rgba(255,255,255,.07);
+        border-color: rgba(249,115,22,.28);
+        box-shadow: 0 20px 44px rgba(0,0,0,.20);
+    }
+
+    .home-about-image {
+        transition: transform .45s cubic-bezier(.22,1,.36,1),
+                    box-shadow .45s ease;
+    }
+
+    .home-about-image:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: 0 24px 54px rgba(15,23,42,.14);
+    }
+
+    .home-cta-card {
+        transition: transform .4s cubic-bezier(.22,1,.36,1),
+                    box-shadow .4s ease;
+    }
+
+    .home-cta-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 28px 70px rgba(0,0,0,.18);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html.home-reveal-ready .home-reveal-section > div,
+        html.home-reveal-ready .home-reveal-item {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+        document.querySelectorAll('.home-reveal-section, .home-reveal-item')
+            .forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    document.documentElement.classList.add('home-reveal-ready');
+
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: .12, rootMargin: '0px 0px -7% 0px' });
+
+    document.querySelectorAll('.home-reveal-section')
+        .forEach(section => sectionObserver.observe(section));
+
+    const itemObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            const parent = entry.target.parentElement;
+            const siblings = parent
+                ? Array.from(parent.children).filter(el => el.classList.contains('home-reveal-item'))
+                : [];
+
+            const index = Math.max(0, siblings.indexOf(entry.target));
+            entry.target.style.transitionDelay = `${Math.min(index * 90, 360)}ms`;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: .14, rootMargin: '0px 0px -5% 0px' });
+
+    document.querySelectorAll('.home-reveal-item')
+        .forEach(item => itemObserver.observe(item));
+});
+</script>
 
 @endsection

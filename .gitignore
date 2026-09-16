@@ -31,3 +31,6 @@ Thumbs.db
 # Local database backups
 /database/*backup*
 /database/*-test.*
+
+# Local product image backup
+/public/images/Products-Original-Backup/
