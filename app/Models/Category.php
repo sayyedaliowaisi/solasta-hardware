@@ -13,9 +13,15 @@ class Category extends Model
         'description',
         'folder',
         'image',
+
+        // Products listing page images
+        'hero_image',
+        'banner_image',
+
         'is_active',
         'sort_order',
     ];
+
 
     protected function casts(): array
     {
@@ -24,6 +30,13 @@ class Category extends Model
             'sort_order' => 'integer',
         ];
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Products
+    |--------------------------------------------------------------------------
+    */
 
     public function products(): HasMany
     {

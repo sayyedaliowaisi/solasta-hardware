@@ -19,8 +19,11 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         /*
-         * Sirf active categories
-         */
+        |--------------------------------------------------------------------------
+        | Active Categories
+        |--------------------------------------------------------------------------
+        */
+
         $categories = Category::query()
             ->where('is_active', true)
             ->orderBy('sort_order')
@@ -34,37 +37,52 @@ class ProductController extends Controller
 
 
         /*
-         * Requested category
-         */
+        |--------------------------------------------------------------------------
+        | Requested Category
+        |--------------------------------------------------------------------------
+        */
+
         $categorySlug = $request->query('category');
 
 
         /*
-         * Agar category query nahi hai to first active category
-         */
+        |--------------------------------------------------------------------------
+        | Default Category
+        |--------------------------------------------------------------------------
+        */
+
         if (!$categorySlug) {
             $categorySlug = $categories->first()?->slug;
         }
 
 
         /*
-         * Current Category
-         */
+        |--------------------------------------------------------------------------
+        | Current Category
+        |--------------------------------------------------------------------------
+        */
+
         $currentCategoryModel = $categories
             ->firstWhere('slug', $categorySlug);
 
 
         /*
-         * Invalid / hidden category case
-         */
+        |--------------------------------------------------------------------------
+        | Invalid / Hidden Category
+        |--------------------------------------------------------------------------
+        */
+
         if (!$currentCategoryModel) {
             $currentCategoryModel = $categories->first();
         }
 
 
         /*
-         * Agar DB me koi active category hi nahi hai
-         */
+        |--------------------------------------------------------------------------
+        | No Active Category
+        |--------------------------------------------------------------------------
+        */
+
         if (!$currentCategoryModel) {
             abort(404);
         }
@@ -74,8 +92,11 @@ class ProductController extends Controller
 
 
         /*
-         * Active products
-         */
+        |--------------------------------------------------------------------------
+        | Active Products
+        |--------------------------------------------------------------------------
+        */
+
         $products = Product::query()
             ->with('category')
             ->where(
@@ -92,89 +113,149 @@ class ProductController extends Controller
 
 
         /*
-         * Existing Blade ko break na karne ke liye
-         * same array structure maintain kar rahe hain.
-         */
+        |--------------------------------------------------------------------------
+        | Current Category Array
+        |--------------------------------------------------------------------------
+        */
+
         $currentCategory = [
-            'id' => $currentCategoryModel->id,
 
-            'title' => $currentCategoryModel->name,
+            'id' =>
+                $currentCategoryModel->id,
 
-            'slug' => $currentCategoryModel->slug,
+            'title' =>
+                $currentCategoryModel->name,
 
-            'description' => $currentCategoryModel->description,
+            'slug' =>
+                $currentCategoryModel->slug,
 
-            'folder' => $currentCategoryModel->folder,
+            'description' =>
+                $currentCategoryModel->description,
 
-            'count' => $products->count(),
+            'folder' =>
+                $currentCategoryModel->folder,
 
-            'products' => $products->map(
-                function ($product) {
+            'image' =>
+                $currentCategoryModel->image,
 
-                    return [
-                        'id' => $product->id,
+            /*
+            |--------------------------------------------------------------------------
+            | Products Page Media
+            |--------------------------------------------------------------------------
+            */
 
-                        'name' => $product->name,
+            'hero_image' =>
+                $currentCategoryModel->hero_image,
 
-                        'slug' => $product->slug,
+            'banner_image' =>
+                $currentCategoryModel->banner_image,
 
-                        'image' => $product->image,
+            'count' =>
+                $products->count(),
 
-                        'video' => $product->video,
+            'products' =>
+                $products->map(
+                    function ($product) {
 
-                        'description' => $product->description,
+                        return [
 
-                        'category_slug' =>
-                            $product->category->slug
-                            ?? null,
+                            'id' =>
+                                $product->id,
 
-                        'is_featured' =>
-                            $product->is_featured,
-                    ];
-                }
-            ),
+                            'name' =>
+                                $product->name,
+
+                            'slug' =>
+                                $product->slug,
+
+                            'price' =>
+                                (float) $product->price,
+
+                            'image' =>
+                                $product->image,
+
+                            'video' =>
+                                $product->video,
+
+                            'description' =>
+                                $product->description,
+
+                            'category_slug' =>
+                                $product->category?->slug,
+
+                            'is_featured' =>
+                                (bool) $product->is_featured,
+
+                        ];
+                    }
+                ),
         ];
 
 
         /*
-         * Existing products.blade.php expects
-         * $categories[$slug]
-         */
+        |--------------------------------------------------------------------------
+        | Categories For Existing Blade
+        |--------------------------------------------------------------------------
+        */
+
         $categoriesForView = $categories
-            ->mapWithKeys(function ($category) {
+            ->mapWithKeys(
+                function ($category) {
 
-                return [
-                    $category->slug => [
-                        'id' => $category->id,
+                    return [
 
-                        'title' => $category->name,
+                        $category->slug => [
 
-                        'slug' => $category->slug,
+                            'id' =>
+                                $category->id,
 
-                        'description' =>
-                            $category->description,
+                            'title' =>
+                                $category->name,
 
-                        'folder' => $category->folder,
+                            'slug' =>
+                                $category->slug,
 
-                        'count' =>
-                            $category
-                                ->active_products_count,
-                    ],
-                ];
-            })
+                            'description' =>
+                                $category->description,
+
+                            'folder' =>
+                                $category->folder,
+
+                            'image' =>
+                                $category->image,
+
+                            'hero_image' =>
+                                $category->hero_image,
+
+                            'banner_image' =>
+                                $category->banner_image,
+
+                            'count' =>
+                                $category->active_products_count,
+
+                        ],
+
+                    ];
+                }
+            )
             ->toArray();
 
 
         /*
-         * Products Page CMS Settings
-         *
-         * Public GET par firstOrCreate use nahi kar rahe.
-         * Agar settings row available nahi hui to
-         * Blade fallback text use karega.
-         */
+        |--------------------------------------------------------------------------
+        | Products Page CMS Settings
+        |--------------------------------------------------------------------------
+        */
+
         $productsPage =
             ProductsPageSetting::first();
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Products View
+        |--------------------------------------------------------------------------
+        */
 
         return view(
             'pages.products',
@@ -195,7 +276,6 @@ class ProductController extends Controller
     }
 
 
-
     /*
     |--------------------------------------------------------------------------
     | PRODUCT DETAIL
@@ -205,8 +285,11 @@ class ProductController extends Controller
     public function show(string $slug)
     {
         /*
-         * Active product
-         */
+        |--------------------------------------------------------------------------
+        | Active Product
+        |--------------------------------------------------------------------------
+        */
+
         $productModel = Product::query()
             ->with('category')
             ->where('slug', $slug)
@@ -215,8 +298,11 @@ class ProductController extends Controller
 
 
         /*
-         * Product ki category bhi active honi chahiye
-         */
+        |--------------------------------------------------------------------------
+        | Category Must Also Be Active
+        |--------------------------------------------------------------------------
+        */
+
         abort_unless(
             $productModel->category
             && $productModel->category->is_active,
@@ -229,9 +315,119 @@ class ProductController extends Controller
 
 
         /*
-         * Existing Blade compatible product array
-         */
+        |--------------------------------------------------------------------------
+        | Product Gallery
+        |--------------------------------------------------------------------------
+        */
+
+        $gallery =
+            is_array($productModel->gallery)
+                ? array_values(
+                    array_filter(
+                        $productModel->gallery
+                    )
+                )
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Product Types / Finishes
+        |--------------------------------------------------------------------------
+        */
+
+        $productTypes =
+            is_array($productModel->product_types)
+                ? array_values(
+                    array_filter(
+                        $productModel->product_types
+                    )
+                )
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Detail Features
+        |--------------------------------------------------------------------------
+        */
+
+        $detailFeatures =
+            is_array($productModel->detail_features)
+                ? array_values(
+                    $productModel->detail_features
+                )
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Specifications
+        |--------------------------------------------------------------------------
+        */
+
+        $specifications =
+            is_array($productModel->specifications)
+                ? array_values(
+                    $productModel->specifications
+                )
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dimensions
+        |--------------------------------------------------------------------------
+        */
+
+        $dimensions =
+            is_array($productModel->dimensions)
+                ? $productModel->dimensions
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Installation Steps
+        |--------------------------------------------------------------------------
+        */
+
+        $installationSteps =
+            is_array($productModel->installation_steps)
+                ? array_values(
+                    $productModel->installation_steps
+                )
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FAQs
+        |--------------------------------------------------------------------------
+        */
+
+        $faqs =
+            is_array($productModel->faqs)
+                ? array_values(
+                    $productModel->faqs
+                )
+                : [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Product Array
+        |--------------------------------------------------------------------------
+        */
+
         $product = [
+
+            /*
+            |--------------------------------------------------------------------------
+            | Basic Information
+            |--------------------------------------------------------------------------
+            */
+
             'id' =>
                 $productModel->id,
 
@@ -244,24 +440,129 @@ class ProductController extends Controller
             'description' =>
                 $productModel->description,
 
+            'price' =>
+                (float) $productModel->price,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Media
+            |--------------------------------------------------------------------------
+            */
+
             'image' =>
                 $productModel->image,
 
+            'gallery' =>
+                $gallery,
+
             'video' =>
                 $productModel->video,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Rating / Reviews
+            |--------------------------------------------------------------------------
+            */
+
+            'rating' =>
+                $productModel->rating !== null
+                    ? (float) $productModel->rating
+                    : 5.0,
+
+            'review_count' =>
+                $productModel->review_count !== null
+                    ? (int) $productModel->review_count
+                    : 0,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Product Types
+            |--------------------------------------------------------------------------
+            */
+
+            'product_types' =>
+                $productTypes,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Product Detail Tab
+            |--------------------------------------------------------------------------
+            */
+
+            'detail_content' =>
+                $productModel->detail_content,
+
+            'detail_features' =>
+                $detailFeatures,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Specifications
+            |--------------------------------------------------------------------------
+            */
+
+            'specifications' =>
+                $specifications,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Dimensions
+            |--------------------------------------------------------------------------
+            */
+
+            'dimensions' =>
+                $dimensions,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Installation
+            |--------------------------------------------------------------------------
+            */
+
+            'installation_steps' =>
+                $installationSteps,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | FAQs
+            |--------------------------------------------------------------------------
+            */
+
+            'faqs' =>
+                $faqs,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Other Information
+            |--------------------------------------------------------------------------
+            */
 
             'category_slug' =>
                 $categoryModel->slug,
 
             'is_featured' =>
-                $productModel->is_featured,
+                (bool) $productModel->is_featured,
+
         ];
 
 
         /*
-         * Existing Blade compatible category
-         */
+        |--------------------------------------------------------------------------
+        | Current Category
+        |--------------------------------------------------------------------------
+        */
+
         $currentCategory = [
+
             'id' =>
                 $categoryModel->id,
 
@@ -276,12 +577,25 @@ class ProductController extends Controller
 
             'folder' =>
                 $categoryModel->folder,
+
+            'image' =>
+                $categoryModel->image,
+
+            'hero_image' =>
+                $categoryModel->hero_image,
+
+            'banner_image' =>
+                $categoryModel->banner_image,
+
         ];
 
 
         /*
-         * Related Products
-         */
+        |--------------------------------------------------------------------------
+        | Related Products
+        |--------------------------------------------------------------------------
+        */
+
         $relatedProducts = Product::query()
             ->where(
                 'category_id',
@@ -305,6 +619,7 @@ class ProductController extends Controller
                 use ($categoryModel) {
 
                     return [
+
                         'id' =>
                             $related->id,
 
@@ -313,6 +628,9 @@ class ProductController extends Controller
 
                         'slug' =>
                             $related->slug,
+
+                        'price' =>
+                            (float) $related->price,
 
                         'image' =>
                             $related->image,
@@ -323,23 +641,35 @@ class ProductController extends Controller
                         'description' =>
                             $related->description,
 
+                        'category' =>
+                            $categoryModel->name,
+
                         'category_slug' =>
                             $categoryModel->slug,
+
+                        'is_featured' =>
+                            (bool) $related->is_featured,
+
                     ];
                 }
             );
 
 
         /*
-         * Product Detail Page CMS Settings
-         *
-         * Public GET par firstOrCreate use nahi kar rahe.
-         * Agar setting row available na ho to
-         * Blade fallback text use karega.
-         */
+        |--------------------------------------------------------------------------
+        | Product Detail CMS Settings
+        |--------------------------------------------------------------------------
+        */
+
         $productDetailPage =
             ProductDetailPageSetting::first();
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Product Detail View
+        |--------------------------------------------------------------------------
+        */
 
         return view(
             'pages.product-detail',

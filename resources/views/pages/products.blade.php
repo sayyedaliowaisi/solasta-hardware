@@ -1,277 +1,265 @@
 @extends('layouts.app')
 
-@section('title', $currentCategory['title'] . ' | ' . (data_get($siteSettings ?? null, 'company_name') ?: 'M R Hardware'))
+@section(
+    'title',
+    $currentCategory['title'] . ' | ' .
+    (data_get($siteSettings ?? null, 'company_name') ?: 'M R Hardware')
+)
+
+
+@push('styles')
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/product.css') }}"
+    >
+@endpush
+
 
 @section('content')
 
+
 @php
-    $desktopPages = $currentCategory['products']->chunk(4);
+
+    $products =
+        $currentCategory['products']
+        ?? collect();
+
+    $productCount =
+        $currentCategory['count']
+        ?? $products->count();
+
+    $companyName =
+        data_get(
+            $siteSettings ?? null,
+            'company_name'
+        )
+        ?: 'M R Hardware';
+
+    $productsPerPage = 12;
+
 
     /*
     |--------------------------------------------------------------------------
-    | Products Page CMS
+    | CATEGORY HERO BACKGROUND
     |--------------------------------------------------------------------------
-    | The page continues to work even before ProductsPageSetting is wired
-    | into the controller. Once available, pass it as $productsPage.
+    |
+    | Priority:
+    |
+    | 1. Admin hero_image
+    | 2. Existing category-slug image
+    | 3. default.jpg
+    |
     */
-    $productsPage = $productsPage ?? null;
-    $site = $siteSettings ?? null;
 
-    $companyName = data_get($site, 'company_name') ?: 'M R Hardware';
+    $adminHeroImage =
+        trim(
+            (string) (
+                $currentCategory['hero_image']
+                ?? ''
+            )
+        );
 
-    $heroBadge = data_get($productsPage, 'hero_badge') ?: 'Product Catalogue';
-    $heroProductsText = data_get($productsPage, 'hero_products_text') ?: 'Products Available';
-    $heroButtonText = data_get($productsPage, 'hero_button_text') ?: 'Explore Products';
+    $slugHeroImage =
+        'images/product-hero/'
+        . $categorySlug
+        . '.jpg';
 
-    $collectionLabel = data_get($productsPage, 'collection_label') ?: 'Collection';
-    $collectionText = data_get($productsPage, 'collection_text') ?: 'Products in this category';
+    $defaultHeroImage =
+        'images/product-hero/default.jpg';
 
-    $businessLabel = data_get($productsPage, 'business_label') ?: 'Business';
-    $businessText = data_get($productsPage, 'business_text') ?: 'Manufacturing & Trading';
 
-    $enquiryBadge = data_get($productsPage, 'enquiry_badge') ?: 'Need a specific model?';
-    $enquiryText = data_get($productsPage, 'enquiry_text')
-        ?: 'Open any product for a closer view or send an enquiry for model-wise specifications and availability.';
-    $enquiryButtonText = data_get($productsPage, 'enquiry_button_text') ?: 'Send Enquiry';
+    if ($adminHeroImage !== '') {
 
-    $productsSectionBadge = data_get($productsPage, 'products_section_badge') ?: 'Our Collection';
-    $viewProductText = data_get($productsPage, 'view_product_text') ?: 'View Product';
+        $heroImage =
+            $adminHeroImage;
 
-    $emptyTitle = data_get($productsPage, 'empty_title') ?: 'No products found';
-    $emptyText = data_get($productsPage, 'empty_text')
-        ?: 'No active products are currently available in this category.';
+    } elseif (
+        file_exists(
+            public_path(
+                $slugHeroImage
+            )
+        )
+    ) {
 
-    $ctaBadge = data_get($productsPage, 'cta_badge') ?: 'Product Enquiry';
-    $ctaTitle = data_get($productsPage, 'cta_title') ?: 'Looking for a particular model?';
-    $ctaDescription = data_get($productsPage, 'cta_description')
-        ?: 'Contact us for model-wise specifications, availability and business enquiries.';
-    $ctaButtonText = data_get($productsPage, 'cta_button_text') ?: 'Send Enquiry';
+        $heroImage =
+            $slugHeroImage;
+
+    } else {
+
+        $heroImage =
+            $defaultHeroImage;
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CATEGORY PREMIUM BANNER
+    |--------------------------------------------------------------------------
+    |
+    | Priority:
+    |
+    | 1. Admin banner_image
+    | 2. Existing category-slug image
+    | 3. default.jpg
+    |
+    */
+
+    $adminBannerImage =
+        trim(
+            (string) (
+                $currentCategory['banner_image']
+                ?? ''
+            )
+        );
+
+    $slugBannerImage =
+        'images/product-banner/'
+        . $categorySlug
+        . '.jpg';
+
+    $defaultBannerImage =
+        'images/product-banner/default.jpg';
+
+
+    if ($adminBannerImage !== '') {
+
+        $categoryBannerImage =
+            $adminBannerImage;
+
+    } elseif (
+        file_exists(
+            public_path(
+                $slugBannerImage
+            )
+        )
+    ) {
+
+        $categoryBannerImage =
+            $slugBannerImage;
+
+    } else {
+
+        $categoryBannerImage =
+            $defaultBannerImage;
+
+    }
+
 @endphp
 
 
+
 {{-- =========================================================
-     HERO — ONE COMPLETE DESKTOP SCREEN
+     PRODUCTS HERO
 ========================================================= --}}
-<section
-    class="relative overflow-hidden bg-[#071a2d] text-white
-           lg:min-h-[calc(100svh-72px)]
-           lg:flex lg:items-center"
->
 
-    <div
-        class="absolute inset-0 opacity-25"
-        style="
-            background-image:
-            radial-gradient(circle at 18% 28%, rgba(249,115,22,.85) 0, transparent 26%),
-            radial-gradient(circle at 82% 72%, rgba(14,165,233,.55) 0, transparent 28%);
-        "
-    ></div>
+<section class="product-page-hero">
 
-    <div
-        class="absolute inset-0
-               bg-[linear-gradient(to_bottom_right,rgba(7,26,45,.2),rgba(7,26,45,.75))]"
-    ></div>
+    {{-- BACKGROUND IMAGE --}}
 
-    <div
-        class="relative mx-auto w-full max-w-[1180px]
-               px-4 py-14
-               sm:px-6 sm:py-16
-               lg:px-8 lg:py-12"
-    >
+    <div class="product-page-hero-background">
 
-        <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+        <img
+            src="{{ asset($heroImage) }}"
+            alt="{{ $currentCategory['title'] }}"
+        >
 
-            {{-- LEFT --}}
-            <div class="max-w-3xl">
-
-                <p
-                    class="text-[10px] sm:text-[11px]
-                           font-bold uppercase
-                           tracking-[0.22em]
-                           text-orange-400"
-                >
-                    {{ $heroBadge }}
-                </p>
+    </div>
 
 
-                <h1
-                    class="mt-4
-                           text-[36px]
-                           sm:text-[46px]
-                           lg:text-[54px]
-                           font-black
-                           leading-[1.02]
-                           tracking-[-0.045em]"
-                >
+    {{-- DARK OVERLAY --}}
+
+    <div class="product-page-hero-overlay"></div>
+
+
+    {{-- LEFT ACCENT --}}
+
+    <div class="product-page-hero-accent"></div>
+
+
+    <div class="product-page-container">
+
+        <div class="product-page-hero-inner">
+
+            <div class="product-page-hero-copy product-reveal">
+
+
+                {{-- KICKER --}}
+
+                <div class="product-page-hero-kicker-wrap">
+
+                    <span class="product-page-hero-kicker-line"></span>
+
+                    <p class="product-page-kicker">
+                        PREMIUM ARCHITECTURAL HARDWARE
+                    </p>
+
+                </div>
+
+
+                {{-- TITLE --}}
+
+                <h1>
                     {{ $currentCategory['title'] }}
                 </h1>
 
 
-                <p
-                    class="mt-5
-                           max-w-2xl
-                           text-[14px] sm:text-[15px]
-                           leading-7
-                           text-slate-300"
-                >
+                {{-- DESCRIPTION --}}
+
+                <p class="product-page-hero-description">
                     {{ $currentCategory['description'] }}
                 </p>
 
 
-                <div class="mt-7 flex flex-wrap items-center gap-3">
+                {{-- PRODUCT / BRAND INFO --}}
 
-                    <div
-                        class="inline-flex items-center gap-2
-                               rounded-full
-                               border border-white/10
-                               bg-white/5
-                               px-4 py-2.5
-                               text-[12px]
-                               font-semibold
-                               text-slate-200
-                               backdrop-blur"
-                    >
-                        <span class="h-2 w-2 rounded-full bg-orange-500"></span>
+                <div class="product-page-hero-bottom">
 
-                        {{ $currentCategory['count'] }} {{ $heroProductsText }}
+                    <div class="product-page-hero-stat">
+
+                        <strong>
+                            {{ $productCount }}
+                        </strong>
+
+                        <span>
+                            Products
+                        </span>
+
                     </div>
 
 
-                    <a
-                        href="#products-collection"
-                        class="inline-flex items-center gap-2
-                               rounded-full
-                               bg-orange-600
-                               px-5 py-2.5
-                               text-[12px]
-                               font-bold text-white
-                               transition
-                               hover:bg-orange-500"
-                    >
-                        {{ $heroButtonText }}
-                        <span>↓</span>
-                    </a>
-
-                </div>
-
-            </div>
+                    <span class="product-page-hero-stat-divider"></span>
 
 
-            {{-- RIGHT VISUAL PANEL --}}
-            <div
-                class="hidden lg:block
-                       rounded-[28px]
-                       border border-white/10
-                       bg-white/[0.06]
-                       p-6
-                       backdrop-blur-sm"
-            >
+                    <div class="product-page-hero-brand">
 
-                <div class="grid grid-cols-2 gap-4">
+                        <span>
+                            COLLECTION BY
+                        </span>
 
-                    <div
-                        class="rounded-[20px]
-                               border border-white/10
-                               bg-white/[0.06]
-                               p-5"
-                    >
-                        <p
-                            class="text-[9px]
-                                   font-bold uppercase
-                                   tracking-[0.18em]
-                                   text-orange-400"
-                        >
-                            {{ $collectionLabel }}
-                        </p>
-
-                        <p
-                            class="mt-2
-                                   text-[22px]
-                                   font-black
-                                   tracking-[-0.03em]"
-                        >
-                            {{ $currentCategory['count'] }}
-                        </p>
-
-                        <p
-                            class="mt-1 text-[12px] text-slate-400"
-                        >
-                            {{ $collectionText }}
-                        </p>
-                    </div>
-
-
-                    <div
-                        class="rounded-[20px]
-                               border border-white/10
-                               bg-white/[0.06]
-                               p-5"
-                    >
-                        <p
-                            class="text-[9px]
-                                   font-bold uppercase
-                                   tracking-[0.18em]
-                                   text-orange-400"
-                        >
-                            {{ $businessLabel }}
-                        </p>
-
-                        <p
-                            class="mt-2
-                                   text-[18px]
-                                   font-black
-                                   tracking-[-0.02em]"
-                        >
+                        <strong>
                             {{ $companyName }}
-                        </p>
+                        </strong>
 
-                        <p
-                            class="mt-1 text-[12px] text-slate-400"
-                        >
-                            {{ $businessText }}
-                        </p>
                     </div>
 
                 </div>
 
 
-                <div
-                    class="mt-4
-                           rounded-[20px]
-                           border border-white/10
-                           bg-[#0b2239]
-                           p-5"
+                {{-- EXPLORE BUTTON --}}
+
+                <a
+                    href="#products-collection"
+                    class="product-page-hero-explore"
                 >
-                    <p
-                        class="text-[9px]
-                               font-bold uppercase
-                               tracking-[0.18em]
-                               text-orange-400"
-                    >
-                        {{ $enquiryBadge }}
-                    </p>
 
-                    <p
-                        class="mt-2
-                               text-[14px]
-                               leading-6
-                               text-slate-300"
-                    >
-                        {{ $enquiryText }}
-                    </p>
+                    <span>
+                        EXPLORE COLLECTION
+                    </span>
 
-                    <a
-                        href="{{ route('contact') }}"
-                        class="mt-4 inline-flex
-                               items-center gap-2
-                               text-[12px]
-                               font-bold
-                               text-white"
-                    >
-                        {{ $enquiryButtonText }}
-                        <span>→</span>
-                    </a>
-                </div>
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                </a>
 
             </div>
 
@@ -286,41 +274,28 @@
 {{-- =========================================================
      CATEGORY NAVIGATION
 ========================================================= --}}
-<section
-    class="sticky top-[64px] lg:top-[72px] z-30
-           border-b border-slate-200
-           bg-white/95
-           backdrop-blur"
->
 
-    <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
+<section class="product-category-section">
 
-        <div
-            class="products-category-scroll
-                   flex gap-2.5
-                   overflow-x-auto
-                   py-3"
-        >
+    <div class="product-page-container">
 
-            @foreach($categories as $slug => $category)
+        <div class="product-category-row">
 
-                <a
-                    href="{{ route('products', ['category' => $slug]) }}"
-                    class="flex-none
-                           rounded-full
-                           px-4 py-2
-                           text-[11px] sm:text-[12px]
-                           font-bold
-                           transition
-                           {{ $categorySlug === $slug
-                               ? 'bg-slate-950 text-white shadow-sm'
-                               : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
-                           }}"
-                >
-                    {{ $category['title'] }}
-                </a>
+            <div class="product-category-scroll">
 
-            @endforeach
+                @foreach($categories as $slug => $category)
+
+                    <a
+                        href="{{ route('products', ['category' => $slug]) }}"
+                        class="product-category-pill
+                               {{ $categorySlug === $slug ? 'active' : '' }}"
+                    >
+                        {{ $category['title'] }}
+                    </a>
+
+                @endforeach
+
+            </div>
 
         </div>
 
@@ -331,481 +306,249 @@
 
 
 {{-- =========================================================
-     PRODUCTS COLLECTION
-     DESKTOP: ONE SCREEN / 4 CARDS PER PAGE
-     MOBILE + TABLET: NORMAL RESPONSIVE GRID
+     PRODUCT COLLECTION
 ========================================================= --}}
+
 <section
     id="products-collection"
-    class="bg-[#f6f6f3]
-           py-10 sm:py-12
-           lg:min-h-[calc(100svh-52px)]
-           lg:flex lg:items-center
-           lg:py-8"
+    class="product-collection-section"
 >
 
-    <div class="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
+    <div class="product-page-container">
 
 
-        {{-- SECTION HEADER --}}
-        <div
-            class="mb-7 flex
-                   flex-col gap-4
-                   sm:flex-row
-                   sm:items-end
-                   sm:justify-between
-                   lg:mb-5"
-        >
+        {{-- HEADER --}}
+
+        <div class="product-collection-header product-reveal">
 
             <div>
 
-                <p
-                    class="text-[9px]
-                           font-bold uppercase
-                           tracking-[0.18em]
-                           text-orange-600"
-                >
-                    {{ $productsSectionBadge }}
+                <p class="product-collection-kicker">
+                    OUR COLLECTION
                 </p>
 
-
-                <h2
-                    class="mt-1.5
-                           text-[26px]
-                           sm:text-[30px]
-                           lg:text-[32px]
-                           font-black
-                           tracking-[-0.035em]
-                           text-slate-950"
-                >
+                <h2>
                     {{ $currentCategory['title'] }}
                 </h2>
 
             </div>
 
 
-            <div
-                class="flex items-center gap-3
-                       text-[12px]
-                       text-slate-500"
-            >
+            <div class="product-result-count">
+
+                <strong>
+                    {{ $productCount }}
+                </strong>
+
                 <span>
-                    <strong class="text-slate-900">
-                        {{ $currentCategory['count'] }}
-                    </strong>
-                    products
+                    Products
                 </span>
 
-                @if($desktopPages->count() > 1)
-                    <span class="hidden lg:inline text-slate-300">•</span>
-
-                    <span
-                        id="product-page-status"
-                        class="hidden lg:inline
-                               font-semibold
-                               text-slate-700"
-                    >
-                        Page 1 of {{ $desktopPages->count() }}
-                    </span>
-                @endif
             </div>
 
         </div>
 
 
 
-        @if($currentCategory['products']->count())
+        {{-- =================================================
+             PRODUCTS
+        ================================================== --}}
 
+        @if($products->count())
 
-            {{-- =====================================================
-                 DESKTOP PRODUCT PAGES
-            ====================================================== --}}
-            <div class="hidden lg:block">
-
-                @foreach($desktopPages as $pageIndex => $productPage)
-
-                    <div
-                        class="desktop-product-page
-                               {{ $pageIndex === 0 ? '' : 'hidden' }}"
-                        data-page="{{ $pageIndex }}"
-                    >
-
-                        <div class="grid grid-cols-4 gap-5">
-
-                            @foreach($productPage as $product)
-
-                                <a
-                                    href="{{ route('product.detail', ['slug' => $product['slug']]) }}"
-                                    class="group
-                                           min-w-0
-                                           overflow-hidden
-                                           rounded-[20px]
-                                           border border-slate-200
-                                           bg-white
-                                           transition-all duration-300
-                                           hover:-translate-y-1
-                                           hover:border-slate-300
-                                           hover:shadow-[0_16px_38px_rgba(15,23,42,0.08)]"
-                                >
-
-                                    {{-- IMAGE --}}
-                                    <div
-                                        class="relative
-                                               h-[300px]
-                                               overflow-hidden
-                                               bg-[#ecece8]"
-                                    >
-
-                                        <img
-                                            src="{{ asset($product['image']) }}"
-                                            alt="{{ $product['name'] }}"
-                                            loading="lazy"
-                                            class="absolute inset-0
-                                                   h-full w-full
-                                                   object-cover object-center
-                                                   transition-transform duration-500
-                                                   group-hover:scale-[1.04]"
-                                        >
-
-
-                                        <div
-                                            class="absolute left-3 top-3
-                                                   rounded-full
-                                                   border border-white/70
-                                                   bg-white/90
-                                                   px-3 py-1.5
-                                                   text-[8px]
-                                                   font-bold uppercase
-                                                   tracking-[0.12em]
-                                                   text-slate-700
-                                                   shadow-sm
-                                                   backdrop-blur"
-                                        >
-                                            {{ $companyName }}
-                                        </div>
-
-
-                                        @if(!empty($product['video']))
-
-                                            <div
-                                                class="absolute right-3 top-3
-                                                       inline-flex items-center gap-1.5
-                                                       rounded-full
-                                                       bg-slate-950/85
-                                                       px-3 py-1.5
-                                                       text-[9px]
-                                                       font-bold text-white
-                                                       backdrop-blur"
-                                            >
-                                                ▶ Video
-                                            </div>
-
-                                        @endif
-
-
-                                        <div
-                                            class="pointer-events-none
-                                                   absolute inset-x-0 bottom-0
-                                                   h-16
-                                                   bg-gradient-to-t
-                                                   from-black/15
-                                                   to-transparent"
-                                        ></div>
-
-                                    </div>
-
-
-                                    {{-- DETAILS --}}
-                                    <div class="p-4">
-
-                                        <p
-                                            class="text-[8px]
-                                                   font-bold uppercase
-                                                   tracking-[0.14em]
-                                                   text-orange-600"
-                                        >
-                                            {{ $currentCategory['title'] }}
-                                        </p>
-
-
-                                        <h3
-                                            class="mt-1.5
-                                                   min-h-[40px]
-                                                   line-clamp-2
-                                                   text-[13px]
-                                                   font-bold
-                                                   leading-5
-                                                   text-slate-950"
-                                        >
-                                            {{ $product['name'] }}
-                                        </h3>
-
-
-                                        <div
-                                            class="mt-3
-                                                   flex items-center
-                                                   justify-between
-                                                   border-t border-slate-100
-                                                   pt-3"
-                                        >
-
-                                            <span
-                                                class="text-[10px]
-                                                       font-semibold
-                                                       text-slate-500"
-                                            >
-                                                {{ $viewProductText }}
-                                            </span>
-
-
-                                            <span
-                                                class="text-[13px]
-                                                       text-slate-900
-                                                       transition-transform
-                                                       group-hover:translate-x-1"
-                                            >
-                                                →
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-
-                @endforeach
-
-
-                {{-- DESKTOP PAGINATION --}}
-                @if($desktopPages->count() > 1)
-
-                    <div
-                        class="mt-5
-                               flex items-center
-                               justify-between"
-                    >
-
-                        <button
-                            type="button"
-                            id="product-prev"
-                            class="inline-flex h-10
-                                   items-center gap-2
-                                   rounded-full
-                                   border border-slate-200
-                                   bg-white
-                                   px-4
-                                   text-[11px]
-                                   font-bold
-                                   text-slate-700
-                                   transition
-                                   hover:border-slate-300
-                                   hover:text-slate-950
-                                   disabled:cursor-not-allowed
-                                   disabled:opacity-40"
-                        >
-                            ← Previous
-                        </button>
-
-
-                        <div
-                            id="product-page-dots"
-                            class="flex items-center gap-2"
-                        >
-                            @foreach($desktopPages as $pageIndex => $page)
-                                <button
-                                    type="button"
-                                    data-page-dot="{{ $pageIndex }}"
-                                    aria-label="Go to product page {{ $pageIndex + 1 }}"
-                                    class="product-page-dot
-                                           h-2.5 w-2.5
-                                           rounded-full
-                                           transition-all
-                                           {{ $pageIndex === 0
-                                               ? 'w-7 bg-orange-600'
-                                               : 'bg-slate-300'
-                                           }}"
-                                ></button>
-                            @endforeach
-                        </div>
-
-
-                        <button
-                            type="button"
-                            id="product-next"
-                            class="inline-flex h-10
-                                   items-center gap-2
-                                   rounded-full
-                                   bg-slate-950
-                                   px-4
-                                   text-[11px]
-                                   font-bold
-                                   text-white
-                                   transition
-                                   hover:bg-orange-600
-                                   disabled:cursor-not-allowed
-                                   disabled:opacity-40"
-                        >
-                            Next →
-                        </button>
-
-                    </div>
-
-                @endif
-
-            </div>
-
-
-
-            {{-- =====================================================
-                 MOBILE + TABLET GRID
-            ====================================================== --}}
             <div
-                class="grid grid-cols-2
-                       gap-3.5
-                       sm:gap-5
-                       md:grid-cols-3
-                       lg:hidden"
+                class="product-grid"
+                id="product-grid"
+                data-per-page="{{ $productsPerPage }}"
             >
 
-                @foreach($currentCategory['products'] as $product)
+                @foreach($products as $index => $product)
 
-                    <a
-                        href="{{ route('product.detail', ['slug' => $product['slug']]) }}"
-                        class="group
-                               min-w-0
-                               overflow-hidden
-                               rounded-[18px]
-                               border border-slate-200
-                               bg-white
-                               transition duration-300
-                               hover:shadow-lg"
+                    <article
+                        class="product-card product-card-reveal"
+                        data-product-card
+                        data-index="{{ $index }}"
                     >
 
-                        <div
-                            class="relative
-                                   aspect-[4/5]
-                                   overflow-hidden
-                                   bg-slate-100"
+
+                        {{-- PRODUCT IMAGE --}}
+
+                        <a
+                            href="{{ route('product.detail', ['slug' => $product['slug']]) }}"
+                            class="product-card-image-link"
                         >
 
-                            <img
-                                src="{{ asset($product['image']) }}"
-                                alt="{{ $product['name'] }}"
-                                loading="lazy"
-                                class="absolute inset-0
-                                       h-full w-full
-                                       object-cover object-center
-                                       transition duration-500
-                                       group-hover:scale-[1.04]"
-                            >
+                            <div class="product-card-image-wrap">
 
-
-                            @if(!empty($product['video']))
-
-                                <div
-                                    class="absolute right-2 top-2
-                                           rounded-full
-                                           bg-black/80
-                                           px-2 py-1
-                                           text-[8px]
-                                           font-bold
-                                           text-white"
+                                <img
+                                    src="{{ asset($product['image']) }}"
+                                    alt="{{ $product['name'] }}"
+                                    loading="lazy"
+                                    class="product-card-image"
                                 >
-                                    ▶
+
+
+                                {{-- BRAND --}}
+
+                                <span class="product-card-brand">
+                                    {{ $companyName }}
+                                </span>
+
+
+                                {{-- VIDEO INDICATOR --}}
+
+                                @if(!empty($product['video']))
+
+                                    <span class="product-card-video">
+
+                                        <i class="fa-solid fa-play"></i>
+
+                                    </span>
+
+                                @endif
+
+
+                                {{-- HOVER OVERLAY --}}
+
+                                <div class="product-card-overlay">
+
+                                    <span>
+                                        View Product
+                                    </span>
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
                                 </div>
 
-                            @endif
+                            </div>
 
-                        </div>
+                        </a>
 
 
-                        <div class="p-3.5 sm:p-4">
 
-                            <p
-                                class="text-[8px]
-                                       sm:text-[9px]
-                                       font-bold uppercase
-                                       tracking-[0.12em]
-                                       text-orange-600"
-                            >
+                        {{-- PRODUCT CONTENT --}}
+
+                        <div class="product-card-content">
+
+                            <p class="product-card-category">
                                 {{ $currentCategory['title'] }}
                             </p>
 
 
-                            <h3
-                                class="mt-1.5
-                                       line-clamp-2
-                                       text-[12px]
-                                       sm:text-[13px]
-                                       font-bold
-                                       leading-5
-                                       text-slate-950"
-                            >
-                                {{ $product['name'] }}
+                            <h3>
+
+                                <a
+                                    href="{{ route('product.detail', ['slug' => $product['slug']]) }}"
+                                >
+                                    {{ $product['name'] }}
+                                </a>
+
                             </h3>
 
 
-                            <div
-                                class="mt-3 flex
-                                       items-center
-                                       justify-between
-                                       border-t border-slate-100
-                                       pt-2.5"
-                            >
+                            {{-- DYNAMIC PRODUCT PRICE --}}
 
-                                <span
-                                    class="text-[9px]
-                                           sm:text-[10px]
-                                           font-semibold
-                                           text-slate-500"
-                                >
-                                    View Product
+                            <div class="product-card-price">
+
+                                <span class="product-card-price-value">
+                                    ₹{{ number_format((float) ($product['price'] ?? 1000), 0) }}
                                 </span>
 
-                                <span class="text-[12px]">→</span>
+                                <span class="product-card-price-unit">
+                                    / Piece
+                                </span>
+
+                            </div>
+
+
+                            <div class="product-card-footer">
+
+                                <a
+                                    href="{{ route('product.detail', ['slug' => $product['slug']]) }}"
+                                    class="product-card-view"
+                                >
+                                    View Details
+                                </a>
+
+
+                                <a
+                                    href="{{ route('product.detail', ['slug' => $product['slug']]) }}"
+                                    class="product-card-arrow"
+                                    aria-label="View {{ $product['name'] }}"
+                                >
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
 
                             </div>
 
                         </div>
 
-                    </a>
+                    </article>
 
                 @endforeach
+
+            </div>
+
+
+
+            {{-- =================================================
+                 PAGINATION
+            ================================================== --}}
+
+            <div
+                class="product-pagination"
+                id="product-pagination"
+            >
+
+                <button
+                    type="button"
+                    class="product-pagination-arrow"
+                    id="product-prev"
+                    aria-label="Previous page"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+
+
+                <div
+                    class="product-pagination-pages"
+                    id="product-pagination-pages"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="product-pagination-arrow"
+                    id="product-next"
+                    aria-label="Next page"
+                >
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
 
             </div>
 
 
         @else
 
-            <div
-                class="rounded-[24px]
-                       border border-dashed
-                       border-slate-300
-                       bg-white
-                       p-10
-                       text-center"
-            >
 
-                <h3
-                    class="text-[20px]
-                           font-black
-                           text-slate-900"
-                >
-                    {{ $emptyTitle }}
+            {{-- EMPTY STATE --}}
+
+            <div class="product-empty-state">
+
+                <div class="product-empty-icon">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+
+                <h3>
+                    No products found
                 </h3>
 
-
-                <p class="mt-2 text-[13px] text-slate-500">
-                    {{ $emptyText }}
+                <p>
+                    No active products are currently available in this category.
                 </p>
 
             </div>
+
 
         @endif
 
@@ -816,112 +559,74 @@
 
 
 {{-- =========================================================
-     CTA — ONE COMPLETE DESKTOP SCREEN
+     PREMIUM CATEGORY BANNER
 ========================================================= --}}
-<section
-    class="relative overflow-hidden
-           bg-white
-           py-12 sm:py-14
-           lg:min-h-screen
-           lg:flex lg:items-center
-           lg:py-10"
->
 
-    <div class="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
+<section class="product-premium-banner">
 
-        <div
-            class="relative overflow-hidden
-                   rounded-[28px]
-                   bg-[#071a2d]
-                   px-6 py-10
-                   text-white
-                   sm:px-10 sm:py-12
-                   lg:px-14 lg:py-14"
+    {{-- BACKGROUND IMAGE --}}
+
+    <div
+        class="product-premium-banner-background"
+        aria-hidden="true"
+    >
+
+        <img
+            src="{{ asset($categoryBannerImage) }}"
+            alt=""
+            loading="lazy"
         >
 
-            <div
-                class="absolute -right-24 -top-24
-                       h-80 w-80
-                       rounded-full
-                       bg-orange-500/20
-                       blur-3xl"
-            ></div>
-
-            <div
-                class="absolute -bottom-28 -left-20
-                       h-72 w-72
-                       rounded-full
-                       bg-sky-500/10
-                       blur-3xl"
-            ></div>
+    </div>
 
 
-            <div
-                class="relative
-                       grid gap-8
-                       lg:grid-cols-[1.2fr_.8fr]
-                       lg:items-center"
-            >
+    {{-- OVERLAY --}}
 
-                <div class="max-w-2xl">
-
-                    <p
-                        class="text-[9px]
-                               font-bold uppercase
-                               tracking-[0.18em]
-                               text-orange-400"
-                    >
-                        {{ $ctaBadge }}
-                    </p>
+    <div class="product-premium-banner-overlay"></div>
 
 
-                    <h2
-                        class="mt-2
-                               text-[28px]
-                               sm:text-[34px]
-                               font-black
-                               leading-[1.1]
-                               tracking-[-0.035em]"
-                    >
-                        {{ $ctaTitle }}
-                    </h2>
+    <div class="product-page-container">
+
+        <div class="product-premium-banner-inner">
 
 
-                    <p
-                        class="mt-4
-                               max-w-xl
-                               text-[13px]
-                               sm:text-[14px]
-                               leading-7
-                               text-slate-300"
-                    >
-                        {{ $ctaDescription }}
-                    </p>
+            {{-- LEFT CONTENT --}}
 
-                </div>
+            <div class="product-premium-banner-copy">
+
+                <p class="product-premium-banner-kicker">
+                    TRUSTED BY PROFESSIONALS
+                </p>
 
 
-                <div class="lg:text-right">
+                <h2>
+                    Premium Hardware Solutions
+                </h2>
 
-                    <a
-                        href="{{ route('contact') }}"
-                        class="inline-flex
-                               min-h-[46px]
-                               items-center
-                               justify-center
-                               rounded-xl
-                               bg-orange-600
-                               px-6
-                               text-[12px]
-                               font-bold
-                               text-white
-                               transition
-                               hover:bg-orange-500"
-                    >
-                        {{ $ctaButtonText }}
-                    </a>
 
-                </div>
+                <p class="product-premium-banner-description">
+                    For Homes, Offices, and Commercial Spaces.
+                </p>
+
+            </div>
+
+
+            {{-- RIGHT BUTTON --}}
+
+            <div class="product-premium-banner-action">
+
+                <a
+                    href="#products-collection"
+                    class="product-premium-banner-btn"
+                >
+
+                    <span>
+                        Explore Our Collections
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
 
             </div>
 
@@ -933,94 +638,57 @@
 
 
 
-<style>
-    html {
-        scroll-behavior: smooth;
-    }
+{{-- =========================================================
+     ENQUIRY CTA
+========================================================= --}}
 
-    .products-category-scroll {
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
+<section class="product-enquiry-section">
 
-    .products-category-scroll::-webkit-scrollbar {
-        display: none;
-    }
-</style>
+    <div class="product-page-container">
+
+        <div class="product-enquiry-box product-reveal">
+
+            <div class="product-enquiry-copy">
+
+                <p>
+                    PRODUCT ENQUIRY
+                </p>
+
+                <h2>
+                    Looking for a particular model?
+                </h2>
+
+                <span>
+                    Contact us for model-wise specifications,
+                    availability and business enquiries.
+                </span>
+
+            </div>
 
 
+            <a
+                href="{{ route('contact') }}"
+                class="product-enquiry-btn"
+            >
+                Send Enquiry
 
-@if($desktopPages->count() > 1)
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const pages = Array.from(
-            document.querySelectorAll('.desktop-product-page')
-        );
+        </div>
 
-        const dots = Array.from(
-            document.querySelectorAll('.product-page-dot')
-        );
+    </div>
 
-        const prevButton = document.getElementById('product-prev');
-        const nextButton = document.getElementById('product-next');
-        const status = document.getElementById('product-page-status');
-
-        if (!pages.length || !prevButton || !nextButton) {
-            return;
-        }
-
-        let currentPage = 0;
-
-        function showPage(index) {
-            currentPage = Math.max(
-                0,
-                Math.min(index, pages.length - 1)
-            );
-
-            pages.forEach((page, pageIndex) => {
-                page.classList.toggle(
-                    'hidden',
-                    pageIndex !== currentPage
-                );
-            });
-
-            dots.forEach((dot, dotIndex) => {
-                const active = dotIndex === currentPage;
-
-                dot.classList.toggle('w-7', active);
-                dot.classList.toggle('bg-orange-600', active);
-                dot.classList.toggle('w-2.5', !active);
-                dot.classList.toggle('bg-slate-300', !active);
-            });
-
-            prevButton.disabled = currentPage === 0;
-            nextButton.disabled = currentPage === pages.length - 1;
-
-            if (status) {
-                status.textContent =
-                    `Page ${currentPage + 1} of ${pages.length}`;
-            }
-        }
-
-        prevButton.addEventListener('click', function () {
-            showPage(currentPage - 1);
-        });
-
-        nextButton.addEventListener('click', function () {
-            showPage(currentPage + 1);
-        });
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', function () {
-                showPage(index);
-            });
-        });
-
-        showPage(0);
-    });
-</script>
-
-@endif
+</section>
 
 @endsection
+
+
+
+@push('scripts')
+
+    <script
+        src="{{ asset('js/product.js') }}"
+    ></script>
+
+@endpush

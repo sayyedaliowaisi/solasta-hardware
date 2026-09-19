@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="max-w-3xl">
+<div class="max-w-4xl">
 
     <a
         href="{{ route('admin.categories.index') }}"
@@ -28,7 +28,8 @@
         @include('admin.categories._form')
 
         <button
-            class="mt-8 rounded-xl bg-orange-600 px-6 py-3.5 font-bold text-white hover:bg-orange-500"
+            type="submit"
+            class="mt-8 rounded-xl bg-orange-600 px-6 py-3.5 font-bold text-white transition hover:bg-orange-500"
         >
             Save Category
         </button>

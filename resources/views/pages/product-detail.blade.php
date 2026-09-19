@@ -1,609 +1,1818 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    <title>{{ $product['name'] }} | M R Hardware</title>
+@section(
+    'title',
+    $product['name'] . ' | ' .
+    (data_get($siteSettings ?? null, 'company_name') ?: 'M R Hardware')
+)
 
-    <meta
-        name="description"
-        content="{{ $product['description'] ?: 'Explore product details and enquire with M R Hardware.' }}"
+
+@push('styles')
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/product-detail.css') }}"
     >
+@endpush
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+@section('content')
 
-        body {
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-        }
-
-        .product-scroll {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
-
-        .product-scroll::-webkit-scrollbar {
-            height: 7px;
-        }
-
-        .product-scroll::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 999px;
-        }
-
-        .product-scroll::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 999px;
-        }
-    </style>
-</head>
-
-<body class="bg-[#f6f6f3] text-slate-900 antialiased">
 
 @php
 
     /*
     |--------------------------------------------------------------------------
-    | PRODUCT DETAIL CMS
+    | COMPANY
     |--------------------------------------------------------------------------
     */
 
-    $productDetailPage = $productDetailPage ?? null;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Product Description
-    |--------------------------------------------------------------------------
-    */
-
-    $description = !empty($product['description'])
-        ? $product['description']
-        : 'Explore this product from our '
-            . strtolower($currentCategory['title'])
-            . ' collection. Contact M R Hardware for model-wise specifications, availability and enquiry details.';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Navigation
-    |--------------------------------------------------------------------------
-    */
-
-    $backToProductsText =
-        data_get($productDetailPage, 'back_to_products_text')
-        ?: 'Back to Products';
-
-    $collectionButtonText =
-        data_get($productDetailPage, 'collection_button_text')
-        ?: 'View Collection';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Product Information
-    |--------------------------------------------------------------------------
-    */
-
-    $productBadge =
-        data_get($productDetailPage, 'product_badge')
-        ?: 'Product Details';
-
-    $specificationsTitle =
-        data_get($productDetailPage, 'specifications_title')
-        ?: 'Product Information';
-
-    $specificationsNote =
-        data_get($productDetailPage, 'specifications_note')
-        ?: 'Contact us for model-wise specifications, availability and business enquiries.';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Enquiry
-    |--------------------------------------------------------------------------
-    */
-
-    $enquiryBadge =
-        data_get($productDetailPage, 'enquiry_badge')
-        ?: 'Interested in this product?';
-
-    $enquiryTitle =
-        data_get($productDetailPage, 'enquiry_title')
-        ?: 'Ask for product details or availability';
-
-    $enquiryDescription =
-        data_get($productDetailPage, 'enquiry_description')
-        ?: 'Send your requirement and this product will already be selected in the enquiry form.';
-
-    $enquiryButtonText =
-        data_get($productDetailPage, 'enquiry_button_text')
-        ?: 'Send Enquiry';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Related Products
-    |--------------------------------------------------------------------------
-    */
-
-    $relatedSectionBadge =
-        data_get($productDetailPage, 'related_section_badge')
-        ?: 'More to explore';
-
-    $relatedSectionTitle =
-        data_get($productDetailPage, 'related_section_title')
-        ?: 'Related Products';
-
-    $relatedProductButtonText =
-        data_get($productDetailPage, 'related_product_button_text')
-        ?: 'View Product';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Final CTA
-    |--------------------------------------------------------------------------
-    */
-
-    $ctaBadge =
-        data_get($productDetailPage, 'cta_badge')
+    $companyName =
+        data_get($siteSettings ?? null, 'company_name')
         ?: 'M R Hardware';
 
-    $ctaTitle =
-        data_get($productDetailPage, 'cta_title')
-        ?: 'Need details for this product?';
 
-    $ctaDescription =
-        data_get($productDetailPage, 'cta_description')
-        ?: 'Send your requirement and our team can respond regarding this product and current availability.';
+    /*
+    |--------------------------------------------------------------------------
+    | DESCRIPTION
+    |--------------------------------------------------------------------------
+    */
 
-    $ctaButtonText =
-        data_get($productDetailPage, 'cta_button_text')
-        ?: 'Enquire About This Product';
+    $description =
+        !empty($product['description'])
+            ? $product['description']
+            : 'Premium quality hardware designed for durability and elegance. Crafted with high-grade materials and fine detailing, this product offers a perfect blend of strength, style and smooth functionality. Ideal for modern homes, offices and commercial spaces.';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCT GALLERY
+    |--------------------------------------------------------------------------
+    */
+
+    $galleryImages =
+        $product['gallery']
+        ?? [];
+
+    if (!is_array($galleryImages)) {
+        $galleryImages = [];
+    }
+
+
+    /*
+    | Main product image always first.
+    */
+
+    if (!empty($product['image'])) {
+
+        array_unshift(
+            $galleryImages,
+            $product['image']
+        );
+
+    }
+
+
+    /*
+    | Remove empty / duplicate images.
+    */
+
+    $galleryImages =
+        array_values(
+            array_unique(
+                array_filter(
+                    $galleryImages
+                )
+            )
+        );
+
+
+    /*
+    | Existing gallery design uses 8 thumbnails.
+    |
+    | 1 Main Image + 7 Additional Images
+    |
+    | If fewer images exist, main image is repeated so
+    | the existing gallery layout does not break.
+    */
+
+    if (!empty($product['image'])) {
+
+        while (count($galleryImages) < 8) {
+
+            $galleryImages[] =
+                $product['image'];
+
+        }
+
+    }
+
+
+    $galleryImages =
+        array_slice(
+            $galleryImages,
+            0,
+            8
+        );
+
+
+    /*
+    | Safety fallback.
+    */
+
+    if (empty($galleryImages)) {
+
+        $galleryImages[] =
+            'images/placeholder-product.jpg';
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RATING
+    |--------------------------------------------------------------------------
+    */
+
+    $rating =
+        isset($product['rating'])
+        && is_numeric($product['rating'])
+            ? (float) $product['rating']
+            : 5.0;
+
+    $rating =
+        max(
+            0,
+            min(
+                5,
+                $rating
+            )
+        );
+
+
+    $reviewCount =
+        isset($product['review_count'])
+        && is_numeric($product['review_count'])
+            ? max(
+                0,
+                (int) $product['review_count']
+            )
+            : 0;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCT TYPES / FINISHES
+    |--------------------------------------------------------------------------
+    */
+
+    $productTypes =
+        is_array(
+            $product['product_types']
+            ?? null
+        )
+            ? array_values(
+                array_filter(
+                    $product['product_types'],
+                    fn ($type) =>
+                        is_string($type)
+                        && trim($type) !== ''
+                )
+            )
+            : [];
+
+
+    /*
+    | Existing exact fallback.
+    */
+
+    if (empty($productTypes)) {
+
+        $productTypes = [
+            'SS',
+            'PVD Gold',
+            'Matt Black',
+            'Antique Brass',
+        ];
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FINISH CSS CLASS
+    |--------------------------------------------------------------------------
+    */
+
+    $finishClass =
+        function ($type) {
+
+            $normalized =
+                strtolower(
+                    trim(
+                        (string) $type
+                    )
+                );
+
+
+            return match ($normalized) {
+
+                'ss',
+                'stainless steel' =>
+                    'pd-finish-ss',
+
+                'pvd gold',
+                'gold' =>
+                    'pd-finish-gold',
+
+                'matt black',
+                'matte black',
+                'black' =>
+                    'pd-finish-black',
+
+                'antique brass',
+                'brass' =>
+                    'pd-finish-brass',
+
+                default =>
+                    'pd-finish-ss',
+            };
+
+        };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCT DETAIL CONTENT
+    |--------------------------------------------------------------------------
+    */
+
+    $detailContent =
+        trim(
+            (string) (
+                $product['detail_content']
+                ?? ''
+            )
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DETAIL FEATURES
+    |--------------------------------------------------------------------------
+    */
+
+    $detailFeatures =
+        is_array(
+            $product['detail_features']
+            ?? null
+        )
+            ? array_values(
+                array_filter(
+                    $product['detail_features'],
+                    fn ($feature) =>
+                        is_array($feature)
+                        &&
+                        (
+                            trim(
+                                (string) (
+                                    $feature['title']
+                                    ?? ''
+                                )
+                            ) !== ''
+                            ||
+                            trim(
+                                (string) (
+                                    $feature['description']
+                                    ?? ''
+                                )
+                            ) !== ''
+                        )
+                )
+            )
+            : [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SPECIFICATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    $specifications =
+        is_array(
+            $product['specifications']
+            ?? null
+        )
+            ? array_values(
+                array_filter(
+                    $product['specifications'],
+                    fn ($specification) =>
+                        is_array($specification)
+                        &&
+                        trim(
+                            (string) (
+                                $specification['label']
+                                ?? ''
+                            )
+                        ) !== ''
+                        &&
+                        trim(
+                            (string) (
+                                $specification['value']
+                                ?? ''
+                            )
+                        ) !== ''
+                )
+            )
+            : [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DIMENSIONS
+    |--------------------------------------------------------------------------
+    */
+
+    $dimensions =
+        is_array(
+            $product['dimensions']
+            ?? null
+        )
+            ? $product['dimensions']
+            : [];
+
+
+    $dimensionWidth =
+        trim(
+            (string) (
+                $dimensions['width']
+                ?? ''
+            )
+        );
+
+    $dimensionHeight =
+        trim(
+            (string) (
+                $dimensions['height']
+                ?? ''
+            )
+        );
+
+    $dimensionLength =
+        trim(
+            (string) (
+                $dimensions['length']
+                ?? ''
+            )
+        );
+
+    $dimensionWeight =
+        trim(
+            (string) (
+                $dimensions['weight']
+                ?? ''
+            )
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | INSTALLATION STEPS
+    |--------------------------------------------------------------------------
+    */
+
+    $installationSteps =
+        is_array(
+            $product['installation_steps']
+            ?? null
+        )
+            ? array_values(
+                array_filter(
+                    $product['installation_steps'],
+                    fn ($step) =>
+                        is_array($step)
+                        &&
+                        (
+                            trim(
+                                (string) (
+                                    $step['title']
+                                    ?? ''
+                                )
+                            ) !== ''
+                            ||
+                            trim(
+                                (string) (
+                                    $step['description']
+                                    ?? ''
+                                )
+                            ) !== ''
+                        )
+                )
+            )
+            : [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FAQs
+    |--------------------------------------------------------------------------
+    */
+
+    $productFaqs =
+        is_array(
+            $product['faqs']
+            ?? null
+        )
+            ? array_values(
+                array_filter(
+                    $product['faqs'],
+                    fn ($faq) =>
+                        is_array($faq)
+                        &&
+                        trim(
+                            (string) (
+                                $faq['question']
+                                ?? ''
+                            )
+                        ) !== ''
+                        &&
+                        trim(
+                            (string) (
+                                $faq['answer']
+                                ?? ''
+                            )
+                        ) !== ''
+                )
+            )
+            : [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCT VIDEO
+    |--------------------------------------------------------------------------
+    */
+
+    $productVideo =
+        !empty($product['video'])
+            ? trim((string) $product['video'])
+            : null;
 
 @endphp
 
 
-<main class="min-h-screen">
 
+{{-- =========================================================
+     BREADCRUMB
+========================================================= --}}
 
-    {{-- =========================================================
-         MINIMAL TOP BAR
-    ========================================================== --}}
-    <section
-        class="border-b border-slate-200 bg-white
-               lg:h-[58px]"
-    >
-        <div
-            class="mx-auto flex min-h-[58px] max-w-[1180px]
-                   items-center justify-between gap-3
-                   px-4 sm:px-6 lg:h-[58px] lg:min-h-0 lg:px-8"
-        >
+<section class="pd-breadcrumb-section">
 
-            <a
-                href="{{ route('products', ['category' => $currentCategory['slug']]) }}"
-                class="group inline-flex items-center gap-2
-                       text-[12px] sm:text-[13px]
-                       font-semibold text-slate-600
-                       transition hover:text-slate-950"
-            >
-                <span
-                    class="flex h-8 w-8 items-center justify-center
-                           rounded-full border border-slate-200
-                           bg-white transition
-                           group-hover:border-slate-400"
-                >
-                    ←
-                </span>
+    <div class="pd-container">
 
-                <span class="hidden sm:inline">
-                    {{ $backToProductsText }}
-                </span>
+        <div class="pd-breadcrumb">
 
-                <span class="sm:hidden">
-                    Back
-                </span>
+            <a href="{{ route('home') }}">
+                Home
             </a>
 
+            <span>/</span>
 
-            <a
-                href="{{ route('home') }}"
-                class="text-[13px] sm:text-[14px]
-                       font-black tracking-[-0.02em]
-                       text-slate-950"
-            >
-                M R HARDWARE
+            <a href="{{ route('products') }}">
+                Products
             </a>
 
+            <span>/</span>
 
             <a
-                href="{{ route('contact', ['product' => $product['name']]) }}"
-                class="inline-flex h-9 items-center justify-center
-                       rounded-full bg-slate-950
-                       px-4 text-[11px] sm:text-[12px]
-                       font-bold text-white
-                       transition hover:bg-orange-600"
+                href="{{ route(
+                    'products',
+                    [
+                        'category' =>
+                            $currentCategory['slug']
+                    ]
+                ) }}"
             >
-                {{ $enquiryButtonText }}
+                {{ $currentCategory['title'] }}
             </a>
+
+            <span>/</span>
+
+            <strong>
+                {{ $product['name'] }}
+            </strong>
 
         </div>
-    </section>
+
+    </div>
+
+</section>
 
 
 
-    {{-- =========================================================
-         DESKTOP: ONE-SCREEN PRODUCT VIEW
-    ========================================================== --}}
-    <section
-        class="hidden lg:flex
-               min-h-[calc(100vh-58px)]
-               items-center"
-    >
-        <div
-            class="mx-auto flex w-full max-w-[1180px]
-                   flex-col
-                   px-8
-                   py-5"
-        >
+{{-- =========================================================
+     PRODUCT DETAIL
+========================================================= --}}
 
-            {{-- Breadcrumb --}}
-            <div
-                class="flex h-[28px] shrink-0
-                       items-center gap-2
-                       text-[10px]
-                       font-medium text-slate-400"
-            >
-                <a
-                    href="{{ route('products') }}"
-                    class="transition hover:text-slate-800"
-                >
-                    Products
-                </a>
+<section class="pd-main-section">
 
-                <span>/</span>
+    <div class="pd-main-container">
 
-                <a
-                    href="{{ route('products', ['category' => $currentCategory['slug']]) }}"
-                    class="transition hover:text-slate-800"
-                >
-                    {{ $currentCategory['title'] }}
-                </a>
-
-                <span>/</span>
-
-                <span class="text-slate-600">
-                    {{ $product['name'] }}
-                </span>
-            </div>
+        <div class="pd-main-grid">
 
 
-            {{-- Main row --}}
-            <div
-                class="mt-3 grid
-                       h-[min(650px,calc(100vh-135px))]
-                       min-h-[500px]
-                       grid-cols-[1.02fr_.98fr]
-                       items-stretch
-                       gap-7"
-            >
+            {{-- =================================================
+                 LEFT PRODUCT GALLERY
+            ================================================== --}}
 
-                {{-- LEFT IMAGE --}}
-                <div
-                    class="relative min-h-0 overflow-hidden
-                           rounded-[22px]
-                           border border-slate-200
-                           bg-white
-                           shadow-[0_14px_40px_rgba(15,23,42,0.06)]"
-                >
-
-                    <div
-                        class="absolute left-4 top-4 z-10
-                               rounded-full
-                               border border-white/70
-                               bg-white/90
-                               px-3 py-1.5
-                               text-[9px]
-                               font-bold uppercase
-                               tracking-[0.14em]
-                               text-slate-700
-                               shadow-sm backdrop-blur"
-                    >
-                        {{ $currentCategory['title'] }}
-                    </div>
+            <div class="pd-gallery">
 
 
-                    <img
-                        src="{{ asset($product['image']) }}"
-                        alt="{{ $product['name'] }}"
-                        class="absolute inset-0
-                               h-full w-full
-                               object-cover object-center"
-                    >
+                {{-- LEFT 4 THUMBNAILS --}}
 
+                <div class="pd-thumb-column">
 
-                    <div
-                        class="pointer-events-none
-                               absolute inset-x-0 bottom-0
-                               h-20
-                               bg-gradient-to-t
-                               from-black/15 to-transparent"
-                    ></div>
+                    @foreach(
+                        array_slice(
+                            $galleryImages,
+                            0,
+                            4
+                        )
+                        as $index => $image
+                    )
+
+                        <button
+                            type="button"
+                            class="pd-thumb-btn {{ $index === 0 ? 'active' : '' }}"
+                            data-pd-image="{{ asset($image) }}"
+                            aria-label="View product image {{ $index + 1 }}"
+                        >
+
+                            <img
+                                src="{{ asset($image) }}"
+                                alt="{{ $product['name'] }}"
+                                loading="lazy"
+                            >
+
+                        </button>
+
+                    @endforeach
 
                 </div>
 
 
-                {{-- RIGHT INFORMATION --}}
-                <div
-                    class="flex min-h-0 flex-col
-                           rounded-[22px]
-                           border border-slate-200
-                           bg-white
-                           p-6
-                           shadow-[0_14px_40px_rgba(15,23,42,0.05)]"
-                >
 
-                    <p
-                        class="shrink-0
-                               text-[9px]
-                               font-bold uppercase
-                               tracking-[0.16em]
-                               text-orange-600"
-                    >
-                        {{ $productBadge }}
-                    </p>
+                {{-- MAIN IMAGE --}}
 
-
-                    <h1
-                        class="mt-2 shrink-0
-                               text-[28px]
-                               font-black
-                               leading-[1.12]
-                               tracking-[-0.035em]
-                               text-slate-950"
-                    >
-                        {{ $product['name'] }}
-                    </h1>
-
+                <div class="pd-main-image-area">
 
                     <div
-                        class="mt-3 h-px w-full shrink-0
-                               bg-gradient-to-r
-                               from-slate-200
-                               via-slate-200
-                               to-transparent"
-                    ></div>
-
-
-                    <p
-                        class="mt-3 shrink-0
-                               text-[13px]
-                               leading-6
-                               text-slate-600
-                               line-clamp-3"
-                    >
-                        {{ $description }}
-                    </p>
-
-
-                    {{-- QUICK INFO --}}
-                    <div class="mt-4 grid shrink-0 grid-cols-2 gap-3">
-
-                        <div
-                            class="rounded-2xl
-                                   bg-[#f7f7f4]
-                                   px-4 py-3"
-                        >
-                            <p
-                                class="text-[8px]
-                                       font-bold uppercase
-                                       tracking-[0.14em]
-                                       text-slate-400"
-                            >
-                                Category
-                            </p>
-
-                            <p
-                                class="mt-1
-                                       text-[12px]
-                                       font-bold
-                                       leading-5
-                                       text-slate-900"
-                            >
-                                {{ $currentCategory['title'] }}
-                            </p>
-                        </div>
-
-
-                        <div
-                            class="rounded-2xl
-                                   bg-[#f7f7f4]
-                                   px-4 py-3"
-                        >
-                            <p
-                                class="text-[8px]
-                                       font-bold uppercase
-                                       tracking-[0.14em]
-                                       text-slate-400"
-                            >
-                                {{ $specificationsTitle }}
-                            </p>
-
-                            <p
-                                class="mt-1
-                                       text-[12px]
-                                       font-bold
-                                       leading-5
-                                       text-slate-900"
-                            >
-                                Contact to confirm
-                            </p>
-                        </div>
-
-                    </div>
-
-
-                    {{-- ENQUIRY PANEL --}}
-                    <div
-                        class="mt-4 shrink-0
-                               rounded-[18px]
-                               bg-slate-950
-                               p-5
-                               text-white"
+                        class="pd-main-image-wrap"
+                        id="pd-360-stage"
                     >
 
-                        <p
-                            class="text-[9px]
-                                   font-bold uppercase
-                                   tracking-[0.16em]
-                                   text-orange-400"
+                        <img
+                            src="{{ asset($galleryImages[0]) }}"
+                            alt="{{ $product['name'] }}"
+                            id="pd-main-product-image"
+                            class="pd-main-product-image"
                         >
-                            {{ $enquiryBadge }}
-                        </p>
 
 
-                        <h2
-                            class="mt-1.5
-                                   text-[17px]
-                                   font-bold
-                                   leading-6
-                                   tracking-[-0.02em]"
-                        >
-                            {{ $enquiryTitle }}
-                        </h2>
+                        {{-- PREMIUM BADGE --}}
 
+                        <div class="pd-premium-badge">
 
-                        <p
-                            class="mt-1.5
-                                   text-[12px]
-                                   leading-5
-                                   text-slate-300"
-                        >
-                            {{ $enquiryDescription }}
-                        </p>
+                            <i class="fa-solid fa-crown"></i>
 
-
-                        <div class="mt-4 flex gap-2.5">
-
-                            <a
-                                href="{{ route('contact', ['product' => $product['name']]) }}"
-                                class="inline-flex
-                                       min-h-[40px]
-                                       flex-1
-                                       items-center
-                                       justify-center
-                                       rounded-xl
-                                       bg-orange-600
-                                       px-4
-                                       text-[12px]
-                                       font-bold
-                                       text-white
-                                       transition
-                                       hover:bg-orange-500"
-                            >
-                                {{ $enquiryButtonText }}
-                            </a>
-
-
-                            <a
-                                href="{{ route('products', ['category' => $currentCategory['slug']]) }}"
-                                class="inline-flex
-                                       min-h-[40px]
-                                       items-center
-                                       justify-center
-                                       rounded-xl
-                                       border border-white/15
-                                       px-4
-                                       text-[12px]
-                                       font-semibold
-                                       text-white
-                                       transition
-                                       hover:bg-white/10"
-                            >
-                                {{ $collectionButtonText }}
-                            </a>
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- OPTIONAL VIDEO BUTTON / NOTE --}}
-                    @if(!empty($product['video']))
-
-                        <a
-                            href="#mobile-product-video"
-                            class="mt-4 inline-flex shrink-0
-                                   items-center gap-2
-                                   text-[11px]
-                                   font-bold
-                                   text-slate-500"
-                        >
-                            <span
-                                class="flex h-7 w-7
-                                       items-center justify-center
-                                       rounded-full
-                                       bg-orange-50
-                                       text-orange-600"
-                            >
-                                ▶
+                            <span>
+                                PREMIUM QUALITY
                             </span>
 
-                            Product video available below
-                        </a>
+                        </div>
 
-                    @else
 
-                        <div
-                            class="mt-4 flex shrink-0
-                                   items-start gap-3
-                                   rounded-2xl
-                                   border border-slate-100
-                                   px-4 py-3"
+                        {{-- 360 BUTTON --}}
+
+                        <button
+                            type="button"
+                            class="pd-360-button"
+                            id="pd-360-button"
+                            aria-label="View 360 degrees"
                         >
 
-                            <span
-                                class="flex h-7 w-7
-                                       shrink-0
-                                       items-center
-                                       justify-center
-                                       rounded-full
-                                       bg-orange-50
-                                       text-orange-600"
+                            <strong>
+                                360°
+                            </strong>
+
+                            <span>
+                                <i class="fa-solid fa-rotate"></i>
+                                VIEW 360°
+                            </span>
+
+                        </button>
+
+
+                        {{-- ZOOM BUTTON --}}
+
+                        <button
+                            type="button"
+                            class="pd-zoom-button"
+                            id="pd-zoom-button"
+                            aria-label="Zoom product image"
+                        >
+
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+
+                        </button>
+
+                    </div>
+
+
+
+                    {{-- BOTTOM 4 THUMBNAILS --}}
+
+                    <div class="pd-bottom-thumbs">
+
+                        @foreach(
+                            array_slice(
+                                $galleryImages,
+                                4,
+                                4
+                            )
+                            as $index => $image
+                        )
+
+                            <button
+                                type="button"
+                                class="pd-bottom-thumb-btn"
+                                data-pd-image="{{ asset($image) }}"
+                                aria-label="View product image {{ $index + 5 }}"
                             >
-                                ✓
+
+                                <img
+                                    src="{{ asset($image) }}"
+                                    alt="{{ $product['name'] }}"
+                                    loading="lazy"
+                                >
+
+                            </button>
+
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- =================================================
+                 RIGHT PRODUCT INFORMATION
+            ================================================== --}}
+
+            <div class="pd-product-info">
+
+
+                {{-- CATEGORY --}}
+
+                <div class="pd-category">
+
+                    {{ strtoupper(
+                        $currentCategory['title']
+                    ) }}
+
+                </div>
+
+
+                {{-- PRODUCT NAME --}}
+
+                <h1 class="pd-product-title">
+
+                    {{ $product['name'] }}
+
+                </h1>
+
+
+
+                {{-- RATING --}}
+
+                <div class="pd-rating-row">
+
+                    <span class="pd-review-count">
+
+                        {{ $reviewCount }}
+                        {{ $reviewCount === 1 ? 'Review' : 'Reviews' }}
+
+                    </span>
+
+
+                    <span class="pd-rating-divider"></span>
+
+
+                    <div
+                        class="pd-stars"
+                        aria-label="{{ number_format($rating, 1) }} out of 5"
+                    >
+
+                        @for($i = 1; $i <= 5; $i++)
+
+                            <i
+                                class="fa-solid fa-star
+                                {{ $i <= round($rating) ? '' : 'pd-star-muted' }}"
+                            ></i>
+
+                        @endfor
+
+                    </div>
+
+
+                    <strong class="pd-rating-number">
+
+                        {{ number_format(
+                            $rating,
+                            1
+                        ) }}
+
+                    </strong>
+
+                </div>
+
+
+
+                {{-- PRICE --}}
+
+                <div class="pd-price">
+
+                    ₹{{ number_format(
+                        (float) (
+                            $product['price']
+                            ?? 1000
+                        ),
+                        0
+                    ) }}
+
+                    <span>
+                        / piece
+                    </span>
+
+                </div>
+
+
+                <div class="pd-tax-note">
+                    (Inclusive of all taxes)
+                </div>
+
+
+
+                {{-- DESCRIPTION --}}
+
+                <p class="pd-short-description">
+
+                    {{ $description }}
+
+                </p>
+
+
+                <div class="pd-separator"></div>
+
+
+
+                {{-- =================================================
+                     PRODUCT TYPES
+                ================================================== --}}
+
+                <div class="pd-option-block">
+
+                    <div class="pd-option-heading">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                        <span>
+                            PRODUCT TYPE
+                        </span>
+
+                    </div>
+
+
+                    <div class="pd-type-options">
+
+                        @foreach(
+                            $productTypes
+                            as $index => $type
+                        )
+
+                            <button
+                                type="button"
+                                class="pd-type-btn {{ $index === 0 ? 'active' : '' }}"
+                                data-product-type="{{ $type }}"
+                            >
+
+                                <span
+                                    class="pd-finish-icon {{ $finishClass($type) }}"
+                                ></span>
+
+                                <strong>
+                                    {{ $type }}
+                                </strong>
+
+                            </button>
+
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+
+
+                {{-- =================================================
+                     QUANTITY
+                ================================================== --}}
+
+                <div class="pd-option-block pd-quantity-section">
+
+                    <div class="pd-option-heading">
+
+                        <i class="fa-solid fa-cube"></i>
+
+                        <span>
+                            QUANTITY
+                        </span>
+
+                    </div>
+
+
+                    <div class="pd-quantity-box">
+
+                        <button
+                            type="button"
+                            class="pd-qty-btn"
+                            data-qty-minus
+                            aria-label="Decrease quantity"
+                        >
+                            −
+                        </button>
+
+
+                        <input
+                            type="number"
+                            id="pd-quantity"
+                            value="1"
+                            min="1"
+                            inputmode="numeric"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="pd-qty-btn"
+                            data-qty-plus
+                            aria-label="Increase quantity"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                {{-- =================================================
+                     ACTION BUTTONS
+                ================================================== --}}
+
+                <div class="pd-action-buttons">
+
+                    <button
+                        type="button"
+                        class="pd-add-cart-btn"
+                        id="pd-add-cart"
+                    >
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        <span>
+                            ADD TO CART
+                        </span>
+
+                    </button>
+
+
+                    <a
+                        href="{{ route(
+                            'contact',
+                            [
+                                'product' =>
+                                    $product['name']
+                            ]
+                        ) }}"
+                        class="pd-request-quote-btn"
+                    >
+
+                        <i class="fa-regular fa-file-lines"></i>
+
+                        <span>
+                            REQUEST QUOTE
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+
+                {{-- =================================================
+                     TRUST ITEMS
+                ================================================== --}}
+
+                <div class="pd-trust-row">
+
+
+                    <div class="pd-trust-item">
+
+                        <i class="fa-solid fa-truck-fast"></i>
+
+                        <div>
+
+                            <strong>
+                                FREE SHIPPING
+                            </strong>
+
+                            <span>
+                                On eligible orders
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pd-trust-item">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <div>
+
+                            <strong>
+                                SECURE PAYMENTS
+                            </strong>
+
+                            <span>
+                                Protected checkout
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pd-trust-item">
+
+                        <i class="fa-solid fa-boxes-stacked"></i>
+
+                        <div>
+
+                            <strong>
+                                BULK ORDER
+                            </strong>
+
+                            <span>
+                                Business enquiries
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{{-- =========================================================
+     IMAGE ZOOM MODAL
+========================================================= --}}
+
+<div
+    class="pd-image-modal"
+    id="pd-image-modal"
+    aria-hidden="true"
+>
+
+    <button
+        type="button"
+        class="pd-modal-close"
+        id="pd-modal-close"
+        aria-label="Close image"
+    >
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+
+    <img
+        src="{{ asset($galleryImages[0]) }}"
+        alt="{{ $product['name'] }}"
+        id="pd-modal-image"
+    >
+
+</div>
+
+
+
+{{-- =========================================================
+     PRODUCT INFORMATION TABS
+========================================================= --}}
+
+<section class="pd-info-section">
+
+    <div class="pd-main-container">
+
+
+        {{-- =================================================
+             TAB NAVIGATION
+        ================================================== --}}
+
+        <div
+            class="pd-info-tabs"
+            role="tablist"
+        >
+
+            <button
+                type="button"
+                class="pd-info-tab active"
+                data-pd-tab="product-detail"
+            >
+                Product Detail
+            </button>
+
+
+            <button
+                type="button"
+                class="pd-info-tab"
+                data-pd-tab="specification"
+            >
+                Specification
+            </button>
+
+
+            <button
+                type="button"
+                class="pd-info-tab"
+                data-pd-tab="dimensions"
+            >
+                Dimensions
+            </button>
+
+
+            <button
+                type="button"
+                class="pd-info-tab"
+                data-pd-tab="installation"
+            >
+                Installation Guide
+            </button>
+
+
+            <button
+                type="button"
+                class="pd-info-tab"
+                data-pd-tab="faqs"
+            >
+                FAQs
+            </button>
+
+        </div>
+
+
+
+        {{-- =================================================
+             TAB 1 : PRODUCT DETAIL
+        ================================================== --}}
+
+        <div
+            class="pd-tab-panel active"
+            data-pd-panel="product-detail"
+        >
+
+            <div class="pd-detail-content">
+
+                <span class="pd-info-small-title">
+                    PRODUCT INFORMATION
+                </span>
+
+
+                <h2>
+                    Product Detail
+                </h2>
+
+
+                {{-- ADMIN CONTENT OR EXACT FALLBACK --}}
+
+                @if(!empty($detailContent))
+
+                    <p>
+                        {!! nl2br(e($detailContent)) !!}
+                    </p>
+
+                @else
+
+                    <p>
+                        Premium quality hardware designed to bring together
+                        elegant styling, dependable performance and a refined
+                        finish. Its clean design makes it suitable for modern
+                        residential, office and commercial interiors.
+                    </p>
+
+                    <p>
+                        Available in multiple finish options, this product can
+                        be selected according to your interior style and
+                        application requirement.
+                    </p>
+
+                @endif
+
+
+
+                {{-- ADMIN FEATURES OR EXACT FALLBACK --}}
+
+                @if(!empty($detailFeatures))
+
+                    <div class="pd-detail-feature-grid">
+
+                        @foreach(
+                            $detailFeatures
+                            as $index => $feature
+                        )
+
+                            @php
+
+                                $featureTitle =
+                                    trim(
+                                        (string) (
+                                            $feature['title']
+                                            ?? ''
+                                        )
+                                    );
+
+                                $featureDescription =
+                                    trim(
+                                        (string) (
+                                            $feature['description']
+                                            ?? ''
+                                        )
+                                    );
+
+
+                                $featureIcons = [
+                                    'fa-solid fa-check',
+                                    'fa-solid fa-layer-group',
+                                    'fa-solid fa-house',
+                                ];
+
+
+                                $featureIcon =
+                                    $featureIcons[
+                                        $index
+                                        % count($featureIcons)
+                                    ];
+
+                            @endphp
+
+
+                            <div class="pd-detail-feature">
+
+                                <span>
+
+                                    <i class="{{ $featureIcon }}"></i>
+
+                                </span>
+
+
+                                <div>
+
+                                    @if($featureTitle !== '')
+
+                                        <strong>
+                                            {{ $featureTitle }}
+                                        </strong>
+
+                                    @endif
+
+
+                                    @if($featureDescription !== '')
+
+                                        <p>
+                                            {{ $featureDescription }}
+                                        </p>
+
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+
+                @else
+
+
+                    {{-- EXACT ORIGINAL FEATURES --}}
+
+                    <div class="pd-detail-feature-grid">
+
+
+                        <div class="pd-detail-feature">
+
+                            <span>
+                                <i class="fa-solid fa-check"></i>
                             </span>
 
                             <div>
-                                <p
-                                    class="text-[11px]
-                                           font-bold
-                                           text-slate-900"
-                                >
-                                    {{ $specificationsTitle }}
+
+                                <strong>
+                                    Premium Quality
+                                </strong>
+
+                                <p>
+                                    Designed with attention to finish and detailing.
                                 </p>
 
-                                <p
-                                    class="mt-0.5
-                                           text-[10px]
-                                           leading-4
-                                           text-slate-500"
-                                >
-                                    {{ $specificationsNote }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="pd-detail-feature">
+
+                            <span>
+                                <i class="fa-solid fa-layer-group"></i>
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Multiple Finishes
+                                </strong>
+
+                                <p>
+                                    Available in different finish options.
                                 </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="pd-detail-feature">
+
+                            <span>
+                                <i class="fa-solid fa-house"></i>
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Modern Design
+                                </strong>
+
+                                <p>
+                                    Suitable for a wide range of interiors.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
+
+
+        {{-- =================================================
+             TAB 2 : SPECIFICATION
+        ================================================== --}}
+
+        <div
+            class="pd-tab-panel"
+            data-pd-panel="specification"
+        >
+
+            <div class="pd-spec-content">
+
+                <span class="pd-info-small-title">
+                    PRODUCT INFORMATION
+                </span>
+
+
+                <h2>
+                    Specification
+                </h2>
+
+
+                <div class="pd-info-table">
+
+
+                    {{-- PRODUCT NAME --}}
+
+                    <div class="pd-info-table-row">
+
+                        <span>
+                            Product Name
+                        </span>
+
+                        <strong>
+                            {{ $product['name'] }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- CATEGORY --}}
+
+                    <div class="pd-info-table-row">
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong>
+                            {{ $currentCategory['title'] ?? 'Hardware' }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- AVAILABLE FINISH --}}
+
+                    <div class="pd-info-table-row">
+
+                        <span>
+                            Available Finish
+                        </span>
+
+                        <strong>
+                            {{ implode(
+                                ', ',
+                                $productTypes
+                            ) }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- ADMIN SPECIFICATIONS --}}
+
+                    @foreach(
+                        $specifications
+                        as $specification
+                    )
+
+                        @php
+
+                            $specLabel =
+                                trim(
+                                    (string) (
+                                        $specification['label']
+                                        ?? ''
+                                    )
+                                );
+
+                            $specValue =
+                                trim(
+                                    (string) (
+                                        $specification['value']
+                                        ?? ''
+                                    )
+                                );
+
+                        @endphp
+
+
+                        <div class="pd-info-table-row">
+
+                            <span>
+                                {{ $specLabel }}
+                            </span>
+
+                            <strong>
+                                {{ $specValue }}
+                            </strong>
+
+                        </div>
+
+                    @endforeach
+
+
+
+                    {{-- BRAND --}}
+
+                    <div class="pd-info-table-row">
+
+                        <span>
+                            Brand
+                        </span>
+
+                        <strong>
+                            {{ $companyName }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- COUNTRY --}}
+
+                    <div class="pd-info-table-row">
+
+                        <span>
+                            Country
+                        </span>
+
+                        <strong>
+                            India
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {{-- =================================================
+             TAB 3 : DIMENSIONS
+        ================================================== --}}
+
+        <div
+            class="pd-tab-panel"
+            data-pd-panel="dimensions"
+        >
+
+            <div class="pd-dimension-content">
+
+                <span class="pd-info-small-title">
+                    PRODUCT MEASUREMENTS
+                </span>
+
+
+                <h2>
+                    Dimensions
+                </h2>
+
+
+                <p class="pd-tab-intro">
+                    Product dimensions and size information will
+                    be displayed here.
+                </p>
+
+
+
+                <div class="pd-dimension-grid">
+
+
+                    {{-- WIDTH --}}
+
+                    <div class="pd-dimension-box">
+
+                        <span class="pd-dimension-icon">
+
+                            <i class="fa-solid fa-arrows-left-right"></i>
+
+                        </span>
+
+                        <small>
+                            WIDTH
+                        </small>
+
+                        <strong>
+                            {{ $dimensionWidth !== ''
+                                ? $dimensionWidth
+                                : '—'
+                            }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- HEIGHT --}}
+
+                    <div class="pd-dimension-box">
+
+                        <span class="pd-dimension-icon">
+
+                            <i class="fa-solid fa-arrows-up-down"></i>
+
+                        </span>
+
+                        <small>
+                            HEIGHT
+                        </small>
+
+                        <strong>
+                            {{ $dimensionHeight !== ''
+                                ? $dimensionHeight
+                                : '—'
+                            }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- LENGTH --}}
+
+                    <div class="pd-dimension-box">
+
+                        <span class="pd-dimension-icon">
+
+                            <i class="fa-solid fa-ruler"></i>
+
+                        </span>
+
+                        <small>
+                            LENGTH
+                        </small>
+
+                        <strong>
+                            {{ $dimensionLength !== ''
+                                ? $dimensionLength
+                                : '—'
+                            }}
+                        </strong>
+
+                    </div>
+
+
+
+                    {{-- WEIGHT --}}
+
+                    <div class="pd-dimension-box">
+
+                        <span class="pd-dimension-icon">
+
+                            <i class="fa-solid fa-weight-hanging"></i>
+
+                        </span>
+
+                        <small>
+                            WEIGHT
+                        </small>
+
+                        <strong>
+                            {{ $dimensionWeight !== ''
+                                ? $dimensionWeight
+                                : '—'
+                            }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                @if(
+                    $dimensionWidth === ''
+                    &&
+                    $dimensionHeight === ''
+                    &&
+                    $dimensionLength === ''
+                    &&
+                    $dimensionWeight === ''
+                )
+
+                    <div class="pd-dimension-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <p>
+                            Exact dimensions can be updated according
+                            to the selected product model.
+                        </p>
+
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
+
+
+        {{-- =================================================
+             TAB 4 : INSTALLATION GUIDE
+        ================================================== --}}
+
+        <div
+            class="pd-tab-panel"
+            data-pd-panel="installation"
+        >
+
+            <div class="pd-install-content">
+
+                <span class="pd-info-small-title">
+                    EASY INSTALLATION
+                </span>
+
+
+                <h2>
+                    Installation Guide
+                </h2>
+
+
+                <p class="pd-tab-intro">
+                    Follow the installation information provided
+                    with the product and make sure the product is
+                    correctly aligned before final fitting.
+                </p>
+
+
+
+                <div class="pd-install-steps">
+
+                    @if(!empty($installationSteps))
+
+
+                        {{-- ADMIN INSTALLATION STEPS --}}
+
+                        @foreach(
+                            $installationSteps
+                            as $index => $step
+                        )
+
+                            @php
+
+                                $stepTitle =
+                                    trim(
+                                        (string) (
+                                            $step['title']
+                                            ?? ''
+                                        )
+                                    );
+
+                                $stepDescription =
+                                    trim(
+                                        (string) (
+                                            $step['description']
+                                            ?? ''
+                                        )
+                                    );
+
+                            @endphp
+
+
+                            <div class="pd-install-step">
+
+                                <span class="pd-install-number">
+
+                                    {{ str_pad(
+                                        $index + 1,
+                                        2,
+                                        '0',
+                                        STR_PAD_LEFT
+                                    ) }}
+
+                                </span>
+
+
+                                <div>
+
+                                    @if($stepTitle !== '')
+
+                                        <strong>
+                                            {{ $stepTitle }}
+                                        </strong>
+
+                                    @endif
+
+
+                                    @if($stepDescription !== '')
+
+                                        <p>
+                                            {{ $stepDescription }}
+                                        </p>
+
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+
+                    @else
+
+
+                        {{-- EXACT ORIGINAL FALLBACK --}}
+
+                        <div class="pd-install-step">
+
+                            <span class="pd-install-number">
+                                01
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Check the Product
+                                </strong>
+
+                                <p>
+                                    Check the product and required fitting components before installation.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="pd-install-step">
+
+                            <span class="pd-install-number">
+                                02
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Mark the Position
+                                </strong>
+
+                                <p>
+                                    Place the product in the required position and mark the fitting points.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="pd-install-step">
+
+                            <span class="pd-install-number">
+                                03
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Align the Product
+                                </strong>
+
+                                <p>
+                                    Make sure the product is correctly positioned and aligned.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="pd-install-step">
+
+                            <span class="pd-install-number">
+                                04
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Complete Installation
+                                </strong>
+
+                                <p>
+                                    Complete the fitting and check the product alignment after installation.
+                                </p>
+
                             </div>
 
                         </div>
@@ -615,799 +1824,529 @@
             </div>
 
         </div>
-    </section>
 
 
 
+        {{-- =================================================
+             TAB 5 : FAQ
+        ================================================== --}}
 
-    {{-- =========================================================
-         DESKTOP VIDEO SECTION
-    ========================================================== --}}
-    @if(!empty($product['video']))
-
-        <section
-            id="desktop-product-video"
-            class="hidden lg:flex
-                   min-h-screen
-                   items-center
-                   border-t border-slate-200
-                   bg-white"
+        <div
+            class="pd-tab-panel"
+            data-pd-panel="faqs"
         >
-            <div class="mx-auto w-full max-w-[1180px] px-8 py-10">
 
-                <div
-                    class="grid grid-cols-[.72fr_1.28fr]
-                           items-center gap-10"
-                >
-                    <div>
+            <div class="pd-faq-content">
 
-                        <p
-                            class="text-[9px]
-                                   font-bold uppercase
-                                   tracking-[0.18em]
-                                   text-orange-600"
-                        >
-                            {{ $productBadge }}
-                        </p>
-
-                        <h2
-                            class="mt-2
-                                   text-[28px]
-                                   font-black
-                                   leading-[1.15]
-                                   tracking-[-0.03em]
-                                   text-slate-950"
-                        >
-                            See {{ $product['name'] }} in motion
-                        </h2>
-
-                        <p
-                            class="mt-4
-                                   max-w-md
-                                   text-[13px]
-                                   leading-6
-                                   text-slate-600"
-                        >
-                            {{ $specificationsNote }}
-                        </p>
-
-                        <a
-                            href="{{ route('contact', ['product' => $product['name']]) }}"
-                            class="mt-6 inline-flex
-                                   min-h-[42px]
-                                   items-center justify-center
-                                   rounded-xl
-                                   bg-orange-600
-                                   px-5
-                                   text-[12px]
-                                   font-bold
-                                   text-white
-                                   transition
-                                   hover:bg-orange-500"
-                        >
-                            {{ $enquiryButtonText }}
-                        </a>
-
-                    </div>
-
-                    <div
-                        class="overflow-hidden
-                               rounded-[22px]
-                               border border-slate-200
-                               bg-black
-                               shadow-[0_16px_44px_rgba(15,23,42,0.08)]"
-                    >
-                        <video
-                            controls
-                            preload="metadata"
-                            playsinline
-                            class="aspect-video w-full object-contain"
-                        >
-                            <source
-                                src="{{ asset($product['video']) }}"
-                                type="video/mp4"
-                            >
-                        </video>
-                    </div>
-
-                </div>
-
-            </div>
-        </section>
-
-    @endif
-
-
-    {{-- =========================================================
-         MOBILE + TABLET
-    ========================================================== --}}
-    <section class="lg:hidden py-6 sm:py-8">
-
-        <div class="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
-
-            <div
-                class="mb-5 flex flex-wrap items-center gap-2
-                       text-[10px] sm:text-[11px]
-                       font-medium text-slate-400"
-            >
-                <a
-                    href="{{ route('products') }}"
-                    class="transition hover:text-slate-800"
-                >
-                    Products
-                </a>
-
-                <span>/</span>
-
-                <a
-                    href="{{ route('products', ['category' => $currentCategory['slug']]) }}"
-                    class="transition hover:text-slate-800"
-                >
-                    {{ $currentCategory['title'] }}
-                </a>
-
-                <span>/</span>
-
-                <span class="text-slate-600">
-                    {{ $product['name'] }}
+                <span class="pd-info-small-title">
+                    NEED HELP?
                 </span>
-            </div>
 
 
-            <div
-                class="relative overflow-hidden
-                       rounded-[22px]
-                       border border-slate-200
-                       bg-white
-                       shadow-[0_14px_36px_rgba(15,23,42,0.06)]"
-            >
-
-                <div
-                    class="absolute left-4 top-4 z-10
-                           rounded-full
-                           border border-white/70
-                           bg-white/90
-                           px-3 py-1.5
-                           text-[9px]
-                           font-bold uppercase
-                           tracking-[0.14em]
-                           text-slate-700
-                           shadow-sm backdrop-blur"
-                >
-                    {{ $currentCategory['title'] }}
-                </div>
+                <h2>
+                    Frequently Asked Questions
+                </h2>
 
 
-                <div
-                    class="relative
-                           h-[350px]
-                           sm:h-[450px]
-                           w-full
-                           bg-[#ecece7]"
-                >
-                    <img
-                        src="{{ asset($product['image']) }}"
-                        alt="{{ $product['name'] }}"
-                        class="absolute inset-0
-                               h-full w-full
-                               object-cover object-center"
-                    >
-                </div>
+                <div class="pd-faq-list">
 
-            </div>
+                    @if(!empty($productFaqs))
 
 
-            <div
-                class="mt-5
-                       rounded-[22px]
-                       border border-slate-200
-                       bg-white
-                       p-5 sm:p-6
-                       shadow-[0_14px_36px_rgba(15,23,42,0.05)]"
-            >
+                        {{-- ADMIN FAQs --}}
 
-                <p
-                    class="text-[9px]
-                           font-bold uppercase
-                           tracking-[0.16em]
-                           text-orange-600"
-                >
-                    {{ $productBadge }}
-                </p>
+                        @foreach(
+                            $productFaqs
+                            as $index => $faq
+                        )
 
+                            @php
 
-                <h1
-                    class="mt-2
-                           text-[25px]
-                           sm:text-[29px]
-                           font-black
-                           leading-[1.14]
-                           tracking-[-0.035em]
-                           text-slate-950"
-                >
-                    {{ $product['name'] }}
-                </h1>
+                                $question =
+                                    trim(
+                                        (string) (
+                                            $faq['question']
+                                            ?? ''
+                                        )
+                                    );
+
+                                $answer =
+                                    trim(
+                                        (string) (
+                                            $faq['answer']
+                                            ?? ''
+                                        )
+                                    );
+
+                            @endphp
 
 
-                <div
-                    class="mt-4 h-px w-full
-                           bg-gradient-to-r
-                           from-slate-200
-                           via-slate-200
-                           to-transparent"
-                ></div>
-
-
-                <p
-                    class="mt-4
-                           text-[13px]
-                           sm:text-[14px]
-                           leading-6
-                           text-slate-600"
-                >
-                    {{ $description }}
-                </p>
-
-
-                <div class="mt-5 grid grid-cols-2 gap-3">
-
-                    <div
-                        class="rounded-2xl
-                               bg-[#f7f7f4]
-                               px-4 py-3.5"
-                    >
-                        <p
-                            class="text-[8px]
-                                   font-bold uppercase
-                                   tracking-[0.14em]
-                                   text-slate-400"
-                        >
-                            Category
-                        </p>
-
-                        <p
-                            class="mt-1.5
-                                   text-[12px]
-                                   font-bold
-                                   leading-5
-                                   text-slate-900"
-                        >
-                            {{ $currentCategory['title'] }}
-                        </p>
-                    </div>
-
-
-                    <div
-                        class="rounded-2xl
-                               bg-[#f7f7f4]
-                               px-4 py-3.5"
-                    >
-                        <p
-                            class="text-[8px]
-                                   font-bold uppercase
-                                   tracking-[0.14em]
-                                   text-slate-400"
-                        >
-                            {{ $specificationsTitle }}
-                        </p>
-
-                        <p
-                            class="mt-1.5
-                                   text-[12px]
-                                   font-bold
-                                   leading-5
-                                   text-slate-900"
-                        >
-                            Contact to confirm
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="mt-5
-                           rounded-[18px]
-                           bg-slate-950
-                           p-5
-                           text-white"
-                >
-
-                    <p
-                        class="text-[9px]
-                               font-bold uppercase
-                               tracking-[0.16em]
-                               text-orange-400"
-                    >
-                        {{ $enquiryBadge }}
-                    </p>
-
-
-                    <h2
-                        class="mt-2
-                               text-[17px]
-                               font-bold
-                               leading-6"
-                    >
-                        {{ $enquiryTitle }}
-                    </h2>
-
-
-                    <p
-                        class="mt-2
-                               text-[12px]
-                               leading-5
-                               text-slate-300"
-                    >
-                        {{ $enquiryDescription }}
-                    </p>
-
-
-                    <div
-                        class="mt-4 flex
-                               flex-col gap-2.5
-                               sm:flex-row"
-                    >
-
-                        <a
-                            href="{{ route('contact', ['product' => $product['name']]) }}"
-                            class="inline-flex
-                                   min-h-[42px]
-                                   flex-1
-                                   items-center
-                                   justify-center
-                                   rounded-xl
-                                   bg-orange-600
-                                   px-4
-                                   text-[12px]
-                                   font-bold
-                                   text-white
-                                   transition
-                                   hover:bg-orange-500"
-                        >
-                            {{ $enquiryButtonText }}
-                        </a>
-
-
-                        <a
-                            href="{{ route('products', ['category' => $currentCategory['slug']]) }}"
-                            class="inline-flex
-                                   min-h-[42px]
-                                   items-center
-                                   justify-center
-                                   rounded-xl
-                                   border border-white/15
-                                   px-4
-                                   text-[12px]
-                                   font-semibold
-                                   text-white
-                                   transition
-                                   hover:bg-white/10"
-                        >
-                            {{ $collectionButtonText }}
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            @if(!empty($product['video']))
-
-                <div id="mobile-product-video" class="mt-6">
-
-                    <p
-                        class="text-[9px]
-                               font-bold uppercase
-                               tracking-[0.16em]
-                               text-orange-600"
-                    >
-                        {{ $productBadge }}
-                    </p>
-
-                    <h2
-                        class="mt-1
-                               text-[17px]
-                               font-bold
-                               text-slate-950"
-                    >
-                        See {{ $product['name'] }} in motion
-                    </h2>
-
-
-                    <div
-                        class="mt-3 overflow-hidden
-                               rounded-[20px]
-                               border border-slate-200
-                               bg-black"
-                    >
-                        <video
-                            controls
-                            preload="metadata"
-                            playsinline
-                            class="aspect-video w-full object-contain"
-                        >
-                            <source
-                                src="{{ asset($product['video']) }}"
-                                type="video/mp4"
+                            <div
+                                class="pd-faq-item {{ $index === 0 ? 'active' : '' }}"
                             >
-                        </video>
-                    </div>
+
+                                <button
+                                    type="button"
+                                    class="pd-faq-question"
+                                >
+
+                                    <span>
+                                        {{ $question }}
+                                    </span>
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                </button>
+
+
+                                <div class="pd-faq-answer">
+
+                                    <p>
+                                        {{ $answer }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+
+                    @else
+
+
+                        {{-- EXACT ORIGINAL FAQ 1 --}}
+
+                        <div class="pd-faq-item active">
+
+                            <button
+                                type="button"
+                                class="pd-faq-question"
+                            >
+
+                                <span>
+                                    Which finishes are available?
+                                </span>
+
+                                <i class="fa-solid fa-plus"></i>
+
+                            </button>
+
+
+                            <div class="pd-faq-answer">
+
+                                <p>
+                                    The current finish options are SS, PVD Gold, Matt Black and Antique Brass.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        {{-- EXACT ORIGINAL FAQ 2 --}}
+
+                        <div class="pd-faq-item">
+
+                            <button
+                                type="button"
+                                class="pd-faq-question"
+                            >
+
+                                <span>
+                                    Can I request a bulk order?
+                                </span>
+
+                                <i class="fa-solid fa-plus"></i>
+
+                            </button>
+
+
+                            <div class="pd-faq-answer">
+
+                                <p>
+                                    Yes. You can use the Request Quote option to send an enquiry for bulk requirements.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        {{-- EXACT ORIGINAL FAQ 3 --}}
+
+                        <div class="pd-faq-item">
+
+                            <button
+                                type="button"
+                                class="pd-faq-question"
+                            >
+
+                                <span>
+                                    How can I get more product information?
+                                </span>
+
+                                <i class="fa-solid fa-plus"></i>
+
+                            </button>
+
+
+                            <div class="pd-faq-answer">
+
+                                <p>
+                                    You can contact M R Hardware through the contact page for additional product information.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        {{-- EXACT ORIGINAL FAQ 4 --}}
+
+                        <div class="pd-faq-item">
+
+                            <button
+                                type="button"
+                                class="pd-faq-question"
+                            >
+
+                                <span>
+                                    Are product dimensions available?
+                                </span>
+
+                                <i class="fa-solid fa-plus"></i>
+
+                            </button>
+
+
+                            <div class="pd-faq-answer">
+
+                                <p>
+                                    Product-specific measurements can be displayed in the Dimensions tab once the exact measurements are added for the selected product.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    @endif
 
                 </div>
 
-            @endif
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{{-- =========================================================
+     PRODUCT VIDEO SECTION
+     ONLY SHOW WHEN VIDEO EXISTS
+========================================================= --}}
+
+@if(!empty($productVideo))
+
+    <section class="pd-video-section">
+
+        <div class="pd-main-container">
+
+
+            <div class="pd-video-header">
+
+                <span class="pd-video-eyebrow">
+                    SEE IT IN ACTION
+                </span>
+
+
+                <h2 class="pd-video-title">
+                    Product Video
+                </h2>
+
+
+                <p class="pd-video-description">
+                    Take a closer look at the product, its design,
+                    finish and functionality.
+                </p>
+
+            </div>
+
+
+
+            <div class="pd-video-wrapper">
+
+                <video
+                    class="pd-product-video"
+                    controls
+                    preload="metadata"
+                    playsinline
+                >
+
+                     <source src="{{ asset($productVideo) }}">
+
+                    Your browser does not support the video tag.
+
+                </video>
+
+            </div>
 
         </div>
 
     </section>
 
+@endif
 
 
-    {{-- =========================================================
-         RELATED PRODUCTS
-    ========================================================== --}}
-    @if($relatedProducts->count() > 0)
 
-        <section
-            class="border-t border-slate-200
-                   bg-white
-                   py-9 sm:py-10
-                   lg:flex lg:min-h-screen
-                   lg:items-center lg:py-10"
-        >
-            <div
-                class="mx-auto w-full
-                       max-w-[820px]
-                       px-4 sm:px-6
-                       lg:max-w-[1180px]
-                       lg:px-8"
-            >
+{{-- =========================================================
+     RELATED PRODUCTS
+========================================================= --}}
 
-                <div
-                    class="flex items-end
-                           justify-between gap-4"
+@php
+
+    $availableRelatedProducts =
+        collect(
+            $relatedProducts
+            ?? []
+        )
+        ->filter(
+            function ($item)
+            use ($product) {
+
+                return
+                    ($item['slug'] ?? null)
+                    !==
+                    ($product['slug'] ?? null);
+
+            }
+        )
+        ->take(10);
+
+@endphp
+
+
+
+@if($availableRelatedProducts->isNotEmpty())
+
+    <section class="pd-related-section">
+
+        <div class="pd-main-container">
+
+
+            {{-- =================================================
+                 SECTION HEADER
+            ================================================== --}}
+
+            <div class="pd-related-header">
+
+                <div class="pd-related-heading">
+
+                    <h2>
+                        You May Also Like
+                    </h2>
+
+                    <p>
+                        Explore more products from our collection.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ route(
+                        'products',
+                        [
+                            'category' =>
+                                $currentCategory['slug']
+                        ]
+                    ) }}"
+                    class="pd-related-view-all"
                 >
 
-                    <div>
+                    <span>
+                        View All Products
+                    </span>
 
-                        <p
-                            class="text-[9px]
-                                   font-bold uppercase
-                                   tracking-[0.18em]
-                                   text-orange-600"
-                        >
-                            {{ $relatedSectionBadge }}
-                        </p>
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
 
 
-                        <h2
-                            class="mt-1.5
-                                   text-[21px]
-                                   sm:text-[23px]
-                                   lg:text-[25px]
-                                   font-black
-                                   tracking-[-0.03em]
-                                   text-slate-950"
-                        >
-                            {{ $relatedSectionTitle }}
-                        </h2>
 
-                    </div>
+            {{-- =================================================
+                 PRODUCTS SINGLE HORIZONTAL ROW
+            ================================================== --}}
+
+            <div class="pd-related-products-row">
+
+
+                @foreach(
+                    $availableRelatedProducts
+                    as $related
+                )
+
+                    @php
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | RELATED IMAGE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $relatedImage =
+                            !empty($related['image'])
+                                ? $related['image']
+                                : 'images/placeholder-product.jpg';
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | RELATED PRICE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $relatedPrice =
+                            isset($related['price'])
+                            && is_numeric(
+                                $related['price']
+                            )
+                                ? (float) $related['price']
+                                : 1000;
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | RELATED CATEGORY
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $relatedCategory =
+                            $related['category']
+                            ?? null;
+
+                    @endphp
+
 
 
                     <a
-                        href="{{ route('products', ['category' => $currentCategory['slug']]) }}"
-                        class="inline-flex items-center gap-2
-                               text-[11px]
-                               font-bold
-                               text-slate-600
-                               transition
-                               hover:text-orange-600"
+                        href="{{ route(
+                            'product.detail',
+                            [
+                                'slug' =>
+                                    $related['slug']
+                            ]
+                        ) }}"
+                        class="pd-related-card"
                     >
-                        {{ $collectionButtonText }}
-                        <span>→</span>
+
+
+                        {{-- PRODUCT IMAGE --}}
+
+                        <div class="pd-related-image">
+
+                            <img
+                                src="{{ asset($relatedImage) }}"
+                                alt="{{ $related['name'] ?? 'Product' }}"
+                                loading="lazy"
+                            >
+
+                        </div>
+
+
+
+                        {{-- PRODUCT CONTENT --}}
+
+                        <div class="pd-related-content">
+
+
+                            @if(!empty($relatedCategory))
+
+                                <span class="pd-related-category">
+
+                                    {{ strtoupper(
+                                        $relatedCategory
+                                    ) }}
+
+                                </span>
+
+                            @endif
+
+
+
+                            <h3>
+
+                                {{ $related['name'] ?? 'Product' }}
+
+                            </h3>
+
+
+
+                            <div class="pd-related-bottom">
+
+
+                                {{-- PRICE --}}
+
+                                <div class="pd-related-price">
+
+                                    <span class="pd-related-price-value">
+
+                                        ₹{{ number_format(
+                                            $relatedPrice,
+                                            0
+                                        ) }}
+
+                                    </span>
+
+                                    <small>
+                                        / Piece
+                                    </small>
+
+                                </div>
+
+
+
+                                {{-- ARROW --}}
+
+                                <span class="pd-related-arrow">
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
                     </a>
 
-                </div>
-
-
-
-                {{-- MOBILE / TABLET CAROUSEL --}}
-                <div
-                    class="product-scroll
-                           mt-5 flex
-                           snap-x snap-mandatory
-                           gap-4
-                           overflow-x-auto
-                           pb-3
-                           lg:hidden"
-                >
-
-                    @foreach($relatedProducts as $related)
-
-                        <a
-                            href="{{ route('product.detail', ['slug' => $related['slug']]) }}"
-                            class="group
-                                   w-[72vw]
-                                   max-w-[250px]
-                                   shrink-0
-                                   snap-start
-                                   overflow-hidden
-                                   rounded-[18px]
-                                   border border-slate-200
-                                   bg-white"
-                        >
-
-                            <div
-                                class="relative
-                                       h-[250px]
-                                       overflow-hidden
-                                       bg-slate-100"
-                            >
-
-                                <img
-                                    src="{{ asset($related['image']) }}"
-                                    alt="{{ $related['name'] }}"
-                                    loading="lazy"
-                                    class="absolute inset-0
-                                           h-full w-full
-                                           object-cover object-center
-                                           transition duration-500
-                                           group-hover:scale-[1.04]"
-                                >
-
-                            </div>
-
-
-                            <div class="p-4">
-
-                                <p
-                                    class="text-[8px]
-                                           font-bold uppercase
-                                           tracking-[0.14em]
-                                           text-orange-600"
-                                >
-                                    {{ $currentCategory['title'] }}
-                                </p>
-
-
-                                <h3
-                                    class="mt-1.5
-                                           line-clamp-2
-                                           text-[13px]
-                                           font-bold
-                                           leading-5
-                                           text-slate-950"
-                                >
-                                    {{ $related['name'] }}
-                                </h3>
-
-
-                                <div
-                                    class="mt-3
-                                           flex items-center
-                                           justify-between
-                                           border-t
-                                           border-slate-100
-                                           pt-3"
-                                >
-                                    <span
-                                        class="text-[10px]
-                                               font-semibold
-                                               text-slate-500"
-                                    >
-                                        {{ $relatedProductButtonText }}
-                                    </span>
-
-                                    <span>
-                                        →
-                                    </span>
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    @endforeach
-
-                </div>
-
-
-
-                {{-- DESKTOP CARDS --}}
-                <div
-                    class="mt-6 hidden
-                           lg:grid
-                           lg:grid-cols-4
-                           lg:gap-5"
-                >
-
-                    @foreach($relatedProducts->take(4) as $related)
-
-                        <a
-                            href="{{ route('product.detail', ['slug' => $related['slug']]) }}"
-                            class="group
-                                   min-w-0
-                                   overflow-hidden
-                                   rounded-[20px]
-                                   border border-slate-200
-                                   bg-white
-                                   transition-all
-                                   duration-300
-                                   hover:-translate-y-1
-                                   hover:border-slate-300
-                                   hover:shadow-[0_16px_36px_rgba(15,23,42,0.08)]"
-                        >
-
-                            <div
-                                class="relative
-                                       h-[250px]
-                                       xl:h-[270px]
-                                       overflow-hidden
-                                       bg-[#efefeb]"
-                            >
-
-                                <img
-                                    src="{{ asset($related['image']) }}"
-                                    alt="{{ $related['name'] }}"
-                                    loading="lazy"
-                                    class="absolute inset-0
-                                           h-full w-full
-                                           object-cover object-center
-                                           transition-transform
-                                           duration-500
-                                           group-hover:scale-[1.04]"
-                                >
-
-
-                                <div
-                                    class="pointer-events-none
-                                           absolute inset-x-0 bottom-0
-                                           h-16
-                                           bg-gradient-to-t
-                                           from-black/15
-                                           to-transparent"
-                                ></div>
-
-                            </div>
-
-
-                            <div class="p-4">
-
-                                <p
-                                    class="text-[8px]
-                                           font-bold uppercase
-                                           tracking-[0.14em]
-                                           text-orange-600"
-                                >
-                                    {{ $currentCategory['title'] }}
-                                </p>
-
-
-                                <h3
-                                    class="mt-1.5
-                                           min-h-[40px]
-                                           line-clamp-2
-                                           text-[13px]
-                                           font-bold
-                                           leading-5
-                                           text-slate-950"
-                                >
-                                    {{ $related['name'] }}
-                                </h3>
-
-
-                                <div
-                                    class="mt-3
-                                           flex items-center
-                                           justify-between
-                                           border-t
-                                           border-slate-100
-                                           pt-3"
-                                >
-
-                                    <span
-                                        class="text-[10px]
-                                               font-semibold
-                                               text-slate-500"
-                                    >
-                                        {{ $relatedProductButtonText }}
-                                    </span>
-
-
-                                    <span
-                                        class="text-[13px]
-                                               text-slate-900
-                                               transition-transform
-                                               group-hover:translate-x-1"
-                                    >
-                                        →
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    @endforeach
-
-                </div>
+                @endforeach
 
             </div>
-        </section>
-
-    @endif
-
-
-
-    {{-- =========================================================
-         FINAL CTA
-    ========================================================== --}}
-    <section class="bg-slate-950">
-
-        <div
-            class="mx-auto max-w-[820px]
-                   px-4 py-8
-                   sm:px-6"
-        >
-
-            <p
-                class="text-[9px]
-                       font-bold uppercase
-                       tracking-[0.18em]
-                       text-orange-400"
-            >
-                {{ $ctaBadge }}
-            </p>
-
-
-            <h2
-                class="mt-2
-                       text-[20px]
-                       font-bold
-                       leading-7
-                       text-white"
-            >
-                {{ $ctaTitle }}
-            </h2>
-
-
-            <p
-                class="mt-1.5
-                       text-[12px]
-                       leading-6
-                       text-slate-400"
-            >
-                {{ $ctaDescription }}
-            </p>
-
-
-            <a
-                href="{{ route('contact', ['product' => $product['name']]) }}"
-                class="mt-5 inline-flex
-                       min-h-[44px]
-                       items-center
-                       justify-center
-                       rounded-xl
-                       bg-orange-600
-                       px-5
-                       text-[12px]
-                       font-bold
-                       text-white"
-            >
-                {{ $ctaButtonText }}
-            </a>
 
         </div>
 
     </section>
 
+@endif
 
-</main>
 
-</body>
-</html>
+@endsection
+
+
+
+@push('scripts')
+
+    <script
+        src="{{ asset('js/product-detail.js') }}"
+    ></script>
+
+@endpush

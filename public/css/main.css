@@ -1,0 +1,4470 @@
+/* =========================================================
+   GLOBAL WEBSITE SCALE / DESKTOP PROPORTION FIX
+========================================================= */
+
+html {
+    font-size: 15px;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+main,
+header,
+footer {
+    width: 100%;
+}
+
+.site-container,
+.mr-container,
+.solasta-container,
+.solasta-hero-content-inner {
+    max-width: 1180px;
+}
+
+
+/* Large desktop */
+@media (min-width: 1280px) {
+
+    html {
+        font-size: 14.5px;
+    }
+
+}
+
+
+/* Normal laptop / desktop */
+@media (min-width: 1024px) and (max-width: 1279px) {
+
+    html {
+        font-size: 14px;
+    }
+
+}
+
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    html {
+        font-size: 15px;
+    }
+
+}
+
+
+/* Mobile */
+@media (max-width: 767px) {
+
+    html {
+        font-size: 16px;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA HERO
+========================================================= */
+
+.solasta-hero {
+    width: 100%;
+    overflow: hidden;
+    background: #f8f5ef;
+}
+
+
+/* =========================================================
+   HERO GRID
+========================================================= */
+
+.solasta-hero-inner {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    min-height: 560px;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.solasta-hero-content {
+    display: flex;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle at 80% 45%,
+            rgba(255, 255, 255, 0.95),
+            transparent 35%
+        ),
+        #f8f5ef;
+}
+
+
+.solasta-hero-content-inner {
+    width: 100%;
+    max-width: 610px;
+
+    margin-left: auto;
+
+    padding:
+        65px
+        80px
+        55px
+        40px;
+}
+
+
+/* =========================================================
+   KICKER
+========================================================= */
+
+.solasta-hero-kicker {
+    margin: 0;
+
+    color: #a4a4a4;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.22em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.solasta-hero-title {
+    margin: 18px 0 0;
+
+    color: #101010;
+
+    font-size: 50px;
+    font-weight: 800;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.045em;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.solasta-hero-description {
+    max-width: 500px;
+
+    margin: 22px 0 0;
+
+    color: #4e535a;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.solasta-hero-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 28px;
+}
+
+
+.solasta-hero-btn {
+    min-height: 45px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 0 21px;
+
+    border-radius: 3px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease,
+        background-color 0.28s ease,
+        color 0.28s ease,
+        border-color 0.28s ease;
+}
+
+
+.solasta-hero-btn-primary {
+    background: #ff5a16;
+
+    border: 1px solid #ff5a16;
+
+    color: #ffffff;
+}
+
+
+.solasta-hero-btn-primary:hover {
+    background: #ed4f0d;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px
+        rgba(255, 90, 22, 0.24);
+}
+
+
+.solasta-hero-btn-secondary {
+    background: #ffffff;
+
+    border: 1px solid #d8d3cc;
+
+    color: #252525;
+}
+
+
+.solasta-hero-btn-secondary:hover {
+    border-color: #bdb8b1;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 24px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.solasta-hero-features {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    margin-top: 42px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #ddd8d2;
+}
+
+
+.solasta-hero-feature {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+
+    padding-right: 18px;
+}
+
+
+.solasta-hero-feature + .solasta-hero-feature {
+    border-left: 1px solid #dcd7d0;
+
+    padding-left: 20px;
+}
+
+
+.solasta-hero-feature-icon {
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ff5a16;
+
+    font-size: 24px;
+}
+
+
+.solasta-hero-feature strong {
+    display: block;
+
+    color: #202020;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+
+.solasta-hero-feature span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #737373;
+
+    font-size: 10px;
+
+    line-height: 1.25;
+}
+
+
+/* =========================================================
+   RIGHT IMAGE
+========================================================= */
+
+.solasta-hero-image-wrap {
+    position: relative;
+
+    min-height: 560px;
+
+    overflow: hidden;
+
+    background: #875033;
+}
+
+
+.solasta-hero-image {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transform: scale(1.015);
+
+    animation:
+        solastaHeroImageZoom
+        10s
+        ease-in-out
+        infinite
+        alternate;
+}
+
+
+@keyframes solastaHeroImageZoom {
+
+    from {
+        transform: scale(1.015);
+    }
+
+    to {
+        transform: scale(1.07);
+    }
+
+}
+
+
+/* =========================================================
+   QUALITY SCRIPT
+========================================================= */
+
+.solasta-quality-text {
+    position: absolute;
+
+    top: 50%;
+    right: 55px;
+
+    z-index: 3;
+
+    transform:
+        translateY(-46%)
+        rotate(-3deg);
+
+    width: 185px;
+
+    color: #ffffff;
+
+    text-align: center;
+
+    font-family:
+        "Segoe Script",
+        "Brush Script MT",
+        cursive;
+
+    font-size: 32px;
+
+    line-height: 1.18;
+
+    text-shadow:
+        0 3px 16px
+        rgba(0, 0, 0, 0.28);
+}
+
+
+.solasta-quality-text span {
+    display: block;
+}
+
+
+.solasta-quality-line {
+    width: 74px;
+    height: 3px;
+
+    margin:
+        12px
+        auto
+        0;
+
+    background: #ff5a16;
+
+    transform: rotate(-8deg);
+
+    transform-origin: center;
+}
+
+
+/* =========================================================
+   HERO ENTRY ANIMATION
+========================================================= */
+
+.hero-reveal {
+    opacity: 0;
+
+    transform:
+        translateY(24px);
+
+    animation:
+        solastaHeroReveal
+        0.8s
+        cubic-bezier(.22, 1, .36, 1)
+        forwards;
+}
+
+
+.hero-delay-1 {
+    animation-delay: 0.08s;
+}
+
+
+.hero-delay-2 {
+    animation-delay: 0.18s;
+}
+
+
+.hero-delay-3 {
+    animation-delay: 0.28s;
+}
+
+
+.hero-delay-4 {
+    animation-delay: 0.38s;
+}
+
+
+.hero-delay-5 {
+    animation-delay: 0.48s;
+}
+
+
+@keyframes solastaHeroReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-hero-inner {
+        grid-template-columns:
+            52% 48%;
+
+        min-height: 510px;
+    }
+
+
+    .solasta-hero-content-inner {
+        padding:
+            50px
+            35px
+            45px
+            28px;
+    }
+
+
+    .solasta-hero-title {
+        font-size: 42px;
+    }
+
+
+    .solasta-hero-image-wrap {
+        min-height: 510px;
+    }
+
+
+    .solasta-quality-text {
+        right: 30px;
+
+        width: 150px;
+
+        font-size: 27px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-hero-inner {
+        display: flex;
+
+        flex-direction: column;
+
+        min-height: auto;
+    }
+
+
+    .solasta-hero-image-wrap {
+        order: 1;
+
+        min-height: 360px;
+    }
+
+
+    .solasta-hero-content {
+        order: 2;
+    }
+
+
+    .solasta-hero-content-inner {
+        max-width: none;
+
+        padding:
+            38px
+            22px
+            40px;
+    }
+
+
+    .solasta-hero-title {
+        font-size: 38px;
+    }
+
+
+    .solasta-hero-description {
+        font-size: 13px;
+    }
+
+
+    .solasta-hero-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .solasta-hero-btn {
+        width: 100%;
+    }
+
+
+    .solasta-hero-features {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+
+    .solasta-hero-feature {
+        padding-right: 0;
+    }
+
+
+    .solasta-hero-feature + .solasta-hero-feature {
+        border-left: 0;
+
+        padding-left: 0;
+    }
+
+
+    .solasta-quality-text {
+        right: 20px;
+
+        width: 140px;
+
+        font-size: 27px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .solasta-hero-image-wrap {
+        min-height: 300px;
+    }
+
+
+    .solasta-hero-title {
+        font-size: 33px;
+    }
+
+
+    .solasta-quality-text {
+        right: 14px;
+
+        width: 125px;
+
+        font-size: 24px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-reveal {
+        opacity: 1;
+
+        transform: none;
+
+        animation: none;
+    }
+
+
+    .solasta-hero-image {
+        transform: none;
+
+        animation: none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA - SHOP BY CATEGORY
+========================================================= */
+
+.solasta-category-section {
+    width: 100%;
+    background: #ffffff;
+
+    padding:
+        48px
+        0
+        52px;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.solasta-category-container {
+    width:
+        min(
+            calc(100% - 40px),
+            1180px
+        );
+
+    margin:
+        0
+        auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.solasta-category-header {
+    display: flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        30px;
+}
+
+
+.solasta-category-heading h2 {
+    margin: 0;
+
+    color:
+        #151515;
+
+    font-size:
+        30px;
+
+    font-weight:
+        800;
+
+    line-height:
+        1.1;
+
+    letter-spacing:
+        -0.035em;
+}
+
+
+.solasta-category-heading p {
+    margin:
+        9px
+        0
+        0;
+
+    color:
+        #666b72;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.55;
+}
+
+
+/* =========================================================
+   VIEW ALL LINK
+========================================================= */
+
+.solasta-category-view-all {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    color:
+        #ff5a16;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    text-decoration:
+        none;
+
+    white-space:
+        nowrap;
+
+    transition:
+        gap .25s ease,
+        color .25s ease;
+}
+
+
+.solasta-category-view-all:hover {
+    gap:
+        13px;
+
+    color:
+        #e34d11;
+}
+
+
+/* =========================================================
+   CATEGORY GRID
+========================================================= */
+
+.solasta-category-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(12, minmax(0, 1fr));
+
+    gap:
+        15px;
+
+    margin-top:
+        23px;
+}
+
+
+/* =========================================================
+   CATEGORY CARD
+========================================================= */
+
+.solasta-category-card {
+    display:
+        block;
+
+    overflow:
+        hidden;
+
+    border:
+        1px
+        solid
+        #ebe8e3;
+
+    border-radius:
+        5px;
+
+    background:
+        #faf9f7;
+
+    color:
+        inherit;
+
+    text-decoration:
+        none;
+
+    transition:
+        transform .32s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .32s ease,
+        border-color .32s ease;
+}
+
+
+.solasta-category-large {
+    grid-column:
+        span 4;
+}
+
+
+.solasta-category-small {
+    grid-column:
+        span 3;
+}
+
+
+.solasta-category-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #ddd8d1;
+
+    box-shadow:
+        0
+        14px
+        32px
+        rgba(15, 23, 42, .08);
+}
+
+
+/* =========================================================
+   CATEGORY IMAGE
+========================================================= */
+
+.solasta-category-image {
+    position:
+        relative;
+
+    width:
+        100%;
+
+    height:
+        142px;
+
+    overflow:
+        hidden;
+
+    background:
+        #f1efeb;
+}
+
+
+.solasta-category-small .solasta-category-image {
+    height:
+        122px;
+}
+
+
+.solasta-category-image img {
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    object-position:
+        center;
+
+    transition:
+        transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.solasta-category-card:hover
+.solasta-category-image img {
+    transform:
+        scale(1.045);
+}
+
+
+.solasta-category-placeholder {
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1efeb,
+            #e7e3dd
+        );
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.solasta-category-card-content {
+    min-height:
+        59px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    padding:
+        11px
+        14px;
+
+    background:
+        #faf9f7;
+}
+
+
+.solasta-category-small
+.solasta-category-card-content {
+    min-height:
+        52px;
+}
+
+
+.solasta-category-card-content h3 {
+    margin:
+        0;
+
+    color:
+        #171717;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1.25;
+}
+
+
+.solasta-category-card-content p {
+    margin:
+        3px
+        0
+        0;
+
+    color:
+        #73777d;
+
+    font-size:
+        9px;
+
+    line-height:
+        1.3;
+
+    display:
+        -webkit-box;
+
+    -webkit-box-orient:
+        vertical;
+
+    -webkit-line-clamp:
+        1;
+
+    overflow:
+        hidden;
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.solasta-category-arrow {
+    flex-shrink:
+        0;
+
+    color:
+        #ff5a16;
+
+    font-size:
+        18px;
+
+    line-height:
+        1;
+
+    transition:
+        transform .25s ease;
+}
+
+
+.solasta-category-card:hover
+.solasta-category-arrow {
+    transform:
+        translateX(4px);
+}
+
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+html.category-motion-ready
+.category-reveal {
+    opacity:
+        0;
+
+    transform:
+        translateY(24px);
+
+    transition:
+        opacity .7s cubic-bezier(.22, 1, .36, 1),
+        transform .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.category-motion-ready
+.category-reveal.category-visible {
+    opacity:
+        1;
+
+    transform:
+        translateY(0);
+}
+
+
+html.category-motion-ready
+.category-card-reveal {
+    opacity:
+        0;
+
+    transform:
+        translateY(22px)
+        scale(.985);
+
+    transition:
+        opacity .65s cubic-bezier(.22, 1, .36, 1),
+        transform .65s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .3s ease;
+}
+
+
+html.category-motion-ready
+.category-card-reveal.category-visible {
+    opacity:
+        1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-category-section {
+        padding:
+            42px
+            0
+            46px;
+    }
+
+
+    .solasta-category-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .solasta-category-large,
+    .solasta-category-small {
+        grid-column:
+            span 1;
+    }
+
+
+    .solasta-category-image,
+    .solasta-category-small
+    .solasta-category-image {
+        height:
+            150px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-category-section {
+        padding:
+            36px
+            0
+            40px;
+    }
+
+
+    .solasta-category-container {
+        width:
+            min(
+                calc(100% - 28px),
+                1180px
+            );
+    }
+
+
+    .solasta-category-header {
+        align-items:
+            flex-start;
+    }
+
+
+    .solasta-category-heading h2 {
+        font-size:
+            27px;
+    }
+
+
+    .solasta-category-heading p {
+        font-size:
+            11px;
+    }
+
+
+    .solasta-category-break {
+        display:
+            none;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .solasta-category-header {
+        display:
+            block;
+    }
+
+
+    .solasta-category-view-all {
+        margin-top:
+            14px;
+    }
+
+
+    .solasta-category-grid {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            13px;
+    }
+
+
+    .solasta-category-image,
+    .solasta-category-small
+    .solasta-category-image {
+        height:
+            185px;
+    }
+
+
+    .solasta-category-card-content,
+    .solasta-category-small
+    .solasta-category-card-content {
+        min-height:
+            58px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html.category-motion-ready
+    .category-reveal,
+
+    html.category-motion-ready
+    .category-card-reveal {
+        opacity:
+            1;
+
+        transform:
+            none;
+
+        transition:
+            none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA - FEATURED PRODUCTS
+========================================================= */
+
+.solasta-products-section {
+    width: 100%;
+    background: #f7f6f3;
+    padding: 46px 0 50px;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.solasta-products-container {
+    width: min(calc(100% - 40px), 1180px);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.solasta-products-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+
+.solasta-products-heading h2 {
+    margin: 0;
+
+    color: #151515;
+
+    font-size: 30px;
+    font-weight: 800;
+
+    line-height: 1.1;
+
+    letter-spacing: -0.035em;
+}
+
+
+.solasta-products-heading p {
+    margin: 8px 0 0;
+
+    color: #666b72;
+
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   VIEW ALL
+========================================================= */
+
+.solasta-products-view-all {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: #ff5a16;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+        gap .25s ease,
+        color .25s ease;
+}
+
+
+.solasta-products-view-all:hover {
+    gap: 13px;
+
+    color: #e34d11;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.solasta-products-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-top: 22px;
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.solasta-product-card {
+    overflow: hidden;
+
+    border: 1px solid #ebe9e5;
+
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    transition:
+        transform .32s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .32s ease,
+        border-color .32s ease;
+}
+
+
+.solasta-product-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #ddd8d1;
+
+    box-shadow:
+        0 15px 34px
+        rgba(15, 23, 42, .08);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.solasta-product-image-link {
+    display: block;
+
+    text-decoration: none;
+}
+
+
+.solasta-product-image {
+    position: relative;
+
+    width: 100%;
+
+    height: 164px;
+
+    overflow: hidden;
+
+    background: #fbfbfa;
+}
+
+
+.solasta-product-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition:
+        transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.solasta-product-card:hover
+.solasta-product-image img {
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   PRODUCT CONTENT
+========================================================= */
+
+.solasta-product-content {
+    padding: 12px 13px 14px;
+}
+
+
+.solasta-product-content h3 {
+    margin: 0;
+
+    min-height: 30px;
+
+    color: #1b1d22;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.35;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+}
+
+
+.solasta-product-code {
+    margin:
+        4px
+        0
+        11px;
+
+    color: #7a7f86;
+
+    font-size: 8px;
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   ENQUIRE BUTTON
+========================================================= */
+
+.solasta-product-enquire {
+    display: inline-flex;
+
+    min-height: 34px;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px
+        solid
+        #ff5a16;
+
+    border-radius: 3px;
+
+    padding:
+        0
+        15px;
+
+    color: #ff5a16;
+
+    background: #ffffff;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background-color .25s ease,
+        color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.solasta-product-enquire:hover {
+    background: #ff5a16;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(255, 90, 22, .16);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.solasta-products-empty {
+    grid-column: 1 / -1;
+
+    padding: 30px;
+
+    border:
+        1px
+        dashed
+        #d7d4cf;
+
+    background: #ffffff;
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+html.products-motion-ready
+.products-reveal {
+    opacity: 0;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity .7s cubic-bezier(.22, 1, .36, 1),
+        transform .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.products-motion-ready
+.products-reveal.products-visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+html.products-motion-ready
+.product-card-reveal {
+    opacity: 0;
+
+    transform:
+        translateY(22px)
+        scale(.985);
+
+    transition:
+        opacity .65s cubic-bezier(.22, 1, .36, 1),
+        transform .65s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .3s ease;
+}
+
+
+html.products-motion-ready
+.product-card-reveal.products-visible {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-products-section {
+        padding:
+            42px
+            0
+            46px;
+    }
+
+
+    .solasta-products-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+
+    .solasta-product-image {
+        height: 175px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-products-container {
+        width:
+            min(
+                calc(100% - 28px),
+                1180px
+            );
+    }
+
+
+    .solasta-products-header {
+        align-items: flex-start;
+    }
+
+
+    .solasta-products-heading h2 {
+        font-size: 27px;
+    }
+
+
+    .solasta-products-heading p {
+        font-size: 11px;
+    }
+
+
+    .solasta-products-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 13px;
+    }
+
+
+    .solasta-product-image {
+        height: 165px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .solasta-products-header {
+        display: block;
+    }
+
+
+    .solasta-products-view-all {
+        margin-top: 14px;
+    }
+
+
+    .solasta-products-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .solasta-product-image {
+        height: 250px;
+    }
+
+
+    .solasta-product-content h3 {
+        min-height: auto;
+
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html.products-motion-ready
+    .products-reveal,
+
+    html.products-motion-ready
+    .product-card-reveal {
+        opacity: 1;
+
+        transform: none;
+
+        transition: none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA - ABOUT / QUALITY
+========================================================= */
+
+.solasta-about-section {
+    width: 100%;
+    background: #ffffff;
+    padding: 48px 0 52px;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.solasta-about-container {
+    width: min(calc(100% - 40px), 1180px);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.solasta-about-grid {
+    display: grid;
+
+    grid-template-columns:
+        1.12fr
+        .88fr;
+
+    gap: 52px;
+
+    align-items: center;
+}
+
+
+/* =========================================================
+   LEFT IMAGE
+========================================================= */
+
+.solasta-about-media {
+    position: relative;
+
+    min-height: 355px;
+
+    overflow: hidden;
+
+    border-radius: 5px;
+
+    background: #1f2933;
+
+    box-shadow:
+        0 12px 30px
+        rgba(15, 23, 42, .10);
+}
+
+
+.solasta-about-image {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition:
+        transform .7s
+        cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.solasta-about-media:hover
+.solasta-about-image {
+    transform:
+        scale(1.04);
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+========================================================= */
+
+.solasta-about-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8, 18, 28, .88) 0%,
+            rgba(8, 18, 28, .72) 38%,
+            rgba(8, 18, 28, .30) 67%,
+            rgba(8, 18, 28, .06) 100%
+        );
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.solasta-about-content {
+    position: absolute;
+
+    z-index: 3;
+
+    left: 38px;
+    bottom: 34px;
+
+    max-width: 330px;
+}
+
+
+.solasta-about-content h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 29px;
+    font-weight: 800;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.035em;
+}
+
+
+.solasta-about-content p {
+    margin: 14px 0 0;
+
+    color: #e1e5e8;
+
+    font-size: 11px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.solasta-about-btn {
+    display: inline-flex;
+
+    min-height: 38px;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 18px;
+
+    padding:
+        0
+        18px;
+
+    border-radius: 3px;
+
+    background: #ffffff;
+
+    color: #181b20;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background-color .25s ease;
+}
+
+
+.solasta-about-btn:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0
+        10px
+        22px
+        rgba(0, 0, 0, .18);
+
+    background:
+        #f8f8f8;
+}
+
+
+/* =========================================================
+   RIGHT FEATURES
+========================================================= */
+
+.solasta-about-features {
+    display: grid;
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   FEATURE ITEM
+========================================================= */
+
+.solasta-about-feature {
+    display: grid;
+
+    grid-template-columns:
+        52px
+        1fr;
+
+    gap: 16px;
+
+    align-items: center;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.solasta-about-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px
+        solid
+        #ffd4c1;
+
+    border-radius: 50%;
+
+    color: #ff5a16;
+
+    font-size: 21px;
+
+    background:
+        #ffffff;
+
+    transition:
+        transform .3s ease,
+        background-color .3s ease,
+        border-color .3s ease;
+}
+
+
+.solasta-about-feature:hover
+.solasta-about-icon {
+    transform:
+        rotate(-6deg)
+        scale(1.05);
+
+    background:
+        #fff6f1;
+
+    border-color:
+        #ffb38f;
+}
+
+
+/* =========================================================
+   FEATURE TEXT
+========================================================= */
+
+.solasta-about-feature h3 {
+    margin: 0;
+
+    color: #1a1d23;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+.solasta-about-feature p {
+    margin:
+        4px
+        0
+        0;
+
+    color:
+        #616871;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+html.about-motion-ready
+.about-reveal {
+    opacity: 0;
+
+    transform:
+        translateX(-24px);
+
+    transition:
+        opacity .75s
+        cubic-bezier(.22, 1, .36, 1),
+        transform .75s
+        cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.about-motion-ready
+.about-reveal.about-visible {
+    opacity: 1;
+
+    transform:
+        translateX(0);
+}
+
+
+html.about-motion-ready
+.about-feature-reveal {
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    transition:
+        opacity .65s
+        cubic-bezier(.22, 1, .36, 1),
+        transform .65s
+        cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.about-motion-ready
+.about-feature-reveal.about-visible {
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-about-grid {
+        grid-template-columns:
+            1fr
+            .9fr;
+
+        gap: 34px;
+    }
+
+
+    .solasta-about-media {
+        min-height: 335px;
+    }
+
+
+    .solasta-about-content {
+        left: 28px;
+        bottom: 28px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-about-section {
+        padding:
+            40px
+            0
+            44px;
+    }
+
+
+    .solasta-about-container {
+        width:
+            min(
+                calc(100% - 28px),
+                1180px
+            );
+    }
+
+
+    .solasta-about-grid {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            30px;
+    }
+
+
+    .solasta-about-media {
+        min-height:
+            360px;
+    }
+
+
+    .solasta-about-content {
+        left:
+            24px;
+
+        right:
+            24px;
+
+        bottom:
+            26px;
+
+        max-width:
+            360px;
+    }
+
+
+    .solasta-about-content h2 {
+        font-size:
+            27px;
+    }
+
+
+    .solasta-about-features {
+        gap:
+            19px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .solasta-about-media {
+        min-height:
+            390px;
+    }
+
+
+    .solasta-about-content {
+        left:
+            20px;
+
+        right:
+            20px;
+    }
+
+
+    .solasta-about-content h2 {
+        font-size:
+            25px;
+    }
+
+
+    .solasta-about-content p {
+        font-size:
+            10px;
+    }
+
+
+    .solasta-about-feature {
+        grid-template-columns:
+            48px
+            1fr;
+
+        gap:
+            13px;
+    }
+
+
+    .solasta-about-icon {
+        width:
+            48px;
+
+        height:
+            48px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html.about-motion-ready
+    .about-reveal,
+
+    html.about-motion-ready
+    .about-feature-reveal {
+        opacity:
+            1;
+
+        transform:
+            none;
+
+        transition:
+            none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA - TRUSTED PARTNERS
+========================================================= */
+
+.solasta-partners-section {
+    width: 100%;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e9e7e3;
+    border-bottom: 1px solid #e9e7e3;
+
+    padding: 22px 0;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.solasta-partners-container {
+    width: min(calc(100% - 40px), 1180px);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.solasta-partners-grid {
+    display: grid;
+
+    grid-template-columns:
+        1.35fr
+        3.65fr;
+
+    align-items: center;
+
+    gap: 40px;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.solasta-partners-copy h2 {
+    margin: 0;
+
+    color: #1a1d22;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.02em;
+}
+
+
+.solasta-partners-copy p {
+    margin: 5px 0 0;
+
+    color: #747980;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   PARTNER LIST
+========================================================= */
+
+.solasta-partners-list {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 28px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   PARTNER ITEM
+========================================================= */
+
+.solasta-partner-item {
+    min-width: 90px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    opacity: .68;
+
+    filter: grayscale(1);
+
+    transition:
+        opacity .3s ease,
+        filter .3s ease,
+        transform .3s ease;
+}
+
+
+.solasta-partner-item:hover {
+    opacity: 1;
+
+    filter: grayscale(0);
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.solasta-partner-item img {
+    display: block;
+
+    width: auto;
+
+    max-width: 110px;
+
+    max-height: 38px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   TEXT FALLBACK
+========================================================= */
+
+.solasta-partner-item span {
+    color: #666a70;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+html.partners-motion-ready
+.partners-reveal {
+    opacity: 0;
+
+    transform: translateY(18px);
+
+    transition:
+        opacity .7s cubic-bezier(.22, 1, .36, 1),
+        transform .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.partners-motion-ready
+.partners-reveal.partners-visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+html.partners-motion-ready
+.partner-item-reveal {
+    opacity: 0;
+
+    transform: translateY(12px);
+
+    transition:
+        opacity .55s cubic-bezier(.22, 1, .36, 1),
+        transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.partners-motion-ready
+.partner-item-reveal.partners-visible {
+    opacity: .68;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-partners-grid {
+        grid-template-columns:
+            1fr
+            2.7fr;
+
+        gap: 28px;
+    }
+
+
+    .solasta-partners-list {
+        gap: 20px;
+    }
+
+
+    .solasta-partner-item img {
+        max-width: 95px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-partners-section {
+        padding: 25px 0;
+    }
+
+
+    .solasta-partners-container {
+        width: min(calc(100% - 28px), 1180px);
+    }
+
+
+    .solasta-partners-grid {
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+
+    .solasta-partners-list {
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        gap: 26px;
+
+        padding-bottom: 5px;
+
+        scrollbar-width: none;
+    }
+
+
+    .solasta-partners-list::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .solasta-partner-item {
+        min-width: 100px;
+
+        flex-shrink: 0;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .solasta-partners-copy h2 {
+        font-size: 14px;
+    }
+
+
+    .solasta-partners-copy p {
+        font-size: 9px;
+    }
+
+
+    .solasta-partner-item {
+        min-width: 90px;
+    }
+
+
+    .solasta-partner-item img {
+        max-width: 88px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html.partners-motion-ready
+    .partners-reveal,
+
+    html.partners-motion-ready
+    .partner-item-reveal {
+        opacity: 1;
+
+        transform: none;
+
+        transition: none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA - OUR PROJECTS
+========================================================= */
+
+.solasta-projects-section {
+    width: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0c1b28 0%,
+            #111d27 100%
+        );
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.solasta-projects-container {
+    width: min(calc(100% - 40px), 1180px);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.solasta-projects-grid {
+    min-height: 165px;
+
+    display: grid;
+
+    grid-template-columns:
+        .82fr
+        1.18fr;
+
+    align-items: center;
+
+    gap: 42px;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.solasta-projects-content h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.03em;
+}
+
+
+.solasta-projects-content p {
+    margin:
+        7px
+        0
+        0;
+
+    color:
+        #cbd1d6;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.solasta-projects-btn {
+    min-height: 37px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 17px;
+
+    padding:
+        0
+        17px;
+
+    border-radius:
+        3px;
+
+    background:
+        #ffffff;
+
+    color:
+        #14181d;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    text-decoration:
+        none;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background-color .25s ease;
+}
+
+
+.solasta-projects-btn:hover {
+    transform:
+        translateY(-2px);
+
+    background:
+        #f4f4f4;
+
+    box-shadow:
+        0
+        10px
+        24px
+        rgba(0, 0, 0, .22);
+}
+
+
+/* =========================================================
+   RIGHT GALLERY
+========================================================= */
+
+.solasta-projects-gallery {
+    height:
+        132px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap:
+        10px;
+
+    padding:
+        16px
+        0;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.solasta-project-image {
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        4px;
+
+    background:
+        #27323b;
+}
+
+
+.solasta-project-image img {
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    object-position:
+        center;
+
+    transition:
+        transform .55s
+        cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.solasta-project-image:hover img {
+    transform:
+        scale(1.06);
+}
+
+
+/* =========================================================
+   SCROLL ANIMATION
+========================================================= */
+
+html.projects-motion-ready
+.projects-reveal {
+    opacity:
+        0;
+
+    transform:
+        translateX(-22px);
+
+    transition:
+        opacity .7s cubic-bezier(.22, 1, .36, 1),
+        transform .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.projects-motion-ready
+.projects-reveal.projects-visible {
+    opacity:
+        1;
+
+    transform:
+        translateX(0);
+}
+
+
+html.projects-motion-ready
+.project-image-reveal {
+    opacity:
+        0;
+
+    transform:
+        translateY(18px)
+        scale(.98);
+
+    transition:
+        opacity .6s cubic-bezier(.22, 1, .36, 1),
+        transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.projects-motion-ready
+.project-image-reveal.projects-visible {
+    opacity:
+        1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-projects-grid {
+        grid-template-columns:
+            .9fr
+            1.1fr;
+
+        gap:
+            28px;
+    }
+
+
+    .solasta-projects-gallery {
+        height:
+            128px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-projects-container {
+        width:
+            min(
+                calc(100% - 28px),
+                1180px
+            );
+    }
+
+
+    .solasta-projects-grid {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            22px;
+
+        padding:
+            28px
+            0;
+    }
+
+
+    .solasta-projects-gallery {
+        height:
+            180px;
+
+        padding:
+            0;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .solasta-projects-gallery {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        height:
+            200px;
+    }
+
+
+    .solasta-project-image:nth-child(3) {
+        display:
+            none;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html.projects-motion-ready
+    .projects-reveal,
+
+    html.projects-motion-ready
+    .project-image-reveal {
+        opacity:
+            1;
+
+        transform:
+            none;
+
+        transition:
+            none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA - NEWSLETTER CTA
+========================================================= */
+
+.solasta-cta-section {
+    width: 100%;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eceae7;
+
+    padding: 21px 0;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.solasta-cta-container {
+    width: min(calc(100% - 40px), 1180px);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.solasta-cta-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    align-items: center;
+
+    gap: 34px;
+}
+
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.solasta-cta-copy {
+    display: flex;
+
+    align-items: center;
+
+    gap: 17px;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.solasta-cta-icon {
+    width: 35px;
+    height: 35px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ff5a16;
+
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.solasta-cta-copy h3 {
+    margin: 0;
+
+    color: #1a1d22;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+.solasta-cta-copy p {
+    margin: 4px 0 0;
+
+    color: #777c83;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.solasta-cta-form {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        105px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.solasta-cta-form input {
+    width: 100%;
+
+    min-height: 40px;
+
+    border:
+        1px
+        solid
+        #ebe8e4;
+
+    border-right: 0;
+
+    border-radius:
+        4px
+        0
+        0
+        4px;
+
+    background: #fbfbfa;
+
+    padding:
+        0
+        14px;
+
+    color: #34383e;
+
+    font-size: 10px;
+
+    outline: none;
+
+    transition:
+        border-color .25s ease,
+        background-color .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.solasta-cta-form input::placeholder {
+    color: #9a9da2;
+}
+
+
+.solasta-cta-form input:focus {
+    border-color: #ffb18d;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 90, 22, .05);
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.solasta-cta-form button {
+    min-height: 40px;
+
+    border: 0;
+
+    border-radius:
+        0
+        4px
+        4px
+        0;
+
+    background: #ff5a16;
+
+    color: #ffffff;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color .25s ease,
+        transform .25s ease;
+}
+
+
+.solasta-cta-form button:hover {
+    background: #ea4d0c;
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+html.cta-motion-ready
+.cta-reveal {
+    opacity: 0;
+
+    transform: translateY(16px);
+
+    transition:
+        opacity .65s cubic-bezier(.22, 1, .36, 1),
+        transform .65s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+html.cta-motion-ready
+.cta-reveal.cta-visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .solasta-cta-section {
+        padding: 24px 0;
+    }
+
+
+    .solasta-cta-container {
+        width: min(calc(100% - 28px), 1180px);
+    }
+
+
+    .solasta-cta-grid {
+        grid-template-columns: 1fr;
+
+        gap: 17px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .solasta-cta-form {
+        grid-template-columns: 1fr;
+
+        gap: 8px;
+    }
+
+
+    .solasta-cta-form input {
+        border-right:
+            1px
+            solid
+            #ebe8e4;
+
+        border-radius: 4px;
+    }
+
+
+    .solasta-cta-form button {
+        border-radius: 4px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html.cta-motion-ready
+    .cta-reveal {
+        opacity: 1;
+
+        transform: none;
+
+        transition: none;
+    }
+
+}
+
+/* =========================================================
+   SOLASTA HEADER
+========================================================= */
+
+.solasta-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background: #ffffff;
+}
+
+.solasta-header-container {
+    width: min(calc(100% - 40px), 1180px);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.solasta-topbar {
+    background: #ff5a16;
+    color: #ffffff;
+}
+
+.solasta-topbar-inner {
+    min-height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.solasta-topbar-left {
+    margin: 0;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: .02em;
+}
+
+.solasta-topbar-right {
+    display: flex;
+    align-items: center;
+
+    gap: 24px;
+}
+
+.solasta-topbar-right a {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #ffffff;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.solasta-topbar-right i {
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   MAIN NAVBAR
+========================================================= */
+
+.solasta-navbar {
+    background: #ffffff;
+
+    border-bottom:
+        1px
+        solid
+        #eceae7;
+
+    box-shadow:
+        0
+        3px
+        15px
+        rgba(15, 23, 42, .035);
+}
+
+.solasta-navbar-inner {
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 28px;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.solasta-brand {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    color: inherit;
+
+    text-decoration: none;
+}
+
+.solasta-brand img {
+    display: block;
+
+    width: auto;
+    height: 39px;
+
+    object-fit: contain;
+}
+
+.solasta-brand-copy {
+    display: flex;
+    flex-direction: column;
+}
+
+.solasta-brand-copy strong {
+    color: #ef5314;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    line-height: 1;
+
+    letter-spacing: -.025em;
+}
+
+.solasta-brand-copy span {
+    margin-top: 4px;
+
+    color: #8b9097;
+
+    font-size: 7px;
+    font-weight: 700;
+
+    letter-spacing: .13em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.solasta-nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+}
+
+.solasta-nav-links > a,
+.solasta-products-trigger {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    min-height: 66px;
+
+    color: #41464d;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color .25s ease;
+}
+
+.solasta-nav-links > a::after,
+.solasta-products-trigger::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 2px;
+
+    background: #ff5a16;
+
+    transform: scaleX(0);
+
+    transform-origin: center;
+
+    transition:
+        transform .25s ease;
+}
+
+.solasta-nav-links > a:hover,
+.solasta-nav-links > a.active,
+.solasta-products-trigger:hover,
+.solasta-products-trigger.active {
+    color: #ff5a16;
+}
+
+.solasta-nav-links > a:hover::after,
+.solasta-nav-links > a.active::after,
+.solasta-products-trigger:hover::after,
+.solasta-products-trigger.active::after {
+    transform: scaleX(1);
+}
+
+.solasta-products-trigger i {
+    font-size: 8px;
+
+    transition:
+        transform .25s ease;
+}
+
+
+/* =========================================================
+   PRODUCTS DROPDOWN
+========================================================= */
+
+.solasta-products-nav {
+    position: relative;
+}
+
+.solasta-products-nav:hover
+.solasta-products-trigger i {
+    transform: rotate(180deg);
+}
+
+.solasta-products-dropdown {
+    position: absolute;
+
+    top: calc(100% - 2px);
+    left: 50%;
+
+    width: 420px;
+
+    padding: 18px;
+
+    border:
+        1px
+        solid
+        #ece9e5;
+
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0
+        20px
+        45px
+        rgba(15, 23, 42, .11);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translate(-50%, 10px);
+
+    transition:
+        opacity .22s ease,
+        visibility .22s ease,
+        transform .22s ease;
+}
+
+.solasta-products-nav:hover
+.solasta-products-dropdown {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translate(-50%, 0);
+}
+
+.solasta-products-dropdown-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 4px;
+}
+
+.solasta-products-dropdown-grid a {
+    padding:
+        8px
+        10px;
+
+    border-radius: 3px;
+
+    color: #555b63;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color .2s ease,
+        background .2s ease;
+}
+
+.solasta-products-dropdown-grid a:hover,
+.solasta-products-dropdown-grid a.active {
+    background: #fff2eb;
+
+    color: #ff5a16;
+}
+
+.solasta-dropdown-all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 10px;
+
+    padding:
+        10px
+        11px;
+
+    border-top:
+        1px
+        solid
+        #eeeae7;
+
+    color: #ff5a16;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   RIGHT ACTIONS
+========================================================= */
+
+.solasta-header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+}
+
+.solasta-header-icon {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #292e34;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        color .25s ease,
+        background .25s ease;
+}
+
+.solasta-header-icon:hover {
+    color: #ff5a16;
+
+    background: #fff5f0;
+}
+
+.solasta-header-quote {
+    min-height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-left: 6px;
+
+    padding:
+        0
+        16px;
+
+    border-radius: 3px;
+
+    background: #ff5a16;
+
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.solasta-header-quote:hover {
+    background: #e94c0b;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0
+        8px
+        18px
+        rgba(255, 90, 22, .18);
+}
+
+
+/* =========================================================
+   MOBILE TOGGLE
+========================================================= */
+
+.solasta-mobile-toggle {
+    display: none;
+
+    width: 37px;
+    height: 37px;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 5px;
+
+    border:
+        1px
+        solid
+        #e6e3df;
+
+    border-radius: 4px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+}
+
+.solasta-mobile-toggle span {
+    width: 17px;
+    height: 1.5px;
+
+    background: #22272d;
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease;
+}
+
+.solasta-mobile-toggle.active span:nth-child(1) {
+    transform:
+        translateY(6.5px)
+        rotate(45deg);
+}
+
+.solasta-mobile-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.solasta-mobile-toggle.active span:nth-child(3) {
+    transform:
+        translateY(-6.5px)
+        rotate(-45deg);
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.solasta-mobile-menu {
+    display: none;
+
+    border-top:
+        1px
+        solid
+        #ece9e5;
+
+    background: #ffffff;
+}
+
+.solasta-mobile-menu.open {
+    display: block;
+}
+
+.solasta-mobile-menu-inner {
+    width: min(calc(100% - 28px), 1180px);
+
+    margin: 0 auto;
+
+    padding:
+        8px
+        0
+        18px;
+}
+
+.solasta-mobile-menu-inner > a,
+.solasta-mobile-products > button {
+    width: 100%;
+
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 0;
+    border-bottom:
+        1px
+        solid
+        #f0eeeb;
+
+    background: transparent;
+
+    color: #32373d;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.solasta-mobile-products-list {
+    display: none;
+
+    padding:
+        6px
+        0
+        10px
+        12px;
+}
+
+.solasta-mobile-products.open
+.solasta-mobile-products-list {
+    display: block;
+}
+
+.solasta-mobile-products-list a {
+    display: block;
+
+    padding:
+        8px
+        6px;
+
+    color: #626870;
+
+    font-size: 11px;
+
+    text-decoration: none;
+}
+
+.solasta-mobile-view-all {
+    color: #ff5a16 !important;
+
+    font-weight: 700;
+}
+
+.solasta-mobile-quote {
+    margin-top: 12px;
+
+    min-height: 40px !important;
+
+    justify-content: center !important;
+
+    border: 0 !important;
+
+    border-radius: 3px;
+
+    background: #ff5a16 !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .solasta-nav-links {
+        gap: 20px;
+    }
+
+    .solasta-header-actions {
+        gap: 2px;
+    }
+
+    .solasta-header-quote {
+        padding:
+            0
+            12px;
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .solasta-topbar-right {
+        gap: 14px;
+    }
+
+    .solasta-nav-links,
+    .solasta-header-actions {
+        display: none;
+    }
+
+    .solasta-mobile-toggle {
+        display: flex;
+    }
+
+}
+
+
+@media (max-width: 640px) {
+
+    .solasta-header-container {
+        width: min(calc(100% - 28px), 1180px);
+    }
+
+    .solasta-topbar {
+        display: none;
+    }
+
+    .solasta-navbar-inner {
+        min-height: 61px;
+    }
+
+    .solasta-brand img {
+        height: 35px;
+    }
+
+    .solasta-brand-copy strong {
+        font-size: 15px;
+    }
+
+    .solasta-brand-copy span {
+        font-size: 6px;
+    }
+
+}
+
+/* =========================================================
+   MOBILE NAVBAR QUICK ACTIONS
+========================================================= */
+
+.solasta-mobile-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin-top: 14px;
+    margin-bottom: 12px;
+}
+
+
+.solasta-mobile-action {
+    min-height: 64px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    border: 1px solid #ece9e5;
+
+    border-radius: 4px;
+
+    background: #faf9f7;
+
+    color: #33383e;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color .25s ease,
+        border-color .25s ease,
+        background .25s ease,
+        transform .25s ease;
+}
+
+
+.solasta-mobile-action i {
+    color: #ff5a16;
+
+    font-size: 15px;
+}
+
+
+.solasta-mobile-action:hover {
+    color: #ff5a16;
+
+    border-color: #ffc5aa;
+
+    background: #fff5ef;
+
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   EXACT SOLASTA FOOTER
+========================================================= */
+
+.solasta-exact-footer {
+    width: 100%;
+    background: #0d1d2a;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   INNER
+========================================================= */
+
+.solasta-exact-footer__inner {
+    width: min(calc(100% - 80px), 1180px);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.solasta-exact-footer__grid {
+    display: grid;
+
+    grid-template-columns:
+        1.45fr
+        .75fr
+        1.15fr
+        1.05fr;
+
+    gap: 54px;
+
+    padding:
+        34px
+        0
+        26px;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.solasta-exact-footer__brand-row {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.solasta-exact-footer__brand-logo img {
+    display: block;
+
+    width: 34px;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+.solasta-exact-footer__brand-copy h2 {
+    margin: 0;
+
+    color: #ff5a14;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+.solasta-exact-footer__tagline {
+    margin:
+        6px
+        0
+        0;
+
+    color: #7c8791;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: .28em;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.solasta-exact-footer__description {
+    max-width: 255px;
+
+    margin:
+        18px
+        0
+        0;
+
+    color: #a1abb3;
+
+    font-size: 9px;
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+.solasta-exact-footer__socials {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+
+.solasta-exact-footer__socials a {
+    width: 27px;
+    height: 27px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px
+        solid
+        rgba(255, 255, 255, .72);
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    text-decoration: none;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+.solasta-exact-footer__socials a:hover {
+    background: #ff5a14;
+    border-color: #ff5a14;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   COLUMN HEADINGS
+========================================================= */
+
+.solasta-exact-footer__column h3,
+.solasta-exact-footer__contact h3 {
+    margin:
+        2px
+        0
+        15px;
+
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   COLUMN LINKS
+========================================================= */
+
+.solasta-exact-footer__column ul {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+
+.solasta-exact-footer__column li {
+    margin-bottom: 8px;
+}
+
+
+.solasta-exact-footer__column a {
+    color: #a7b0b8;
+
+    font-size: 9px;
+    font-weight: 400;
+
+    line-height: 1.25;
+
+    text-decoration: none;
+
+    transition:
+        color .2s ease;
+}
+
+
+.solasta-exact-footer__column a:hover {
+    color: #ffffff;
+}
+
+
+.solasta-exact-footer__view-all {
+    color: #ff5a14 !important;
+
+    font-weight: 700 !important;
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.solasta-exact-footer__contact-item {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 10px;
+
+    color: #a7b0b8;
+
+    font-size: 9px;
+
+    text-decoration: none;
+}
+
+
+.solasta-exact-footer__contact-item i {
+    width: 12px;
+
+    color: #87939c;
+
+    font-size: 9px;
+
+    text-align: center;
+}
+
+
+a.solasta-exact-footer__contact-item:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   LEGAL
+========================================================= */
+
+.solasta-exact-footer__legal {
+    margin-top: 42px;
+
+    text-align: right;
+}
+
+
+.solasta-exact-footer__legal p {
+    margin: 0;
+
+    color: #8a959e;
+
+    font-size: 8px;
+}
+
+
+.solasta-exact-footer__legal div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 7px;
+
+    margin-top: 7px;
+}
+
+
+.solasta-exact-footer__legal a,
+.solasta-exact-footer__legal span {
+    color: #8a959e;
+
+    font-size: 8px;
+
+    text-decoration: none;
+}
+
+
+.solasta-exact-footer__legal a:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   BOTTOM STRAPLINE
+========================================================= */
+
+.solasta-exact-footer__bottom {
+    min-height: 47px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border-top:
+        1px
+        solid
+        rgba(255, 255, 255, .07);
+}
+
+
+.solasta-exact-footer__orange-line {
+    width: 42px;
+    height: 3px;
+
+    display: block;
+
+    background: #ff5a14;
+}
+
+
+.solasta-exact-footer__bottom p {
+    margin: 0;
+
+    color: #9ca6ae;
+
+    font-size: 8px;
+}
+
+
+.solasta-exact-footer__bottom p span {
+    margin:
+        0
+        5px;
+
+    color: #636f78;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .solasta-exact-footer__grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            36px
+            45px;
+    }
+
+
+    .solasta-exact-footer__legal {
+        margin-top: 25px;
+        text-align: left;
+    }
+
+
+    .solasta-exact-footer__legal div {
+        justify-content: flex-start;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .solasta-exact-footer__inner {
+        width:
+            min(
+                calc(100% - 30px),
+                1180px
+            );
+    }
+
+
+    .solasta-exact-footer__grid {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+        padding:
+            32px
+            0
+            25px;
+    }
+
+
+    .solasta-exact-footer__description {
+        max-width: 100%;
+    }
+
+
+    .solasta-exact-footer__bottom {
+        align-items: flex-start;
+
+        padding:
+            16px
+            0;
+    }
+
+
+    .solasta-exact-footer__orange-line {
+        margin-top: 4px;
+    }
+
+}

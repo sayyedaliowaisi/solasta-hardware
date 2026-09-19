@@ -11,9 +11,7 @@
 
     $productMenuActive =
         request()->routeIs('admin.products.*') ||
-        request()->routeIs('admin.categories.*') ||
-        request()->routeIs('admin.products-page.*') ||
-        request()->routeIs('admin.product-detail-page.*');
+        request()->routeIs('admin.categories.*');
 
     $contentMenuActive =
         request()->routeIs('admin.homepage.*') ||
@@ -344,90 +342,6 @@
 
                 </a>
 
-
-                {{-- PRODUCTS PAGE --}}
-                <a
-                    href="{{ route('admin.products-page.edit') }}"
-                    class="
-                        flex
-                        min-h-[44px]
-                        items-center
-                        gap-3
-                        rounded-xl
-                        px-3.5
-                        py-2.5
-                        text-[13px]
-                        font-bold
-                        transition
-
-                        {{ request()->routeIs('admin.products-page.*')
-                            ? 'bg-orange-600 text-white shadow-lg shadow-orange-950/20'
-                            : 'text-slate-300 hover:bg-white/[0.07] hover:text-white'
-                        }}
-                    "
-                >
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.8"
-                        stroke="currentColor"
-                        class="h-[18px] w-[18px] shrink-0"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6.75 3.75h10.5A2.25 2.25 0 0 1 19.5 6v12a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 18V6a2.25 2.25 0 0 1 2.25-2.25ZM8.25 8.25h7.5M8.25 12h7.5M8.25 15.75h5"
-                        />
-                    </svg>
-
-                    <span>Products Page</span>
-
-                </a>
-
-
-                {{-- PRODUCT DETAIL PAGE --}}
-                <a
-                    href="{{ route('admin.product-detail-page.edit') }}"
-                    class="
-                        flex
-                        min-h-[44px]
-                        items-center
-                        gap-3
-                        rounded-xl
-                        px-3.5
-                        py-2.5
-                        text-[13px]
-                        font-bold
-                        transition
-
-                        {{ request()->routeIs('admin.product-detail-page.*')
-                            ? 'bg-orange-600 text-white shadow-lg shadow-orange-950/20'
-                            : 'text-slate-300 hover:bg-white/[0.07] hover:text-white'
-                        }}
-                    "
-                >
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.8"
-                        stroke="currentColor"
-                        class="h-[18px] w-[18px] shrink-0"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6.75 3.75h10.5A2.25 2.25 0 0 1 19.5 6v12a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 18V6a2.25 2.25 0 0 1 2.25-2.25ZM8.25 8.25h7.5M8.25 12h7.5M8.25 15.75h4.5"
-                        />
-                    </svg>
-
-                    <span>Product Detail</span>
-
-                </a>
-
             </div>
 
         </div>
@@ -710,7 +624,7 @@
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm8.25 3a8.2 8.2 0 0 0-.15-1.55l1.65-1.28-2-3.46-2.04.82a8.7 8.7 0 0 0-2.69-1.55L14.7 2.8h-4l-.32 2.18a8.7 8.7 0 0 0-2.69 1.55l-2.04-.82-2 3.46 1.65 1.28A8.2 8.2 0 0 0 5.15 12c0 .53.05 1.05.15 1.55l-1.65 1.28 2 3.46 2.04-.82a8.7 8.7 0 0 0 2.69 1.55l.32 2.18h4l.32-2.18a8.7 8.7 0 0 0 2.69-1.55l2.04.82 2-3.46-1.65-1.28c.1-.5.15-1.02.15-1.55Z"
+                            d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm8.25 3a8.2 8.2 0 0 0-.15-1.55l1.65-1.28-2-3.46-2.04.82a8.7 8.7 0 0 0-2.69-1.55L14.7 2.8h-4l-.32 2.18a8.7 8.7 0 0 0-2.69 1.55l-2.04-.82-2 3.46 1.65 1.28A8.2 8.2 0 0 0 5.15 12c0 .53.05 1.05.15 1.55l-1.65 1.28 2 3.46 2.04-.82a8.7 8.7 0 0 0 2.69 1.55l.32 2.18h4l.32-2.18a8.7 8.7 0 0 0 2.69-1.55l2.04.82 2 3.46-1.65-1.28c.1-.5.15-1.02.15-1.55Z"
                         />
                     </svg>
 

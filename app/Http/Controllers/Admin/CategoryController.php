@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Category List
+    | CATEGORY LIST
     |--------------------------------------------------------------------------
     */
 
@@ -32,55 +32,52 @@ class CategoryController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Create Category
+    | CREATE CATEGORY
     |--------------------------------------------------------------------------
     */
 
     public function create()
     {
-        return view('admin.categories.create');
+        return view(
+            'admin.categories.create'
+        );
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Store Category
+    | STORE CATEGORY
     |--------------------------------------------------------------------------
     */
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+        /*
+        |--------------------------------------------------------------------------
+        | Normalize Manual Slug
+        |--------------------------------------------------------------------------
+        */
 
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                'unique:categories,slug',
-            ],
+        if ($request->filled('slug')) {
 
-            'description' => [
-                'nullable',
-                'string',
-            ],
+            $request->merge([
+                'slug' => Str::slug(
+                    $request->input('slug')
+                ),
+            ]);
 
-            'folder' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
+        }
 
-            'sort_order' => [
-                'nullable',
-                'integer',
-                'min:0',
-            ],
-        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validation
+        |--------------------------------------------------------------------------
+        */
+
+        $validated = $request->validate(
+            $this->validationRules()
+        );
 
 
         /*
@@ -89,34 +86,36 @@ class CategoryController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $slug = !empty($validated['slug'])
-            ? Str::slug($validated['slug'])
-            : Str::slug($validated['name']);
+        if (!empty($validated['slug'])) {
+
+            $slug = $validated['slug'];
+
+        } else {
+
+            $baseSlug = Str::slug(
+                $validated['name']
+            );
+
+            $slug = $this->generateUniqueSlug(
+                $baseSlug
+            );
+
+        }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Create
+        | Create Category
         |--------------------------------------------------------------------------
         */
 
-        Category::create([
-            'name' => $validated['name'],
-
-            'slug' => $slug,
-
-            'description' =>
-                $validated['description'] ?? null,
-
-            'folder' =>
-                $validated['folder'] ?? null,
-
-            'sort_order' =>
-                $validated['sort_order'] ?? 0,
-
-            'is_active' =>
-                $request->boolean('is_active'),
-        ]);
+        Category::create(
+            $this->categoryPayload(
+                $request,
+                $validated,
+                $slug
+            )
+        );
 
 
         return redirect()
@@ -130,7 +129,7 @@ class CategoryController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Edit Category
+    | EDIT CATEGORY
     |--------------------------------------------------------------------------
     */
 
@@ -145,7 +144,7 @@ class CategoryController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Update Category
+    | UPDATE CATEGORY
     |--------------------------------------------------------------------------
     */
 
@@ -153,41 +152,34 @@ class CategoryController extends Controller
         Request $request,
         Category $category
     ) {
-        $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+        /*
+        |--------------------------------------------------------------------------
+        | Normalize Manual Slug
+        |--------------------------------------------------------------------------
+        */
 
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
+        if ($request->filled('slug')) {
 
-                Rule::unique(
-                    'categories',
-                    'slug'
-                )->ignore($category->id),
-            ],
+            $request->merge([
+                'slug' => Str::slug(
+                    $request->input('slug')
+                ),
+            ]);
 
-            'description' => [
-                'nullable',
-                'string',
-            ],
+        }
 
-            'folder' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
 
-            'sort_order' => [
-                'nullable',
-                'integer',
-                'min:0',
-            ],
-        ]);
+        /*
+        |--------------------------------------------------------------------------
+        | Validation
+        |--------------------------------------------------------------------------
+        */
+
+        $validated = $request->validate(
+            $this->validationRules(
+                $category
+            )
+        );
 
 
         /*
@@ -196,34 +188,37 @@ class CategoryController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $slug = !empty($validated['slug'])
-            ? Str::slug($validated['slug'])
-            : Str::slug($validated['name']);
+        if (!empty($validated['slug'])) {
+
+            $slug = $validated['slug'];
+
+        } else {
+
+            $baseSlug = Str::slug(
+                $validated['name']
+            );
+
+            $slug = $this->generateUniqueSlug(
+                $baseSlug,
+                $category->id
+            );
+
+        }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Update
+        | Update Category
         |--------------------------------------------------------------------------
         */
 
-        $category->update([
-            'name' => $validated['name'],
-
-            'slug' => $slug,
-
-            'description' =>
-                $validated['description'] ?? null,
-
-            'folder' =>
-                $validated['folder'] ?? null,
-
-            'sort_order' =>
-                $validated['sort_order'] ?? 0,
-
-            'is_active' =>
-                $request->boolean('is_active'),
-        ]);
+        $category->update(
+            $this->categoryPayload(
+                $request,
+                $validated,
+                $slug
+            )
+        );
 
 
         return redirect()
@@ -237,7 +232,7 @@ class CategoryController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Delete Category
+    | DELETE CATEGORY
     |--------------------------------------------------------------------------
     */
 
@@ -247,10 +242,6 @@ class CategoryController extends Controller
         |--------------------------------------------------------------------------
         | Protect Categories Containing Products
         |--------------------------------------------------------------------------
-        |
-        | Category delete karne se pehle check karenge ki
-        | us category ke andar products exist karte hain ya nahi.
-        |
         */
 
         $productCount = $category
@@ -266,6 +257,7 @@ class CategoryController extends Controller
                     'error',
                     "Category \"{$category->name}\" cannot be deleted because it contains {$productCount} product(s). Move or delete those products first."
                 );
+
         }
 
 
@@ -273,7 +265,13 @@ class CategoryController extends Controller
         |--------------------------------------------------------------------------
         | Safe Delete
         |--------------------------------------------------------------------------
+        |
+        | Sirf database category delete hogi.
+        | Physical catalogue images delete nahi hongi.
+        |
         */
+
+        $categoryName = $category->name;
 
         $category->delete();
 
@@ -282,7 +280,309 @@ class CategoryController extends Controller
             ->route('admin.categories.index')
             ->with(
                 'success',
-                'Category deleted successfully.'
+                "Category \"{$categoryName}\" deleted successfully."
             );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | VALIDATION RULES
+    |--------------------------------------------------------------------------
+    */
+
+    private function validationRules(
+        ?Category $category = null
+    ): array {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Unique Slug
+        |--------------------------------------------------------------------------
+        */
+
+        $slugRule = Rule::unique(
+            'categories',
+            'slug'
+        );
+
+
+        if ($category) {
+
+            $slugRule->ignore(
+                $category->id
+            );
+
+        }
+
+
+        return [
+
+            /*
+            |--------------------------------------------------------------------------
+            | BASIC INFORMATION
+            |--------------------------------------------------------------------------
+            */
+
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                $slugRule,
+            ],
+
+            'description' => [
+                'nullable',
+                'string',
+                'max:10000',
+            ],
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CATALOGUE
+            |--------------------------------------------------------------------------
+            */
+
+            'folder' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            /*
+            | Existing category image.
+            | Isko preserve kar rahe hain.
+            */
+
+            'image' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PRODUCTS PAGE MEDIA
+            |--------------------------------------------------------------------------
+            */
+
+            'hero_image' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+
+            'banner_image' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SORTING
+            |--------------------------------------------------------------------------
+            */
+
+            'sort_order' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:999999',
+            ],
+
+        ];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CATEGORY PAYLOAD
+    |--------------------------------------------------------------------------
+    */
+
+    private function categoryPayload(
+        Request $request,
+        array $validated,
+        string $slug
+    ): array {
+
+        return [
+
+            /*
+            |--------------------------------------------------------------------------
+            | BASIC INFORMATION
+            |--------------------------------------------------------------------------
+            */
+
+            'name' =>
+                trim(
+                    $validated['name']
+                ),
+
+            'slug' =>
+                $slug,
+
+            'description' =>
+                $this->nullableString(
+                    $validated['description']
+                    ?? null
+                ),
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CATALOGUE
+            |--------------------------------------------------------------------------
+            */
+
+            'folder' =>
+                $this->nullableString(
+                    $validated['folder']
+                    ?? null
+                ),
+
+            'image' =>
+                $this->nullableString(
+                    $validated['image']
+                    ?? null
+                ),
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PRODUCTS PAGE MEDIA
+            |--------------------------------------------------------------------------
+            */
+
+            'hero_image' =>
+                $this->nullableString(
+                    $validated['hero_image']
+                    ?? null
+                ),
+
+            'banner_image' =>
+                $this->nullableString(
+                    $validated['banner_image']
+                    ?? null
+                ),
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | DISPLAY
+            |--------------------------------------------------------------------------
+            */
+
+            'sort_order' =>
+                isset($validated['sort_order'])
+                    ? (int) $validated['sort_order']
+                    : 0,
+
+            'is_active' =>
+                $request->boolean(
+                    'is_active'
+                ),
+
+        ];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | NULLABLE STRING
+    |--------------------------------------------------------------------------
+    */
+
+    private function nullableString(
+        mixed $value
+    ): ?string {
+
+        if (!is_string($value)) {
+            return null;
+        }
+
+
+        $value = trim(
+            $value
+        );
+
+
+        return $value !== ''
+            ? $value
+            : null;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GENERATE UNIQUE CATEGORY SLUG
+    |--------------------------------------------------------------------------
+    */
+
+    private function generateUniqueSlug(
+        string $baseSlug,
+        ?int $ignoreCategoryId = null
+    ): string {
+
+        if ($baseSlug === '') {
+
+            $baseSlug =
+                'category';
+
+        }
+
+
+        $slug =
+            $baseSlug;
+
+        $counter =
+            2;
+
+
+        while (true) {
+
+            $query = Category::query()
+                ->where(
+                    'slug',
+                    $slug
+                );
+
+
+            if ($ignoreCategoryId !== null) {
+
+                $query->where(
+                    'id',
+                    '!=',
+                    $ignoreCategoryId
+                );
+
+            }
+
+
+            if (!$query->exists()) {
+
+                return $slug;
+
+            }
+
+
+            $slug =
+                $baseSlug
+                . '-'
+                . $counter;
+
+
+            $counter++;
+        }
     }
 }
